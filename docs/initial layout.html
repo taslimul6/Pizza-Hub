@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PizzaHub — Hot, fresh pizza from local shops, delivered fast</title>
+<meta name="description" content="Discover local pizza shops, browse menus and order hot, fresh pizza for delivery. Restaurants can join PizzaHub and grow their business.">
+<meta name="theme-color" content="#C8261B">
+
+<!-- Fonts: Fraunces (display) + DM Sans (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&family=Fraunces:opsz,wght@9..144,600..900&display=swap" rel="stylesheet">
+<!-- Icons: Font Awesome 6 Free -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
+
+<script>document.documentElement.classList.add('js');</script>
+
+<style>
+/* ==========================================================================
+   1. DESIGN TOKENS  (brand identity as CSS custom properties)
+   ========================================================================== */
+:root {
+  /* --- Brand colors ---------------------------------------------------- */
+  --color-primary:       #C8261B;  /* Tomato red — brand, primary CTAs      (white text 5.6:1) */
+  --color-primary-600:   #A81D14;  /* Hover / pressed / text on tints       (white text 7.4:1) */
+  --color-primary-800:   #8F160E;  /* Deep red for gradients                */
+  --color-primary-100:   #FDE6E3;  /* Tint: active nav, soft backgrounds    */
+
+  --color-secondary:     #2F6B3A;  /* Basil green — vendors, freshness      (white text 6.4:1) */
+  --color-secondary-600: #245530;
+  --color-secondary-100: #E3F1E5;
+
+  --color-accent:        #FFB81C;  /* Cheese gold — badges, highlights, CTAs on dark (dark text 9.7:1) */
+  --color-accent-600:    #F2A300;
+  --color-accent-100:    #FFF1CC;
+
+  /* --- Neutrals --------------------------------------------------------- */
+  --color-dark:          #2A1A14;  /* Espresso — body text, dark sections   (15.9:1 on Light) */
+  --color-dark-900:      #1E120D;  /* Footer                                */
+  --color-light:         #FFF8EE;  /* Cream — page background               */
+  --color-white:         #FFFFFF;
+  --gray-50:  #FAF6F0;
+  --gray-100: #F1EAE0;
+  --gray-200: #E4DACB;             /* Borders                               */
+  --gray-300: #CFC2B0;
+  --gray-500: #8A7C6C;             /* Decorative only — NOT for text        */
+  --gray-600: #6B5E50;             /* Muted text (6.0:1 on Light)           */
+  --gray-700: #4A3E33;
+
+  /* --- Semantic states -------------------------------------------------- */
+  --color-success:    #1E7B3C;  --color-success-bg: #E2F4E7;   /* 4.6:1 */
+  --color-warning:    #8A4005;  --color-warning-bg: #FEF0D9;   /* 6.6:1 */
+  --color-error:      #B3261E;  --color-error-bg:   #FCE4E2;   /* 5.4:1 */
+  --color-focus:      #1A5FD4;                                  /* Focus ring, 5.5:1 on Light */
+
+  /* --- Aliases ---------------------------------------------------------- */
+  --color-text:       var(--color-dark);
+  --color-text-muted: var(--gray-600);
+  --color-bg:         var(--color-light);
+  --color-surface:    var(--color-white);
+  --color-border:     var(--gray-200);
+
+  /* --- Typography ------------------------------------------------------- */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body:    "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Type scale (size / weight / line-height) */
+  --fs-h1: clamp(2.5rem, 1.5rem + 4.2vw, 4.25rem);  --fw-h1: 800;  --lh-h1: 1.04;
+  --fs-h2: clamp(1.9rem, 1.3rem + 2.4vw, 3rem);     --fw-h2: 800;  --lh-h2: 1.1;
+  --fs-h3: clamp(1.4rem, 1.15rem + 1vw, 1.75rem);   --fw-h3: 700;  --lh-h3: 1.2;
+  --fs-h4: 1.25rem;                                 --fw-h4: 700;  --lh-h4: 1.3;
+  --fs-h5: 1.0625rem;                               --fw-h5: 700;  --lh-h5: 1.35;
+  --fs-h6: 0.8125rem;                               --fw-h6: 700;  --lh-h6: 1.4;   /* uppercase eyebrow */
+  --fs-body-lg: 1.1875rem;                          --lh-body-lg: 1.6;
+  --fs-body:    1rem;                               --lh-body: 1.6;   --fw-body: 400;
+  --fs-small:   0.875rem;                           --lh-small: 1.5;
+  --fs-button:  1rem;                               --fw-button: 700; --lh-button: 1;
+
+  /* --- Spacing (4 / 8px scale) ------------------------------------------ */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+
+  /* --- Radius ----------------------------------------------------------- */
+  --radius-sm: 8px;  --radius-md: 14px;  --radius-lg: 22px;  --radius-xl: 32px;  --radius-pill: 999px;
+
+  /* --- Shadows (5 levels, warm-tinted) ---------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(42, 26, 20, .08);
+  --shadow-sm: 0 2px 8px rgba(42, 26, 20, .08);
+  --shadow-md: 0 6px 20px rgba(42, 26, 20, .10);
+  --shadow-lg: 0 14px 36px rgba(42, 26, 20, .14);
+  --shadow-xl: 0 28px 60px rgba(42, 26, 20, .20);
+  --shadow-primary: 0 8px 22px rgba(200, 38, 27, .35);
+
+  /* --- Motion / layout -------------------------------------------------- */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --t-fast: .15s;  --t-base: .25s;  --t-slow: .45s;
+  --container: 1200px;
+  --header-h: 72px;
+}
+
+/* ==========================================================================
+   2. BASE / RESET
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--lh-body);
+  color: var(--color-text); background: var(--color-bg); -webkit-font-smoothing: antialiased;
+}
+body.no-scroll { overflow: hidden; }
+img, svg { max-width: 100%; display: block; }
+img { height: auto; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; margin: 0; padding: 0; }
+h1, h2, h3, h4, h5, h6, p, figure, blockquote { margin: 0; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -.02em; }
+h1 { font-size: var(--fs-h1); font-weight: var(--fw-h1); line-height: var(--lh-h1); }
+h2 { font-size: var(--fs-h2); font-weight: var(--fw-h2); line-height: var(--lh-h2); }
+h3 { font-size: var(--fs-h3); font-weight: var(--fw-h3); line-height: var(--lh-h3); }
+h4 { font-size: var(--fs-h4); font-weight: var(--fw-h4); line-height: var(--lh-h4); }
+h5 { font-size: var(--fs-h5); font-weight: var(--fw-h5); line-height: var(--lh-h5); }
+h6 { font-size: var(--fs-h6); font-weight: var(--fw-h6); line-height: var(--lh-h6); text-transform: uppercase; letter-spacing: .12em; }
+small, .small { font-size: var(--fs-small); line-height: var(--lh-small); }
+
+/* Accessible focus ring everywhere */
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; border-radius: 6px; }
+.on-dark :focus-visible, .site-footer :focus-visible { outline-color: #fff; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip-link {
+  position: fixed; top: 8px; left: 8px; z-index: 1000; background: var(--color-dark); color: #fff;
+  padding: 10px 16px; border-radius: var(--radius-sm); transform: translateY(-200%); transition: transform var(--t-base) var(--ease);
+}
+.skip-link:focus { transform: none; }
+
+.container { width: min(100% - 2 * var(--space-5), var(--container)); margin-inline: auto; }
+section { padding-block: clamp(56px, 8vw, var(--space-9)); }
+
+/* Section heading pattern */
+.section-head { max-width: 640px; margin-bottom: var(--space-7); }
+.section-head.center { margin-inline: auto; text-align: center; }
+.section-head.row { max-width: none; display: flex; align-items: end; justify-content: space-between; gap: var(--space-5); flex-wrap: wrap; }
+.eyebrow { color: var(--color-primary); margin-bottom: var(--space-3); display: inline-flex; align-items: center; gap: 8px; }
+.eyebrow.green { color: var(--color-secondary); }
+.section-sub { color: var(--color-text-muted); font-size: var(--fs-body-lg); line-height: var(--lh-body-lg); margin-top: var(--space-3); }
+
+/* Scroll reveal (only when JS is on) */
+.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: var(--d, 0s); }
+.js .reveal.in { opacity: 1; transform: none; }
+
+/* ==========================================================================
+   3. COMPONENTS — buttons, cards, badges, forms
+   ========================================================================== */
+/* Buttons: primary (solid red) · secondary (outline) · ghost (text) · accent (gold, for dark bgs) */
+.btn {
+  --btn-bg: var(--color-primary); --btn-fg: #fff; --btn-bd: var(--color-primary);
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 26px; border-radius: var(--radius-pill);
+  font-size: var(--fs-button); font-weight: var(--fw-button); line-height: var(--lh-button); white-space: nowrap;
+  background: var(--btn-bg); color: var(--btn-fg); border: 2px solid var(--btn-bd);
+  transition: transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), background var(--t-base), color var(--t-base), border-color var(--t-base);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0) scale(.98); }
+.btn-primary:hover { --btn-bg: var(--color-primary-600); --btn-bd: var(--color-primary-600); box-shadow: var(--shadow-primary); }
+.btn-secondary { --btn-bg: transparent; --btn-fg: var(--color-dark); --btn-bd: var(--color-dark); }
+.btn-secondary:hover { --btn-bg: var(--color-dark); --btn-fg: #fff; box-shadow: var(--shadow-md); }
+.btn-ghost { --btn-bg: transparent; --btn-fg: var(--color-dark); --btn-bd: transparent; padding-inline: 18px; }
+.btn-ghost:hover { --btn-bg: var(--gray-100); }
+.btn-accent { --btn-bg: var(--color-accent); --btn-fg: var(--color-dark); --btn-bd: var(--color-accent); }
+.btn-accent:hover { --btn-bg: var(--color-accent-600); --btn-bd: var(--color-accent-600); box-shadow: 0 8px 22px rgba(255, 184, 28, .4); }
+.btn-green { --btn-bg: var(--color-secondary); --btn-bd: var(--color-secondary); }
+.btn-green:hover { --btn-bg: var(--color-secondary-600); --btn-bd: var(--color-secondary-600); }
+.btn-outline-light { --btn-bg: transparent; --btn-fg: #fff; --btn-bd: rgba(255,255,255,.6); }
+.btn-outline-light:hover { --btn-bg: #fff; --btn-fg: var(--color-dark); --btn-bd: #fff; }
+.btn-sm { min-height: 40px; padding: 0 18px; font-size: var(--fs-small); }
+.btn-lg { min-height: 56px; padding: 0 32px; font-size: 1.0625rem; }
+
+/* Card */
+.card {
+  background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); overflow: hidden;
+  transition: transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+}
+.card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.card-media { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: var(--gray-100); }
+.card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.card:hover .card-media img { transform: scale(1.06); }
+
+/* Pills / badges */
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--radius-pill); font-size: var(--fs-small); font-weight: 700; line-height: 1.4; }
+.pill-tag { background: var(--gray-100); color: var(--gray-700); font-weight: 500; font-size: 0.8125rem; padding: 2px 10px; }
+.status { position: absolute; top: 12px; left: 12px; background: #fff; box-shadow: var(--shadow-sm); }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.status.open { color: var(--color-success); }
+.status.closed { color: var(--gray-700); }
+.flag { position: absolute; top: 12px; left: 12px; background: var(--color-accent); color: var(--color-dark); box-shadow: var(--shadow-sm); }
+.flag.green { background: var(--color-secondary-100); color: var(--color-secondary-600); }
+
+/* Forms */
+.field-input {
+  width: 100%; min-height: 48px; padding: 0 18px; background: #fff; color: var(--color-dark);
+  border: 2px solid var(--gray-200); border-radius: var(--radius-pill); transition: border-color var(--t-base), box-shadow var(--t-base);
+}
+.field-input::placeholder { color: var(--gray-600); opacity: 1; }
+.field-input:hover { border-color: var(--gray-300); }
+.field-input:focus-visible { outline: none; border-color: var(--color-focus); box-shadow: 0 0 0 4px rgba(26, 95, 212, .18); }
+.field-input[aria-invalid="true"] { border-color: var(--color-error); }
+.form-msg { font-size: var(--fs-small); min-height: 1.5em; margin-top: var(--space-2); }
+.form-msg.error { color: var(--color-error); }
+.form-msg.success { color: var(--color-success); font-weight: 700; }
+
+/* ==========================================================================
+   4. NAVBAR
+   ========================================================================== */
+.site-header {
+  position: sticky; top: 0; z-index: 100; background: rgba(255, 248, 238, .88);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid transparent; transition: box-shadow var(--t-base), border-color var(--t-base), background var(--t-base);
+}
+.site-header.is-scrolled { background: rgba(255, 248, 238, .97); box-shadow: var(--shadow-md); border-color: var(--color-border); }
+.nav-bar { display: flex; align-items: center; gap: var(--space-5); height: var(--header-h); }
+
+.logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 900; font-size: 1.5rem; letter-spacing: -.03em; flex-shrink: 0; }
+.logo b { color: var(--color-primary); font-weight: 900; }
+.logo svg { transition: transform var(--t-base) var(--ease); }
+.logo:hover svg { transform: rotate(-12deg) scale(1.08); }
+
+.primary-nav { flex: 1; min-width: 0; }
+.nav-list { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; }
+.nav-link {
+  position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--radius-pill);
+  font-weight: 500; font-size: .96875rem; white-space: nowrap; transition: background var(--t-fast), color var(--t-fast);
+}
+.nav-link i { display: none; width: 18px; text-align: center; }
+.nav-link:hover { background: var(--gray-100); }
+.nav-link[aria-current="page"] { background: var(--color-primary-100); color: var(--color-primary-600); font-weight: 700; }
+
+.badge {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 6px;
+  border-radius: var(--radius-pill); background: var(--color-primary); color: #fff; font-size: 12px; font-weight: 700; line-height: 1;
+}
+.badge.is-empty { display: none; }
+.badge.bump { animation: bump .5s var(--ease); }
+@keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.5); } 100% { transform: scale(1); } }
+
+.nav-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+.cart-quick { display: none; position: relative; width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.1rem; }
+.cart-quick:hover { background: var(--gray-100); }
+.cart-quick .badge { position: absolute; top: 0; right: -2px; }
+
+/* Profile dropdown */
+.profile { position: relative; }
+.profile-btn { display: flex; align-items: center; gap: 10px; padding: 4px 12px 4px 4px; border-radius: var(--radius-pill); border: 2px solid var(--gray-200); background: #fff; transition: border-color var(--t-base), box-shadow var(--t-base); }
+.profile-btn:hover, .profile.open .profile-btn { border-color: var(--color-primary); box-shadow: var(--shadow-sm); }
+.profile-name { font-weight: 700; font-size: var(--fs-small); max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-btn .chev { font-size: .7rem; color: var(--gray-600); transition: transform var(--t-base) var(--ease); }
+.profile.open .chev { transform: rotate(180deg); }
+.avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--gray-100); flex-shrink: 0; }
+.dropdown {
+  position: absolute; right: 0; top: calc(100% + 10px); width: 264px; padding: 8px; background: #fff;
+  border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-xl);
+  opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.98); transform-origin: top right;
+  transition: opacity var(--t-base) var(--ease), transform var(--t-base) var(--ease), visibility 0s linear var(--t-base);
+}
+.profile.open .dropdown { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.dropdown-head { padding: 10px 12px 12px; border-bottom: 1px solid var(--color-border); margin-bottom: 6px; display: grid; gap: 6px; justify-items: start; }
+.role-pill { background: var(--color-secondary-100); color: var(--color-secondary-600); padding: 2px 10px; font-size: .75rem; }
+.menu-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border-radius: var(--radius-sm); font-weight: 500; text-align: left; transition: background var(--t-fast); }
+.menu-item i { width: 18px; text-align: center; color: var(--gray-600); }
+.menu-item:hover, .menu-item:focus-visible { background: var(--gray-100); }
+.menu-item.danger { color: var(--color-error); }
+.menu-item.danger i { color: var(--color-error); }
+.dropdown hr { border: 0; border-top: 1px solid var(--color-border); margin: 6px 0; }
+
+/* Hamburger + drawer */
+.hamburger { display: none; width: 44px; height: 44px; border-radius: 12px; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
+.hamburger:hover { background: var(--gray-100); }
+.hamburger span { width: 22px; height: 2.5px; border-radius: 2px; background: var(--color-dark); transition: transform var(--t-base) var(--ease), opacity var(--t-fast); }
+.hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+.drawer-overlay { position: fixed; inset: 0; z-index: 250; background: rgba(30, 18, 13, .55); opacity: 0; visibility: hidden; transition: opacity var(--t-base), visibility 0s linear var(--t-base); }
+.drawer-overlay.show { opacity: 1; visibility: visible; transition-delay: 0s; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 300; width: min(86vw, 360px); background: var(--color-light);
+  display: flex; flex-direction: column; box-shadow: var(--shadow-xl); transform: translateX(100%); visibility: hidden;
+  transition: transform .35s var(--ease), visibility 0s linear .35s;
+}
+.drawer.open { transform: none; visibility: visible; transition-delay: 0s; }
+.drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--color-border); }
+.drawer-close { width: 44px; height: 44px; border-radius: 12px; font-size: 1.25rem; }
+.drawer-close:hover { background: var(--gray-100); }
+.drawer-body { flex: 1; overflow-y: auto; padding: var(--space-4) var(--space-4) var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+.drawer-user { display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.drawer-user strong { display: block; line-height: 1.2; }
+.drawer .nav-list { flex-direction: column; align-items: stretch; gap: 4px; }
+.drawer .nav-link { padding: 14px 16px; border-radius: var(--radius-md); font-size: 1.0625rem; }
+.drawer .nav-link i { display: inline-block; color: var(--gray-600); }
+.drawer .nav-link[aria-current="page"] i { color: inherit; }
+.drawer-foot { margin-top: auto; display: grid; gap: 10px; }
+
+/* ==========================================================================
+   5. HERO
+   ========================================================================== */
+.hero {
+  position: relative; overflow: hidden; padding-block: clamp(36px, 6vw, 80px) clamp(64px, 8vw, 112px);
+  background:
+    radial-gradient(800px 460px at 88% 18%, #FFE7B0 0%, transparent 62%),
+    radial-gradient(640px 380px at -4% 100%, #FDDCD3 0%, transparent 62%),
+    var(--color-light);
+}
+.hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: var(--space-7); align-items: center; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); padding: 6px 16px 6px 8px; border-radius: var(--radius-pill); font-size: var(--fs-small); font-weight: 700; margin-bottom: var(--space-5); }
+.hero-eyebrow .dot { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--color-accent); color: var(--color-dark); font-size: .75rem; }
+.hero h1 .hl { position: relative; color: var(--color-primary); white-space: nowrap; }
+.hero h1 .hl::after {
+  content: ""; position: absolute; left: -2%; right: -2%; bottom: -.14em; height: .3em; z-index: -1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 Q14 1 26 7 T50 7 T74 7 T98 6' fill='none' stroke='%23FFB81C' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+.hero-sub { font-size: var(--fs-body-lg); line-height: var(--lh-body-lg); color: var(--color-text-muted); max-width: 52ch; margin-top: var(--space-4); }
+.welcome-chip { display: none; margin-bottom: var(--space-3); color: var(--color-secondary-600); font-weight: 700; }
+.welcome-chip.show { display: block; }
+
+.search {
+  display: flex; align-items: center; gap: 6px; margin-top: var(--space-6); padding: 8px 8px 8px 20px; max-width: 580px;
+  background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-pill); box-shadow: var(--shadow-lg);
+  transition: box-shadow var(--t-base), border-color var(--t-base);
+}
+.search:focus-within { border-color: var(--color-focus); box-shadow: 0 0 0 4px rgba(26, 95, 212, .18), var(--shadow-lg); }
+.search > i.pin { color: var(--color-primary); font-size: 1.1rem; }
+.search input { flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; font-size: 1rem; }
+.search input:focus-visible { outline: none; }
+.search input::placeholder { color: var(--gray-600); opacity: 1; }
+.locate { width: 44px; height: 44px; border-radius: 50%; color: var(--color-secondary); font-size: 1.05rem; flex-shrink: 0; transition: background var(--t-fast); }
+.locate:hover { background: var(--color-secondary-100); }
+.search-hint { min-height: 1.5em; margin-top: var(--space-2); padding-left: 20px; font-size: var(--fs-small); color: var(--color-error); }
+
+.hero-ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+.hero-stats { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin-top: var(--space-7); }
+.hero-stats li { display: flex; flex-direction: column; }
+.hero-stats strong { font-family: var(--font-display); font-size: 1.75rem; line-height: 1.1; letter-spacing: -.02em; }
+.hero-stats span { font-size: var(--fs-small); color: var(--color-text-muted); }
+
+.hero-visual { position: relative; display: grid; place-items: center; }
+.hero-visual::before { content: ""; position: absolute; width: 92%; aspect-ratio: 1; border-radius: 50%; background: var(--color-accent); opacity: .35; filter: blur(2px); }
+.hero-pizza { position: relative; width: min(100%, 460px); filter: drop-shadow(0 24px 30px rgba(42, 26, 20, .28)); }
+.pizza-spin { transform-box: view-box; transform-origin: 200px 196px; animation: spin 90s linear infinite; }  /* only the pizza turns, not its shadow */
+@keyframes spin { to { transform: rotate(360deg); } }
+.steam { animation: rise 3.2s ease-in-out infinite; transform-origin: center; }
+.hero-chip { position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 16px 10px 10px; background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); font-size: var(--fs-small); line-height: 1.3; animation: float 5s ease-in-out infinite; }
+.hero-chip .ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; font-size: 1rem; }
+.hero-chip strong { display: block; font-size: .9375rem; }
+.hero-chip.c1 { top: 8%; left: -2%; } .hero-chip.c1 .ic { background: var(--color-primary-100); color: var(--color-primary-600); }
+.hero-chip.c2 { bottom: 10%; right: -2%; animation-delay: -2.5s; } .hero-chip.c2 .ic { background: var(--color-accent-100); color: var(--color-warning); }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes rise { 0%, 100% { opacity: 0; transform: translateY(6px); } 50% { opacity: .7; transform: translateY(-8px); } }
+
+/* ==========================================================================
+   6. HOW IT WORKS
+   ========================================================================== */
+.how { background: #fff; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); counter-reset: step; position: relative; }
+.step { position: relative; padding: var(--space-6) var(--space-5); border-radius: var(--radius-lg); background: var(--color-light); border: 1px solid var(--color-border); text-align: center; transition: transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease); }
+.step:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.step-icon { position: relative; display: grid; place-items: center; width: 84px; height: 84px; margin: 0 auto var(--space-5); border-radius: 26px; font-size: 2rem; color: #fff; transform: rotate(-6deg); transition: transform var(--t-base) var(--ease); }
+.step:hover .step-icon { transform: rotate(0) scale(1.06); }
+.step:nth-child(1) .step-icon { background: var(--color-primary); box-shadow: var(--shadow-primary); }
+.step:nth-child(2) .step-icon { background: var(--color-secondary); box-shadow: 0 8px 22px rgba(47, 107, 58, .35); }
+.step:nth-child(3) .step-icon { background: var(--color-accent); color: var(--color-dark); box-shadow: 0 8px 22px rgba(255, 184, 28, .45); }
+.step-num { position: absolute; top: 14px; right: 18px; font-family: var(--font-display); font-weight: 900; font-size: 2.5rem; line-height: 1; color: var(--gray-200); }
+.step p { color: var(--color-text-muted); margin-top: var(--space-2); }
+
+/* ==========================================================================
+   7. SHOPS
+   ========================================================================== */
+.link-arrow { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--color-primary-600); }
+.link-arrow i { transition: transform var(--t-base) var(--ease); }
+.link-arrow:hover i { transform: translateX(5px); }
+.shops-note { color: var(--color-secondary-600); font-weight: 700; margin-top: var(--space-2); min-height: 1.5em; }
+.grid-shops { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+.shop .card-media { aspect-ratio: 16 / 10; }
+.shop.is-closed .card-media img { filter: grayscale(.85) brightness(.9); }
+.shop-body { padding: var(--space-4) var(--space-5) var(--space-5); display: grid; gap: var(--space-3); }
+.shop-top { display: flex; justify-content: space-between; align-items: start; gap: var(--space-3); }
+.rating { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; flex-shrink: 0; }
+.rating i { color: var(--color-accent-600); }
+.rating small { color: var(--color-text-muted); font-weight: 400; }
+.shop-meta { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); font-size: var(--fs-small); color: var(--color-text-muted); }
+.shop-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.shop-meta i { color: var(--gray-500); }
+.shop-meta .free { color: var(--color-success); font-weight: 700; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.shop-foot { display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-1); padding-top: var(--space-3); border-top: 1px dashed var(--color-border); }
+.shop-foot .opens { font-size: var(--fs-small); color: var(--color-text-muted); }
+
+/* ==========================================================================
+   8. FEATURED MENU
+   ========================================================================== */
+.menu-section { background: #fff; }
+.tabs { display: inline-flex; gap: 4px; padding: 6px; background: var(--gray-100); border-radius: var(--radius-pill); }
+.tab { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: var(--radius-pill); font-weight: 700; color: var(--gray-700); transition: background var(--t-base), color var(--t-base), box-shadow var(--t-base); }
+.tab:hover { background: rgba(255, 255, 255, .7); }
+.tab[aria-selected="true"] { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-primary); }
+.menu-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
+.menu-toolbar p { color: var(--color-text-muted); font-size: var(--fs-small); }
+.grid-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+.grid-menu:focus-visible { outline-offset: 8px; }
+.item { animation: pop .5s var(--ease) both; animation-delay: calc(var(--i, 0) * 60ms); }
+@keyframes pop { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.item-body { padding: var(--space-4) var(--space-5) var(--space-5); display: grid; gap: var(--space-2); }
+.item-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.price { font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; color: var(--color-primary-600); white-space: nowrap; }
+.item p.desc { color: var(--color-text-muted); font-size: var(--fs-small); line-height: 1.55; }
+.item-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-3); }
+.item-foot .from { font-size: .8125rem; color: var(--color-text-muted); display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.item-foot .from span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn.is-added { --btn-bg: var(--color-success); --btn-bd: var(--color-success); }
+
+/* ==========================================================================
+   9. PROMO BANNER
+   ========================================================================== */
+.promo { padding-block: 0; }
+.promo-card {
+  position: relative; overflow: hidden; display: grid; grid-template-columns: 1.4fr .6fr; gap: var(--space-6); align-items: center;
+  padding: clamp(32px, 5vw, 64px); border-radius: var(--radius-xl); color: #fff;
+  background:
+    radial-gradient(circle at 12% 120%, rgba(255, 184, 28, .35) 0, transparent 45%),
+    linear-gradient(120deg, var(--color-primary) 0%, var(--color-primary-800) 100%);
+  box-shadow: var(--shadow-xl);
+}
+.promo-card::before { content: ""; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px; border-radius: 50%; border: 36px solid rgba(255, 255, 255, .07); }
+.promo-card > * { position: relative; }
+.promo .pill { background: var(--color-accent); color: var(--color-dark); }
+.promo h2 { margin-top: var(--space-4); }
+.promo p.lead { margin-top: var(--space-3); font-size: var(--fs-body-lg); opacity: .95; max-width: 46ch; }
+.coupon { display: inline-flex; align-items: stretch; margin-top: var(--space-5); border: 2px dashed rgba(255, 255, 255, .85); border-radius: var(--radius-md); overflow: hidden; background: rgba(0, 0, 0, .14); }
+.coupon code { display: grid; place-items: center; padding: 12px 22px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 1.35rem; font-weight: 700; letter-spacing: .14em; }
+.coupon button { padding: 0 20px; background: #fff; color: var(--color-primary-600); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; transition: background var(--t-base); }
+.coupon button:hover { background: var(--color-accent); color: var(--color-dark); }
+.promo small { display: block; margin-top: var(--space-3); opacity: .9; }
+.promo-badge { justify-self: center; display: grid; place-items: center; width: clamp(160px, 20vw, 230px); aspect-ratio: 1; border-radius: 50%; background: var(--color-accent); color: var(--color-dark); text-align: center; font-family: var(--font-display); font-weight: 900; line-height: .95; transform: rotate(10deg); box-shadow: 0 0 0 10px rgba(255, 184, 28, .3), var(--shadow-lg); animation: wobble 5s ease-in-out infinite; }
+.promo-badge b { display: block; font-size: clamp(3rem, 6vw, 4.6rem); letter-spacing: -.04em; }
+.promo-badge span { font-size: 1.15rem; letter-spacing: .08em; }
+@keyframes wobble { 0%, 100% { transform: rotate(10deg); } 50% { transform: rotate(2deg) scale(1.04); } }
+
+/* ==========================================================================
+   10. VENDOR CTA
+   ========================================================================== */
+.vendor { color: var(--color-light); background: var(--color-dark); margin-top: clamp(56px, 8vw, var(--space-9)); position: relative; overflow: hidden; }
+.vendor::before { content: ""; position: absolute; left: -140px; bottom: -160px; width: 420px; height: 420px; border-radius: 50%; background: var(--color-secondary); opacity: .35; filter: blur(60px); }
+.vendor-grid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; }
+.vendor .eyebrow { color: var(--color-accent); }
+.vendor .lead { margin-top: var(--space-4); font-size: var(--fs-body-lg); color: rgba(255, 248, 238, .82); max-width: 50ch; }
+.benefits { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-5); margin-top: var(--space-6); }
+.benefits li { display: flex; gap: 14px; align-items: flex-start; }
+.benefits .ic { display: grid; place-items: center; flex: 0 0 44px; height: 44px; border-radius: 12px; background: rgba(255, 184, 28, .16); color: var(--color-accent); }
+.benefits strong { display: block; line-height: 1.3; }
+.benefits span.t { font-size: var(--fs-small); color: rgba(255, 248, 238, .75); line-height: 1.5; }
+.vendor-ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+.vendor-visual { position: relative; }
+.vendor-visual .photo { aspect-ratio: 5 / 4; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-xl); background: var(--gray-700); transform: rotate(2deg); }
+.vendor-visual img { width: 100%; height: 100%; object-fit: cover; }
+.stat-card { position: absolute; display: flex; align-items: center; gap: 14px; padding: 14px 20px 14px 14px; background: #fff; color: var(--color-dark); border-radius: var(--radius-md); box-shadow: var(--shadow-xl); animation: float 5s ease-in-out infinite; }
+.stat-card .ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--color-secondary-100); color: var(--color-secondary-600); }
+.stat-card strong { display: block; font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; }
+.stat-card span.t { font-size: var(--fs-small); color: var(--color-text-muted); }
+.stat-card.s1 { left: -24px; bottom: 36px; }
+.stat-card.s2 { right: -12px; top: 28px; animation-delay: -2.5s; }
+
+/* ==========================================================================
+   11. TESTIMONIALS
+   ========================================================================== */
+.grid-quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+.quote { padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); position: relative; }
+.quote::before { content: "\201C"; position: absolute; top: 8px; right: 22px; font-family: var(--font-display); font-size: 6rem; line-height: 1; color: var(--color-primary-100); font-weight: 900; }
+.stars { display: flex; gap: 3px; color: var(--color-accent-600); font-size: .95rem; }
+.quote blockquote { position: relative; font-size: 1.0625rem; line-height: 1.65; }
+.quote figcaption { display: flex; align-items: center; gap: 12px; margin-top: auto; padding-top: var(--space-4); border-top: 1px dashed var(--color-border); }
+.quote figcaption img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.quote figcaption strong { display: block; line-height: 1.25; }
+.quote figcaption span { font-size: var(--fs-small); color: var(--color-text-muted); }
+
+/* ==========================================================================
+   12. APP DOWNLOAD + NEWSLETTER
+   ========================================================================== */
+.connect { padding-top: 0; }
+.connect-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: var(--space-5); }
+.panel { position: relative; overflow: hidden; border-radius: var(--radius-xl); padding: clamp(28px, 4vw, 48px); }
+.panel-app { background: var(--color-secondary); color: #fff; display: grid; grid-template-columns: 1fr auto; gap: var(--space-5); align-items: center; }
+.panel-app p { margin-top: var(--space-3); opacity: .94; max-width: 38ch; }
+.store-btns { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+.store-btn { display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px; border-radius: var(--radius-md); background: var(--color-dark-900); color: #fff; border: 1px solid rgba(255, 255, 255, .25); text-align: left; line-height: 1.15; transition: transform var(--t-base) var(--ease), box-shadow var(--t-base); }
+.store-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.store-btn i { font-size: 1.7rem; }
+.store-btn small { display: block; font-size: .6875rem; opacity: .85; }
+.store-btn strong { font-size: 1.0625rem; }
+.phone { width: 150px; aspect-ratio: 9 / 18; border-radius: 28px; background: var(--color-dark-900); padding: 8px; box-shadow: var(--shadow-xl); transform: rotate(6deg); justify-self: center; }
+.phone-screen { height: 100%; border-radius: 21px; background: var(--color-light); color: var(--color-dark); padding: 14px 10px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+.phone-screen .bar { height: 8px; width: 50%; border-radius: 4px; background: var(--gray-300); }
+.phone-screen .hero-mini { flex: 1; border-radius: 12px; background: radial-gradient(circle at 50% 45%, var(--color-accent) 0 22%, var(--color-primary) 23% 52%, transparent 53%), var(--color-primary-100); }
+.phone-screen .row { height: 28px; border-radius: 8px; background: #fff; border: 1px solid var(--gray-200); }
+.phone-screen .cta { height: 30px; border-radius: 15px; background: var(--color-primary); }
+.panel-news { background: #fff; border: 1px solid var(--color-border); box-shadow: var(--shadow-md); }
+.panel-news p { margin-top: var(--space-3); color: var(--color-text-muted); }
+.news-form { display: flex; gap: var(--space-2); margin-top: var(--space-5); }
+.news-form .field-input { flex: 1; min-width: 0; }
+
+/* ==========================================================================
+   13. FOOTER
+   ========================================================================== */
+.site-footer { background: var(--color-dark-900); color: rgba(255, 248, 238, .78); padding-top: var(--space-8); }
+.footer-grid { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: var(--space-6); }
+.site-footer .logo { color: #fff; }
+.site-footer .about { margin-top: var(--space-4); max-width: 34ch; font-size: var(--fs-small); line-height: 1.65; }
+.site-footer h6 { color: #fff; margin-bottom: var(--space-4); }
+.site-footer li + li { margin-top: 10px; }
+.site-footer a:not(.logo) { transition: color var(--t-fast); font-size: .9375rem; }
+.site-footer a:not(.logo):hover { color: var(--color-accent); text-decoration: underline; text-underline-offset: 4px; }
+.socials { display: flex; gap: 10px; margin-top: var(--space-5); }
+.socials a { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: rgba(255, 255, 255, .08); color: #fff; transition: background var(--t-base), transform var(--t-base) var(--ease), color var(--t-base); }
+.site-footer .socials a:hover { background: var(--color-accent); color: var(--color-dark); transform: translateY(-3px); text-decoration: none; }
+.footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-8); padding-block: var(--space-5); border-top: 1px solid rgba(255, 255, 255, .12); font-size: var(--fs-small); }
+.footer-bottom ul { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+.footer-bottom li + li { margin-top: 0; }
+
+/* ==========================================================================
+   14. OVERLAYS — modal, toast, demo panel
+   ========================================================================== */
+.modal { position: fixed; inset: 0; z-index: 500; display: grid; place-items: center; padding: var(--space-4); }
+.modal[hidden] { display: none; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(30, 18, 13, .6); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); animation: fade .25s both; }
+.modal-card { position: relative; width: min(100%, 420px); padding: var(--space-6); text-align: center; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); animation: pop .35s var(--ease) both; }
+.modal-card .ic { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto var(--space-4); border-radius: 20px; background: var(--color-primary-100); color: var(--color-primary); font-size: 1.6rem; }
+.modal-card p { color: var(--color-text-muted); margin-top: var(--space-2); }
+.modal-actions { display: grid; gap: var(--space-2); margin-top: var(--space-5); }
+.modal-close { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; color: var(--gray-600); }
+.modal-close:hover { background: var(--gray-100); }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 600; max-width: min(92vw, 460px); padding: 14px 22px; border-radius: var(--radius-md);
+  background: var(--color-dark); color: #fff; box-shadow: var(--shadow-xl); font-weight: 500; display: flex; align-items: center; gap: 12px;
+  transform: translate(-50%, 24px); opacity: 0; pointer-events: none; transition: opacity var(--t-base), transform var(--t-base) var(--ease);
+}
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+.toast i { color: var(--color-accent); }
+.toast.warn i { color: #FFD27A; }
+
+.demo { position: fixed; left: 16px; bottom: 16px; z-index: 200; /* below drawer overlay (250) so it never covers the mobile menu */ width: 232px; background: var(--color-dark); color: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-xl); overflow: hidden; border: 1px solid rgba(255, 255, 255, .15); }
+.demo :focus-visible { outline-color: #fff; }
+.demo-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; font-weight: 700; font-size: var(--fs-small); letter-spacing: .02em; }
+.demo-toggle i { transition: transform var(--t-base) var(--ease); color: var(--color-accent); }
+.demo-toggle[aria-expanded="false"] i { transform: rotate(180deg); }
+.demo-body { padding: 0 12px 12px; display: grid; gap: 4px; }
+.demo-body[hidden] { display: none; }
+.demo fieldset { margin: 0; padding: 0; border: 0; display: grid; gap: 4px; }
+.demo legend { padding: 0 4px 6px; font-size: .75rem; color: rgba(255, 255, 255, .75); }
+.demo label { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); cursor: pointer; font-size: var(--fs-small); transition: background var(--t-fast); }
+.demo label:hover { background: rgba(255, 255, 255, .08); }
+.demo input { accent-color: var(--color-accent); width: 16px; height: 16px; margin: 0; }
+.demo label:has(input:checked) { background: rgba(255, 184, 28, .18); font-weight: 700; }
+.demo label:has(input:focus-visible) { outline: 2px solid #fff; }
+
+/* ==========================================================================
+   15. RESPONSIVE
+   ========================================================================== */
+/* Laptop / small laptop (≤1024): switch to hamburger + drawer */
+@media (max-width: 1024px) {
+  .primary-nav { display: none; }
+  .hamburger { display: inline-flex; }
+  .cart-quick { display: inline-flex; }
+  .hero-grid { gap: var(--space-5); }
+  .grid-shops, .grid-menu, .grid-quotes { grid-template-columns: repeat(2, 1fr); }
+  .grid-quotes .quote:last-child { grid-column: 1 / -1; }
+  .footer-grid { grid-template-columns: repeat(4, 1fr); }
+  .footer-brand { grid-column: 1 / -1; }
+  .vendor-grid { gap: var(--space-6); }
+  .connect-grid { grid-template-columns: 1fr; }
+}
+
+/* Tablet (≤768) */
+@media (max-width: 768px) {
+  :root { --header-h: 64px; }
+  .hero-grid, .vendor-grid, .promo-card { grid-template-columns: 1fr; }
+  .hero-visual { order: -1; max-width: 360px; margin-inline: auto; }
+  .hero-chip.c1 { left: 0; } .hero-chip.c2 { right: 0; }
+  .steps { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+  .promo-badge { display: none; }
+  .vendor-visual { max-width: 520px; }
+  .stat-card.s1 { left: 0; } .stat-card.s2 { right: 0; }
+  .panel-app { grid-template-columns: 1fr; }
+  .phone { display: none; }
+  .profile-name, .profile-btn .chev { display: none; }
+  .profile-btn { padding: 3px; }
+  .nav-actions .btn-ghost { display: none; }
+  .demo { width: 200px; }
+  .toast { bottom: auto; top: calc(var(--header-h) + 12px); transform: translate(-50%, -16px); }  /* keep toasts clear of the demo panel */
+}
+
+/* Mobile (≤480) */
+@media (max-width: 480px) {
+  .container { width: min(100% - 32px, var(--container)); }
+  .grid-shops, .grid-menu, .grid-quotes, .benefits { grid-template-columns: 1fr; }
+  .grid-quotes .quote:last-child { grid-column: auto; }
+  .nav-actions > .btn { display: none; }               /* Sign Up lives in the drawer on small phones */
+  .search { flex-wrap: wrap; padding: 12px; border-radius: var(--radius-lg); }
+  .search input { flex: 1 1 calc(100% - 70px); }
+  .search .btn { width: 100%; }
+  .hero-ctas .btn, .vendor-ctas .btn { flex: 1 1 100%; }
+  .hero-chip { padding: 8px 12px 8px 8px; } .hero-chip .ic { width: 32px; height: 32px; }
+  .tabs { display: flex; width: 100%; } .tab { flex: 1; justify-content: center; padding-inline: 8px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .news-form { flex-direction: column; } .news-form .btn { width: 100%; }
+  .coupon { display: flex; flex-direction: column; width: 100%; } .coupon button { min-height: 44px; justify-content: center; }
+  .stat-card.s2 { display: none; }
+  .footer-bottom { flex-direction: column; }
+  .demo { left: 8px; bottom: 8px; width: 188px; }
+  .demo-body { padding-bottom: 8px; }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  .js .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- =====================================================================
+     HEADER / NAVBAR  (rendered by renderNavbar() in the script below)
+     ===================================================================== -->
+<header class="site-header" id="siteHeader">
+  <div class="container nav-bar">
+    <a class="logo" href="#top" aria-label="PizzaHub — home" data-nav-home>
+      <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <rect width="40" height="40" rx="11" fill="#C8261B"/>
+        <path d="M20 34 8.6 14.2Q20 8.6 31.4 14.2Z" fill="#FFB81C"/>
+        <path d="M8.6 14.2Q20 8.6 31.4 14.2" fill="none" stroke="#FFF8EE" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="16.4" cy="18" r="2.1" fill="#C8261B"/><circle cx="23.8" cy="18.6" r="2.1" fill="#C8261B"/><circle cx="20" cy="25" r="1.8" fill="#C8261B"/>
+      </svg>
+      <span>Pizza<b>Hub</b></span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul class="nav-list" id="navLinks"></ul>
+    </nav>
+
+    <div class="nav-actions" id="navActions"></div>
+
+    <button class="hamburger" id="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
+  <div class="drawer-head">
+    <a class="logo" href="#top" aria-label="PizzaHub — home" data-nav-home>
+      <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <rect width="40" height="40" rx="11" fill="#C8261B"/>
+        <path d="M20 34 8.6 14.2Q20 8.6 31.4 14.2Z" fill="#FFB81C"/>
+        <path d="M8.6 14.2Q20 8.6 31.4 14.2" fill="none" stroke="#FFF8EE" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="16.4" cy="18" r="2.1" fill="#C8261B"/><circle cx="23.8" cy="18.6" r="2.1" fill="#C8261B"/><circle cx="20" cy="25" r="1.8" fill="#C8261B"/>
+      </svg>
+      <span>Pizza<b>Hub</b></span>
+    </a>
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="Close menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <nav class="drawer-body" id="drawerBody" aria-label="Mobile"></nav>
+</aside>
+
+<main id="main">
+
+  <!-- =====================================================================
+       1. HERO
+       ===================================================================== -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="welcome-chip" id="welcomeChip" aria-live="polite"></p>
+        <p class="hero-eyebrow"><span class="dot"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span> Now delivering in 120+ neighborhoods</p>
+        <h1 id="hero-title">Hot, <span class="hl">fresh</span> pizza from the shops you love.</h1>
+        <p class="hero-sub">Browse menus from local pizzerias, build your order in seconds, and track it all the way to your door — usually in about 25 minutes.</p>
+
+        <form class="search" id="heroSearch" role="search" aria-label="Find pizza near you" novalidate>
+          <i class="fa-solid fa-location-dot pin" aria-hidden="true"></i>
+          <label class="sr-only" for="address">Delivery address</label>
+          <input id="address" name="address" type="text" placeholder="Find pizza near you — enter your address" autocomplete="street-address" aria-describedby="searchHint">
+          <button class="locate" type="button" id="locateBtn" aria-label="Use my current location"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>
+          <button class="btn btn-primary" type="submit">Find pizza</button>
+        </form>
+        <p class="search-hint" id="searchHint" role="alert"></p>
+
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="#menu"><i class="fa-solid fa-pizza-slice" aria-hidden="true"></i> Order Now</a>
+          <a class="btn btn-secondary btn-lg" href="#partner">Become a Partner</a>
+        </div>
+
+        <ul class="hero-stats" aria-label="PizzaHub at a glance">
+          <li><strong>1,200+</strong><span>Local pizza shops</span></li>
+          <li><strong>25 min</strong><span>Average delivery</span></li>
+          <li><strong>4.8 ★</strong><span>From 48k reviews</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-visual">
+        <!-- Illustrated pizza (inline SVG so it always loads) -->
+        <svg class="hero-pizza" viewBox="0 0 400 400" role="img" aria-label="Illustration of a freshly baked pepperoni, olive and basil pizza">
+          <defs>
+            <radialGradient id="gCrust" cx="50%" cy="38%" r="65%"><stop offset="0" stop-color="#F6BE6A"/><stop offset="1" stop-color="#D9892A"/></radialGradient>
+            <radialGradient id="gCheese" cx="42%" cy="38%" r="70%"><stop offset="0" stop-color="#FFE9A0"/><stop offset="1" stop-color="#FFC34D"/></radialGradient>
+            <radialGradient id="gPep" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#E5503F"/><stop offset="1" stop-color="#A5231A"/></radialGradient>
+            <g id="pep">
+              <circle r="1" fill="url(#gPep)"/>
+              <circle r=".92" fill="none" stroke="#7E1710" stroke-opacity=".35" stroke-width=".05"/>
+              <circle cx="-.35" cy=".25" r=".1" fill="#7E1710" fill-opacity=".55"/><circle cx=".3" cy="-.1" r=".12" fill="#7E1710" fill-opacity=".5"/>
+              <circle cx=".1" cy=".5" r=".08" fill="#7E1710" fill-opacity=".5"/><circle cx="-.1" cy="-.45" r=".09" fill="#7E1710" fill-opacity=".5"/>
+              <ellipse cx="-.32" cy="-.4" rx=".3" ry=".13" fill="#fff" fill-opacity=".22" transform="rotate(-30 -.32 -.4)"/>
+            </g>
+            <g id="leaf">
+              <path d="M0 0C12-22 40-22 52 0 40 22 12 22 0 0Z" fill="#2F6B3A"/>
+              <path d="M0 0C12-22 40-22 52 0 40 22 12 22 0 0Z" fill="#4C9A5B" fill-opacity=".45" transform="scale(.92 .55) translate(3 -2)"/>
+              <path d="M2 0H48" stroke="#1F4A28" stroke-width="1.6" stroke-linecap="round"/>
+            </g>
+            <g id="olive"><circle r="8" fill="#2A1A14"/><circle r="3.2" fill="#FFE9A0"/><ellipse cx="-3" cy="-4" rx="2.6" ry="1.2" fill="#fff" fill-opacity=".3"/></g>
+          </defs>
+          <ellipse cx="200" cy="378" rx="150" ry="12" fill="#2A1A14" opacity=".14"/>
+          <g class="pizza-spin">
+          <!-- crust -->
+          <circle cx="200" cy="196" r="180" fill="url(#gCrust)"/>
+          <circle cx="200" cy="196" r="180" fill="none" stroke="#B86F17" stroke-opacity=".5" stroke-width="3"/>
+          <g fill="#FFD58A" fill-opacity=".55"><circle cx="70" cy="120" r="14"/><circle cx="330" cy="104" r="12"/><circle cx="352" cy="250" r="13"/><circle cx="96" cy="300" r="12"/><circle cx="250" cy="352" r="11"/></g>
+          <!-- sauce + cheese -->
+          <circle cx="200" cy="196" r="152" fill="#D8342A"/>
+          <circle cx="200" cy="196" r="146" fill="url(#gCheese)"/>
+          <g fill="#FFF3C4" fill-opacity=".7"><ellipse cx="120" cy="190" rx="26" ry="14"/><ellipse cx="290" cy="196" rx="22" ry="12"/><ellipse cx="200" cy="256" rx="24" ry="12"/><ellipse cx="206" cy="132" rx="24" ry="12"/></g>
+          <g fill="#FFB43A" fill-opacity=".5"><ellipse cx="160" cy="130" rx="18" ry="9"/><ellipse cx="248" cy="270" rx="18" ry="9"/><ellipse cx="300" cy="140" rx="14" ry="8"/></g>
+          <!-- slice lines -->
+          <g stroke="#B86F17" stroke-opacity=".42" stroke-width="2.2" stroke-linecap="round">
+            <path d="M200 196 200 50M200 196 200 342M200 196 54 196M200 196 346 196M200 196 97 93M200 196 303 299M200 196 303 93M200 196 97 299"/>
+          </g>
+          <!-- toppings -->
+          <use href="#pep" transform="translate(200 196) scale(22)"/>
+          <use href="#pep" transform="translate(276 240) scale(24)"/><use href="#pep" transform="translate(200 284) scale(24)"/>
+          <use href="#pep" transform="translate(124 240) scale(24)"/><use href="#pep" transform="translate(124 152) scale(24)"/>
+          <use href="#pep" transform="translate(200 108) scale(24)"/><use href="#pep" transform="translate(276 152) scale(24)"/>
+          <use href="#pep" transform="translate(316 196) scale(18)"/><use href="#pep" transform="translate(258 297) scale(18)"/>
+          <use href="#pep" transform="translate(142 297) scale(18)"/><use href="#pep" transform="translate(84 196) scale(18)"/>
+          <use href="#pep" transform="translate(142 95) scale(18)"/><use href="#pep" transform="translate(258 95) scale(18)"/>
+          <use href="#olive" transform="translate(236 150)"/><use href="#olive" transform="translate(166 244)"/>
+          <use href="#olive" transform="translate(240 234)"/><use href="#olive" transform="translate(158 150)"/>
+          <use href="#leaf" transform="translate(222 218) rotate(32) scale(.85)"/>
+          <use href="#leaf" transform="translate(150 176) rotate(-148) scale(.8)"/>
+          <use href="#leaf" transform="translate(210 160) rotate(-60) scale(.7)"/>
+          <use href="#leaf" transform="translate(180 236) rotate(110) scale(.7)"/>
+          </g>
+        </svg>
+        <div class="hero-chip c1"><span class="ic"><i class="fa-solid fa-motorcycle" aria-hidden="true"></i></span><span>Out for delivery<strong>Arrives in 12 min</strong></span></div>
+        <div class="hero-chip c2"><span class="ic"><i class="fa-solid fa-star" aria-hidden="true"></i></span><span>Napoli Slice<strong>4.9 · 1.2k reviews</strong></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       2. HOW IT WORKS
+       ===================================================================== -->
+  <section class="how" id="how" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-head center reveal">
+        <h6 class="eyebrow">How it works</h6>
+        <h2 id="how-title">From craving to doorstep in three steps</h2>
+        <p class="section-sub">No phone calls, no guesswork — just great local pizza, one tap away.</p>
+      </div>
+      <ol class="steps" style="list-style:none;margin:0;padding:0">
+        <li class="step reveal" style="--d:.05s">
+          <span class="step-num" aria-hidden="true">01</span>
+          <div class="step-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
+          <h3>Discover shops</h3>
+          <p>Enter your address and see the best-rated pizzerias nearby — open now, with live delivery times.</p>
+        </li>
+        <li class="step reveal" style="--d:.15s">
+          <span class="step-num" aria-hidden="true">02</span>
+          <div class="step-icon"><i class="fa-solid fa-pizza-slice" aria-hidden="true"></i></div>
+          <h3>Choose your pizza</h3>
+          <p>Browse full menus, customize toppings, add sides and drinks, and check out in a few taps.</p>
+        </li>
+        <li class="step reveal" style="--d:.25s">
+          <span class="step-num" aria-hidden="true">03</span>
+          <div class="step-icon"><i class="fa-solid fa-motorcycle" aria-hidden="true"></i></div>
+          <h3>Fast delivery</h3>
+          <p>Your pizza leaves the oven and heads straight to you. Track every step on the live map.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. POPULAR PIZZA SHOPS
+       ===================================================================== -->
+  <section id="shops" aria-labelledby="shops-title">
+    <div class="container">
+      <div class="section-head row reveal">
+        <div>
+          <h6 class="eyebrow">Popular near you</h6>
+          <h2 id="shops-title">Local favorites, fired up</h2>
+          <p class="shops-note" id="shopsNote" role="status"></p>
+        </div>
+        <a class="link-arrow" href="#" data-demo="All shops">View all shops <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="grid-shops" id="shopGrid"></div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       4. FEATURED MENU
+       ===================================================================== -->
+  <section class="menu-section" id="menu" aria-labelledby="menu-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <h6 class="eyebrow">Browse menu</h6>
+        <h2 id="menu-title">What are you craving tonight?</h2>
+        <p class="section-sub">Hand-picked favorites from our top-rated kitchens.</p>
+      </div>
+      <div class="menu-toolbar">
+        <div class="tabs" role="tablist" aria-label="Menu categories" id="menuTabs"></div>
+        <p id="menuCount" aria-live="polite"></p>
+      </div>
+      <div class="grid-menu" id="menuGrid" role="tabpanel" tabindex="0"></div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       5. SPECIAL OFFERS
+       ===================================================================== -->
+  <section class="promo" id="offers" aria-labelledby="promo-title" style="padding-top:clamp(56px,8vw,96px)">
+    <div class="container">
+      <div class="promo-card on-dark reveal">
+        <div>
+          <span class="pill"><i class="fa-solid fa-fire" aria-hidden="true"></i> Limited-time offer</span>
+          <h2 id="promo-title">Your first slice is on us — 30% off.</h2>
+          <p class="lead">New to PizzaHub? Use this code at checkout and save on your first order from any participating shop.</p>
+          <div class="coupon">
+            <code id="couponCode" aria-label="Coupon code: PIZZA30">PIZZA30</code>
+            <button type="button" id="copyCoupon"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy code</span></button>
+          </div>
+          <small>Valid on first orders over $15 · max discount $9 · ends Dec 31.</small>
+        </div>
+        <div class="promo-badge" aria-hidden="true"><div><b>30%</b><span>OFF</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       6. VENDOR CTA
+       ===================================================================== -->
+  <section class="vendor on-dark" id="partner" aria-labelledby="vendor-title">
+    <div class="container vendor-grid">
+      <div class="reveal">
+        <h6 class="eyebrow"><i class="fa-solid fa-store" aria-hidden="true"></i> For restaurants</h6>
+        <h2 id="vendor-title">Grow your pizza business with PizzaHub</h2>
+        <p class="lead">Join over 1,200 local pizzerias reaching new customers every day. Set up your profile in minutes and start taking orders this week.</p>
+        <ul class="benefits">
+          <li><span class="ic"><i class="fa-solid fa-users" aria-hidden="true"></i></span><div><strong>Reach more customers</strong><span class="t">Get discovered by hungry locals searching nearby.</span></div></li>
+          <li><span class="ic"><i class="fa-solid fa-bell-concierge" aria-hidden="true"></i></span><div><strong>Easy order dashboard</strong><span class="t">Accept, prepare and track orders in one place.</span></div></li>
+          <li><span class="ic"><i class="fa-solid fa-utensils" aria-hidden="true"></i></span><div><strong>Publish menus instantly</strong><span class="t">Add pizzas, sides and drinks — update any time.</span></div></li>
+          <li><span class="ic"><i class="fa-solid fa-wallet" aria-hidden="true"></i></span><div><strong>Fast weekly payouts</strong><span class="t">Transparent fees and no hidden charges.</span></div></li>
+        </ul>
+        <div class="vendor-ctas">
+          <button class="btn btn-accent btn-lg" type="button" id="vendorCta"><i class="fa-solid fa-store" aria-hidden="true"></i> <span>Register your restaurant</span></button>
+          <a class="btn btn-outline-light btn-lg" href="#" data-demo="Partner program details">Learn more</a>
+        </div>
+      </div>
+      <div class="vendor-visual reveal" style="--d:.15s">
+        <div class="photo"><img data-emoji="👩‍🍳" data-fallback="chef" src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=70" alt="A chef preparing food in a busy restaurant kitchen" loading="lazy" width="900" height="720"></div>
+        <div class="stat-card s1"><span class="ic"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i></span><div><strong>+38%</strong><span class="t">Avg. order growth</span></div></div>
+        <div class="stat-card s2"><span class="ic"><i class="fa-solid fa-receipt" aria-hidden="true"></i></span><div><strong>48</strong><span class="t">Orders today</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       7. TESTIMONIALS
+       ===================================================================== -->
+  <section id="reviews" aria-labelledby="reviews-title">
+    <div class="container">
+      <div class="section-head center reveal">
+        <h6 class="eyebrow">Loved by pizza fans</h6>
+        <h2 id="reviews-title">Don't just take our word for it</h2>
+      </div>
+      <div class="grid-quotes" id="quoteGrid"></div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       8. APP DOWNLOAD + NEWSLETTER
+       ===================================================================== -->
+  <section class="connect" aria-labelledby="app-title">
+    <div class="container connect-grid">
+      <div class="panel panel-app on-dark reveal">
+        <div>
+          <h2 id="app-title" style="font-size:var(--fs-h3)">Pizza in your pocket</h2>
+          <p>Get the PizzaHub app for live order tracking, exclusive app-only deals and one-tap reordering.</p>
+          <div class="store-btns">
+            <a class="store-btn" href="#" data-demo="App Store"><i class="fa-brands fa-apple" aria-hidden="true"></i><span><small>Download on the</small><strong>App Store</strong></span></a>
+            <a class="store-btn" href="#" data-demo="Google Play"><i class="fa-brands fa-google-play" aria-hidden="true"></i><span><small>Get it on</small><strong>Google Play</strong></span></a>
+          </div>
+        </div>
+        <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="bar"></div><div class="hero-mini"></div><div class="row"></div><div class="row"></div><div class="cta"></div></div></div>
+      </div>
+
+      <div class="panel panel-news reveal" style="--d:.1s">
+        <h3 id="news-title">Get hot deals in your inbox</h3>
+        <p>Weekly offers, new shop alerts and the occasional pizza joke. No spam, unsubscribe anytime.</p>
+        <form class="news-form" id="newsForm" novalidate aria-labelledby="news-title">
+          <label class="sr-only" for="newsEmail">Email address</label>
+          <input class="field-input" id="newsEmail" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-describedby="newsMsg">
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        <p class="form-msg" id="newsMsg" role="status"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- =====================================================================
+     9. FOOTER
+     ===================================================================== -->
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="#top" aria-label="PizzaHub — back to top">
+          <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect width="40" height="40" rx="11" fill="#C8261B"/>
+            <path d="M20 34 8.6 14.2Q20 8.6 31.4 14.2Z" fill="#FFB81C"/>
+            <path d="M8.6 14.2Q20 8.6 31.4 14.2" fill="none" stroke="#FFF8EE" stroke-width="3.4" stroke-linecap="round"/>
+            <circle cx="16.4" cy="18" r="2.1" fill="#C8261B"/><circle cx="23.8" cy="18.6" r="2.1" fill="#C8261B"/><circle cx="20" cy="25" r="1.8" fill="#C8261B"/>
+          </svg>
+          <span>Pizza<b style="color:var(--color-accent)">Hub</b></span>
+        </a>
+        <p class="about">PizzaHub connects hungry neighbors with the best local pizzerias — hot, fresh and delivered fast. Made with love and plenty of mozzarella.</p>
+        <div class="socials">
+          <a href="#" aria-label="PizzaHub on Facebook" data-demo="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="#" aria-label="PizzaHub on Instagram" data-demo="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="#" aria-label="PizzaHub on X" data-demo="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+          <a href="#" aria-label="PizzaHub on TikTok" data-demo="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
+          <a href="#" aria-label="PizzaHub on YouTube" data-demo="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <nav aria-label="Company"><h6>Company</h6><ul>
+        <li><a href="#" data-demo="About us">About us</a></li><li><a href="#" data-demo="Careers">Careers</a></li>
+        <li><a href="#" data-demo="Press">Press</a></li><li><a href="#" data-demo="Blog">Blog</a></li></ul></nav>
+      <nav aria-label="For customers"><h6>For Customers</h6><ul>
+        <li><a href="#menu">Browse menu</a></li><li><a href="#" data-demo="Track order">Track an order</a></li>
+        <li><a href="#" data-demo="Gift cards">Gift cards</a></li><li><a href="#offers">Offers &amp; coupons</a></li></ul></nav>
+      <nav aria-label="For restaurants"><h6>For Restaurants</h6><ul>
+        <li><a href="#partner">Partner with us</a></li><li><a href="#" data-demo="Vendor login">Vendor login</a></li>
+        <li><a href="#" data-demo="Resources">Resources</a></li><li><a href="#" data-demo="Pricing">Pricing</a></li></ul></nav>
+      <nav aria-label="Support"><h6>Support</h6><ul>
+        <li><a href="#" data-demo="Help center">Help center</a></li><li><a href="#" data-demo="Contact us">Contact us</a></li>
+        <li><a href="#" data-demo="Food safety">Food safety</a></li><li><a href="#" data-demo="Accessibility">Accessibility</a></li></ul></nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year">2026</span> PizzaHub, Inc. All rights reserved.</p>
+      <ul>
+        <li><a href="#" data-demo="Privacy policy">Privacy</a></li><li><a href="#" data-demo="Terms of service">Terms</a></li><li><a href="#" data-demo="Cookie settings">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- Sign-in prompt shown when a logged-out visitor adds to cart -->
+<div class="modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" aria-describedby="authDesc" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card">
+    <button class="modal-close" type="button" data-close-modal aria-label="Close dialog"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <div class="ic"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i></div>
+    <h3 id="authTitle">Sign in to order</h3>
+    <p id="authDesc">Sign in or create a free account to add this to your cart.</p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" type="button" data-auth="signin">Sign In</button>
+      <button class="btn btn-secondary" type="button" data-auth="signup">Create an account</button>
+      <button class="btn btn-ghost" type="button" data-close-modal>Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Demo controls (for previewing the role-based navbar) -->
+<aside class="demo" id="demo" aria-label="Demo controls">
+  <button class="demo-toggle" type="button" id="demoToggle" aria-expanded="true" aria-controls="demoBody"><span><i class="fa-solid fa-sliders" aria-hidden="true" style="margin-right:8px"></i>Demo controls</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+  <div class="demo-body" id="demoBody">
+    <fieldset>
+      <legend>View the site as…</legend>
+      <label><input type="radio" name="demoRole" value="guest" checked> Logged out</label>
+      <label><input type="radio" name="demoRole" value="customer"> Customer</label>
+      <label><input type="radio" name="demoRole" value="vendor"> Vendor</label>
+      <label><input type="radio" name="demoRole" value="admin"> Admin</label>
+    </fieldset>
+  </div>
+</aside>
+
+<script>
+/* ==========================================================================
+   PIZZAHUB — vanilla JS
+   Sections: 0 Helpers · 1 Data · 2 State · 3 Navbar · 4 Drawer · 5 Dropdown
+             6 Page sections · 7 Cart/modal/toast · 8 Events · 9 Init
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  /* ---------- 0. Helpers ------------------------------------------------- */
+  const $  = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+  const unsplash = (id, w = 640) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+  const face = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=120&h=120&q=70&crop=faces`;
+  const money = n => '$' + n.toFixed(2);
+
+  // Fallback art if a remote image fails to load (offline, blocked, etc.)
+  function fallbackSrc(img) {
+    let svg;
+    if (img.dataset.initials) {
+      svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" fill="#2F6B3A"/><text x="48" y="60" font-size="38" font-family="Arial,sans-serif" font-weight="700" text-anchor="middle" fill="#fff">${img.dataset.initials}</text></svg>`;
+    } else {
+      const emoji = img.dataset.emoji || '🍕';
+      svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE2A8"/><stop offset="1" stop-color="#FDBDB2"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><text x="200" y="185" font-size="110" text-anchor="middle">${emoji}</text></svg>`;
+    }
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+  document.addEventListener('error', e => {
+    const t = e.target;
+    if (t && t.tagName === 'IMG' && !t.dataset.failed) { t.dataset.failed = '1'; t.src = fallbackSrc(t); }
+  }, true);
+
+  const initials = name => name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+
+  /* ---------- 1. Data ---------------------------------------------------- */
+  const USERS = {
+    customer: { name: 'Maya Rahman',  role: 'customer', avatar: face('1494790108377-be9c29b29330') },
+    vendor:   { name: 'Luca Bianchi', role: 'vendor',   avatar: face('1507003211169-0a1dd7228f2d') },
+    admin:    { name: 'Sam Okafor',   role: 'admin',    avatar: face('1472099645785-5658abf4ff4e') }
+  };
+  const ROLE_LABEL = { customer: 'Customer', vendor: 'Restaurant owner', admin: 'Administrator' };
+  const DASH_LABEL = { customer: 'Dashboard', vendor: 'Vendor dashboard', admin: 'Admin dashboard' };
+
+  // Navbar link model
+  const COMMON_LINKS = [
+    { id: 'home', label: 'Home',        href: '#top',  icon: 'fa-house' },
+    { id: 'menu', label: 'Browse Menu', href: '#menu', icon: 'fa-book-open' }
+  ];
+  const ROLE_LINKS = {
+    customer: [
+      { id: 'orders',       label: 'My Orders',         icon: 'fa-receipt' },
+      { id: 'cart',         label: 'Cart',              icon: 'fa-cart-shopping', cart: true }
+    ],
+    vendor: [
+      { id: 'restaurant',   label: 'My Restaurant',     icon: 'fa-store' },
+      { id: 'manage-menu',  label: 'Manage Menu',       icon: 'fa-utensils' },
+      { id: 'incoming',     label: 'Incoming Orders',   icon: 'fa-bell-concierge' }
+    ],
+    admin: [
+      { id: 'users',        label: 'Manage Users',      icon: 'fa-users-gear' },
+      { id: 'review',       label: 'Review Menu Items', icon: 'fa-clipboard-check' },
+      { id: 'transactions', label: 'Transactions',      icon: 'fa-money-bill-transfer' }
+    ]
+  };
+
+  const SHOPS = [
+    { name: 'Napoli Slice',        img: '1574071318508-1cdbab80d002', rating: 4.9, reviews: '1.2k', time: '20–30 min', fee: 1.49, tags: ['Neapolitan', 'Wood-fired'],    open: true },
+    { name: 'Brooklyn Crust Co.',  img: '1513104890138-7c749659a591', rating: 4.7, reviews: '860',  time: '25–35 min', fee: 0,    tags: ['New York style', 'By the slice'], open: true },
+    { name: 'Basil & Dough',       img: '1565299624946-b28f40a0ae38', rating: 4.8, reviews: '640',  time: '30–40 min', fee: 2.49, tags: ['Vegetarian', 'Organic'],       open: true },
+    { name: 'The Pepperoni Club',  img: '1604382354936-07c5d9983bd3', rating: 4.6, reviews: '2.1k', time: '15–25 min', fee: 0.99, tags: ['Pepperoni', 'Late night'],     open: true },
+    { name: "Mamma Rosa's Kitchen",img: '1593560708920-61dd98c46a4e', rating: 4.9, reviews: '430',  time: '35–45 min', fee: 1.99, tags: ['Family size', 'Homestyle'],    open: false, opens: 'Opens at 11:00 AM' },
+    { name: 'Fire & Fold',         img: '1528137871618-79d2761e3fd5', rating: 4.5, reviews: '390',  time: '20–30 min', fee: 1.29, tags: ['Calzones', 'Stone-baked'],     open: true }
+  ];
+
+  const CATS = [
+    { id: 'pizzas', label: 'Pizzas', icon: 'fa-pizza-slice', emoji: '🍕' },
+    { id: 'sides',  label: 'Sides',  icon: 'fa-bread-slice', emoji: '🥖' },
+    { id: 'drinks', label: 'Drinks', icon: 'fa-glass-water', emoji: '🥤' }
+  ];
+  const MENU = [
+    { id: 'p1', cat: 'pizzas', name: 'Margherita Classica',    desc: 'San Marzano tomato, fior di latte mozzarella, fresh basil and a drizzle of olive oil.', price: 11.50, img: '1574071318508-1cdbab80d002', shop: 'Napoli Slice',       flag: 'Veg',        green: true },
+    { id: 'p2', cat: 'pizzas', name: 'Spicy Pepperoni',        desc: 'Double pepperoni, mozzarella, chili flakes and a swirl of hot honey.',                   price: 13.95, img: '1604382354936-07c5d9983bd3', shop: 'The Pepperoni Club', flag: 'Bestseller' },
+    { id: 'p3', cat: 'pizzas', name: 'Garden Veggie Supreme',  desc: 'Roasted peppers, red onion, mushrooms, black olives and basil on a light tomato base.',   price: 12.95, img: '1565299624946-b28f40a0ae38', shop: 'Basil & Dough',      flag: 'Veg',        green: true },
+    { id: 'p4', cat: 'pizzas', name: 'BBQ Chicken Ranch',      desc: 'Smoky BBQ sauce, grilled chicken, red onion, cilantro and a cool ranch drizzle.',       price: 14.25, img: '1513104890138-7c749659a591', shop: 'Brooklyn Crust Co.' },
+    { id: 'p5', cat: 'pizzas', name: 'Quattro Formaggi',       desc: 'Mozzarella, gorgonzola, fontina and parmesan — rich, creamy and golden.',                price: 14.50, img: '1593560708920-61dd98c46a4e', shop: "Mamma Rosa's",       flag: 'Chef’s pick' },
+    { id: 'p6', cat: 'pizzas', name: 'Truffle Mushroom Bianca',desc: 'White garlic base, wild mushrooms, mozzarella, thyme and a touch of truffle oil.',        price: 15.50, img: '1528137871618-79d2761e3fd5', shop: 'Fire & Fold',        flag: 'New' },
+    { id: 's1', cat: 'sides',  name: 'Garlic Knots',           desc: 'Six warm knots brushed with garlic butter and parsley, served with marinara.',            price: 5.50,  img: '1573140247632-f8fd74997d5c', shop: 'Napoli Slice',       flag: 'Veg',        green: true },
+    { id: 's2', cat: 'sides',  name: 'Crispy Buffalo Wings',   desc: 'Eight oven-crisped wings tossed in buffalo sauce with blue-cheese dip.',                  price: 8.95,  img: '1567620832903-9fc6debc209f', shop: 'The Pepperoni Club', flag: 'Spicy' },
+    { id: 's3', cat: 'sides',  name: 'Caesar Salad',           desc: 'Crisp romaine, shaved parmesan, sourdough croutons and house Caesar dressing.',           price: 7.25,  img: '1550304943-4f24f54ddde9',   shop: 'Basil & Dough' },
+    { id: 's4', cat: 'sides',  name: 'Loaded Cheese Fries',    desc: 'Thick-cut fries smothered in melted cheddar, bacon bits and scallions.',                  price: 6.95,  img: '1573080496219-bb080dd4f877', shop: 'Brooklyn Crust Co.' },
+    { id: 'd1', cat: 'drinks', name: 'Italian Lemonade',       desc: 'Fresh-squeezed lemon, mint and a splash of sparkling water. Served ice cold.',            price: 3.75,  img: '1621263764928-df1444c5e859', shop: 'Napoli Slice' },
+    { id: 'd2', cat: 'drinks', name: 'Classic Cola (500 ml)',  desc: 'The perfect partner for a hot slice, chilled and fizzy.',                                  price: 2.50,  img: '1622483767028-3f66f32aef97', shop: 'The Pepperoni Club' },
+    { id: 'd3', cat: 'drinks', name: 'Peach Iced Tea',         desc: 'Black tea brewed daily, lightly sweetened with ripe peach.',                               price: 3.25,  img: '1556679343-c7306c1976bc',   shop: 'Basil & Dough' },
+    { id: 'd4', cat: 'drinks', name: 'Sparkling Water',        desc: 'Natural Italian mineral water, lightly bubbly. 750 ml bottle.',                            price: 2.95,  img: '1523362628745-0c100150b504', shop: "Mamma Rosa's" }
+  ];
+
+  const QUOTES = [
+    { name: 'Amira Khan',  meta: 'Ordered 14 times', stars: 5, avatar: '1438761681033-6461ffad8d80', text: 'Found a wood-fired place two streets away that I never knew existed. The pizza arrived hot, the box wasn’t soggy, and tracking was spot on.' },
+    { name: 'Daniel Ortiz',meta: 'Weekly regular',   stars: 5, avatar: '1500648767791-00dcc994a43e', text: 'Checkout takes seconds and the delivery fees are always clear up front. Friday pizza night has never been this easy.' },
+    { name: 'Priya Nair',  meta: 'Family of four',   stars: 4, avatar: '1544005313-94ddf0286df2',   text: 'Great variety of shops and the veggie filter saves me every time. One late delivery, but support fixed it within minutes.' }
+  ];
+
+  /* ---------- 2. State --------------------------------------------------- */
+  // Auth state — the single source of truth for the navbar.
+  const auth = { isLoggedIn: false, user: null };   // user: { name, avatar, role }
+  const ui   = { active: 'home', cartCount: 0, menuCat: 'pizzas', pendingItem: null };
+  const subscribers = [];                              // functions run on every auth change
+
+  function setAuth(role) {
+    if (role && USERS[role]) { auth.isLoggedIn = true; auth.user = { ...USERS[role] }; }
+    else { auth.isLoggedIn = false; auth.user = null; }
+    if (role !== 'customer') ui.cartCount = 0;
+    ui.active = 'home';
+    subscribers.forEach(fn => fn());                   // → renderNavbar() etc. run immediately, no reload
+  }
+
+  /* ---------- 3. Navbar -------------------------------------------------- */
+  const navLinksEl = $('#navLinks'), navActionsEl = $('#navActions'), drawerBody = $('#drawerBody');
+
+  function currentLinks() {
+    return COMMON_LINKS.concat(auth.isLoggedIn ? ROLE_LINKS[auth.user.role] : []);
+  }
+  function linkHTML(l, withIcon) {
+    const isPage = !l.href;
+    const cur = ui.active === l.id ? ' aria-current="page"' : '';
+    const badge = l.cart ? `<span class="badge is-empty" data-cart-badge aria-hidden="true">0</span>` : '';
+    return `<li><a class="nav-link" href="${l.href || '#'}" data-nav-id="${l.id}" data-label="${l.label}"${isPage ? ` data-page="${l.id}"` : ''}${cur}>` +
+           `${withIcon ? `<i class="fa-solid ${l.icon}" aria-hidden="true"></i>` : ''}<span>${l.label}</span>${badge}</a></li>`;
+  }
+  function avatarImg(u, cls = 'avatar') {
+    return `<img class="${cls}" src="${u.avatar}" alt="" data-initials="${initials(u.name)}" width="36" height="36">`;
+  }
+  function guestActions() {
+    return `<button class="btn btn-ghost" type="button" data-auth="signin">Sign In</button>
+            <button class="btn btn-primary" type="button" data-auth="signup">Sign Up</button>`;
+  }
+  function profileActions() {
+    const u = auth.user, first = u.name.split(' ')[0];
+    const cartQuick = u.role === 'customer'
+      ? `<a class="cart-quick" href="#" data-page="cart" data-label="Cart" data-cart-quick aria-label="Cart, 0 items"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span class="badge is-empty" data-cart-badge aria-hidden="true">0</span></a>` : '';
+    return `${cartQuick}
+      <div class="profile" id="profile">
+        <button class="profile-btn" id="profileBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="profileMenu" aria-label="Account menu for ${u.name}">
+          ${avatarImg(u)}<span class="profile-name">${first}</span><i class="fa-solid fa-chevron-down chev" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown" id="profileMenu" role="menu" aria-labelledby="profileBtn">
+          <div class="dropdown-head"><strong>${u.name}</strong><span class="pill role-pill">${ROLE_LABEL[u.role]}</span></div>
+          <a class="menu-item" role="menuitem" href="#" data-page="dashboard" data-label="${DASH_LABEL[u.role]}"><i class="fa-solid fa-gauge" aria-hidden="true"></i>Dashboard</a>
+          <a class="menu-item" role="menuitem" href="#" data-page="settings" data-label="Profile Settings"><i class="fa-solid fa-gear" aria-hidden="true"></i>Profile Settings</a>
+          <hr role="separator">
+          <button class="menu-item danger" role="menuitem" type="button" data-auth="logout"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>Logout</button>
+        </div>
+      </div>`;
+  }
+  function drawerHTML() {
+    const links = `<ul class="nav-list">${currentLinks().map(l => linkHTML(l, true)).join('')}</ul>`;
+    if (!auth.isLoggedIn) {
+      return `${links}<div class="drawer-foot"><button class="btn btn-primary btn-lg" type="button" data-auth="signup">Sign Up</button><button class="btn btn-secondary btn-lg" type="button" data-auth="signin">Sign In</button></div>`;
+    }
+    const u = auth.user;
+    return `<div class="drawer-user">${avatarImg(u)}<div><strong>${u.name}</strong><small style="color:var(--color-text-muted)">${ROLE_LABEL[u.role]}</small></div></div>
+      ${links}
+      <ul class="nav-list" aria-label="Account">
+        <li><a class="nav-link" href="#" data-page="dashboard" data-label="${DASH_LABEL[u.role]}"><i class="fa-solid fa-gauge" aria-hidden="true"></i><span>Dashboard</span></a></li>
+        <li><a class="nav-link" href="#" data-page="settings" data-label="Profile Settings"><i class="fa-solid fa-gear" aria-hidden="true"></i><span>Profile Settings</span></a></li>
+      </ul>
+      <div class="drawer-foot"><button class="btn btn-secondary" type="button" data-auth="logout"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout</button></div>`;
+  }
+
+  // Re-renders desktop links, actions and mobile drawer from auth state.
+  function renderNavbar() {
+    closeDrawer(false);
+    navLinksEl.innerHTML = currentLinks().map(l => linkHTML(l, false)).join('');
+    navActionsEl.innerHTML = auth.isLoggedIn ? profileActions() : guestActions();
+    drawerBody.innerHTML = drawerHTML();
+    updateCartBadge();
+    updateActive();
+  }
+
+  function updateActive() {
+    $$('[data-nav-id]').forEach(a => {
+      if (a.dataset.navId === ui.active) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+  }
+  function updateCartBadge(bump) {
+    const n = ui.cartCount;
+    $$('[data-cart-badge]').forEach(b => {
+      b.textContent = n > 99 ? '99+' : n;
+      b.classList.toggle('is-empty', n === 0);
+      if (bump) { b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
+    });
+    $$('[data-nav-id="cart"], [data-cart-quick]').forEach(a => a.setAttribute('aria-label', `Cart, ${n} item${n === 1 ? '' : 's'}`));
+  }
+  function renderWelcome() {
+    const chip = $('#welcomeChip');
+    if (auth.isLoggedIn) { chip.textContent = `Welcome back, ${auth.user.name.split(' ')[0]}! (${ROLE_LABEL[auth.user.role]})`; chip.classList.add('show'); }
+    else { chip.textContent = ''; chip.classList.remove('show'); }
+    const vc = $('#vendorCta span');
+    if (vc) vc.textContent = auth.isLoggedIn && auth.user.role === 'vendor' ? 'Open my restaurant' : 'Register your restaurant';
+  }
+  function syncDemoPanel() {
+    const val = auth.isLoggedIn ? auth.user.role : 'guest';
+    const r = $(`input[name="demoRole"][value="${val}"]`);
+    if (r) r.checked = true;
+  }
+
+  /* ---------- 4. Mobile drawer ------------------------------------------ */
+  const drawer = $('#drawer'), overlay = $('#drawerOverlay'), hamburger = $('#hamburger');
+  drawer.inert = true;
+  function openDrawer() {
+    drawer.classList.add('open'); drawer.inert = false; drawer.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('show'); document.body.classList.add('no-scroll');
+    hamburger.setAttribute('aria-expanded', 'true'); hamburger.setAttribute('aria-label', 'Close menu');
+    $('#drawerClose').focus();
+  }
+  function closeDrawer(restoreFocus = true) {
+    if (!drawer.classList.contains('open')) return;
+    drawer.classList.remove('open'); drawer.inert = true; drawer.setAttribute('aria-hidden', 'true');
+    overlay.classList.remove('show'); document.body.classList.remove('no-scroll');
+    hamburger.setAttribute('aria-expanded', 'false'); hamburger.setAttribute('aria-label', 'Open menu');
+    if (restoreFocus) hamburger.focus();
+  }
+
+  /* ---------- 5. Profile dropdown --------------------------------------- */
+  function dropdownOpen() { const p = $('#profile'); return !!p && p.classList.contains('open'); }
+  function openDropdown(focusFirst) {
+    const p = $('#profile'); if (!p) return;
+    p.classList.add('open'); $('#profileBtn').setAttribute('aria-expanded', 'true');
+    if (focusFirst) $('[role="menuitem"]', p).focus();
+  }
+  function closeDropdown(restoreFocus) {
+    const p = $('#profile'); if (!p || !p.classList.contains('open')) return;
+    p.classList.remove('open'); $('#profileBtn').setAttribute('aria-expanded', 'false');
+    if (restoreFocus) $('#profileBtn').focus();
+  }
+
+  /* ---------- 6. Page sections ------------------------------------------ */
+  // Shops
+  function renderShops() {
+    $('#shopGrid').innerHTML = SHOPS.map((s, i) => {
+      const fee = s.fee === 0 ? `<span class="free"><i class="fa-solid fa-tag" aria-hidden="true"></i> Free delivery</span>`
+                              : `<span><i class="fa-solid fa-tag" aria-hidden="true"></i> ${money(s.fee)} delivery</span>`;
+      return `<article class="card shop reveal${s.open ? '' : ' is-closed'}" style="--d:${(i % 3) * .08}s">
+        <div class="card-media">
+          <img src="${unsplash(s.img)}" alt="Freshly baked pizza from ${s.name}" data-emoji="🍕" loading="lazy" width="640" height="400">
+          <span class="pill status ${s.open ? 'open' : 'closed'}">${s.open ? 'Open' : 'Closed'}</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-top"><h3 style="font-size:1.3rem">${s.name}</h3>
+            <span class="rating" aria-label="Rated ${s.rating} out of 5 from ${s.reviews} reviews"><i class="fa-solid fa-star" aria-hidden="true"></i>${s.rating} <small>(${s.reviews})</small></span></div>
+          <div class="shop-meta"><span><i class="fa-regular fa-clock" aria-hidden="true"></i> ${s.time}</span>${fee}</div>
+          <ul class="tags" aria-label="Cuisine tags">${s.tags.map(t => `<li class="pill pill-tag">${t}</li>`).join('')}</ul>
+          <div class="shop-foot">
+            <span class="opens">${s.open ? 'Delivering now' : s.opens}</span>
+            <a class="link-arrow" href="#menu" aria-label="View menu for ${s.name}">View menu <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </div></article>`;
+    }).join('');
+  }
+
+  // Featured menu: tabs + filtered grid
+  function renderTabs() {
+    $('#menuTabs').innerHTML = CATS.map(c =>
+      `<button class="tab" role="tab" type="button" id="tab-${c.id}" data-cat="${c.id}" aria-selected="${ui.menuCat === c.id}" aria-controls="menuGrid" tabindex="${ui.menuCat === c.id ? 0 : -1}">
+        <i class="fa-solid ${c.icon}" aria-hidden="true"></i>${c.label}</button>`).join('');
+  }
+  function renderMenu() {
+    const cat = CATS.find(c => c.id === ui.menuCat);
+    const items = MENU.filter(m => m.cat === ui.menuCat);
+    const grid = $('#menuGrid');
+    grid.setAttribute('aria-labelledby', `tab-${cat.id}`);
+    grid.innerHTML = items.map((m, i) => `
+      <article class="card item" style="--i:${i}">
+        <div class="card-media">
+          <img src="${unsplash(m.img)}" alt="${m.name}" data-emoji="${cat.emoji}" loading="lazy" width="640" height="480">
+          ${m.flag ? `<span class="pill flag${m.green ? ' green' : ''}">${m.flag}</span>` : ''}
+        </div>
+        <div class="item-body">
+          <div class="item-top"><h3 style="font-size:1.2rem">${m.name}</h3><span class="price">${money(m.price)}</span></div>
+          <p class="desc">${m.desc}</p>
+          <div class="item-foot">
+            <span class="from"><i class="fa-solid fa-store" aria-hidden="true"></i><span>${m.shop}</span></span>
+            <button class="btn btn-primary btn-sm" type="button" data-add="${m.id}" aria-label="Add ${m.name} to cart"><i class="fa-solid fa-plus" aria-hidden="true"></i><span>Add to cart</span></button>
+          </div>
+        </div>
+      </article>`).join('');
+    $('#menuCount').textContent = `Showing ${items.length} ${cat.label.toLowerCase()}`;
+  }
+  function selectTab(id, focus) {
+    ui.menuCat = id; renderTabs(); renderMenu();
+    if (focus) $(`#tab-${id}`).focus();
+  }
+
+  // Testimonials
+  function renderQuotes() {
+    $('#quoteGrid').innerHTML = QUOTES.map((q, i) => `
+      <figure class="card quote reveal" style="--d:${i * .1}s">
+        <div class="stars" role="img" aria-label="${q.stars} out of 5 stars">${[1,2,3,4,5].map(n => `<i class="${n <= q.stars ? 'fa-solid' : 'fa-regular'} fa-star" aria-hidden="true"></i>`).join('')}</div>
+        <blockquote>“${q.text}”</blockquote>
+        <figcaption><img src="${face(q.avatar)}" alt="Portrait of ${q.name}" data-initials="${initials(q.name)}" loading="lazy" width="48" height="48"><div><strong>${q.name}</strong><span>${q.meta}</span></div></figcaption>
+      </figure>`).join('');
+  }
+
+  /* ---------- 7. Cart, modal, toast ------------------------------------- */
+  const toastEl = $('#toast'); let toastTimer;
+  function toast(msg, type) {
+    toastEl.className = 'toast' + (type === 'warn' ? ' warn' : '');
+    toastEl.innerHTML = `<i class="fa-solid ${type === 'warn' ? 'fa-circle-exclamation' : 'fa-circle-check'}" aria-hidden="true"></i><span></span>`;
+    $('span', toastEl).textContent = msg;
+    void toastEl.offsetWidth; toastEl.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2800);
+  }
+
+  function addToCart(id, btn) {
+    const item = MENU.find(m => m.id === id);
+    if (!auth.isLoggedIn) { ui.pendingItem = id; openModal(item); return; }
+    if (auth.user.role !== 'customer') { toast(`Cart is for customer accounts — you're signed in as ${ROLE_LABEL[auth.user.role].toLowerCase()}.`, 'warn'); return; }
+    ui.cartCount += 1; updateCartBadge(true);
+    toast(`${item.name} added to your cart`);
+    if (btn) {
+      const label = $('span', btn), icon = $('i', btn);
+      btn.classList.add('is-added'); label.textContent = 'Added'; icon.className = 'fa-solid fa-check';
+      setTimeout(() => { btn.classList.remove('is-added'); label.textContent = 'Add to cart'; icon.className = 'fa-solid fa-plus'; }, 1400);
+    }
+  }
+
+  // Sign-in prompt modal (with focus trap)
+  const modal = $('#authModal'); let modalReturnFocus = null;
+  function openModal(item) {
+    $('#authDesc').textContent = item ? `Sign in or create a free account to add “${item.name}” to your cart.` : 'Sign in or create a free account to continue.';
+    modalReturnFocus = document.activeElement; modal.hidden = false; document.body.classList.add('no-scroll');
+    $('[data-auth="signin"]', modal).focus();
+  }
+  function closeModal(restore = true) {
+    if (modal.hidden) return;
+    modal.hidden = true; document.body.classList.remove('no-scroll');
+    if (restore && modalReturnFocus && document.contains(modalReturnFocus)) modalReturnFocus.focus();
+  }
+  function trapFocus(container, e) {
+    const f = $$('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])', container).filter(el => el.offsetParent !== null);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  // Auth actions (demo: Sign In / Sign Up log in as a customer)
+  function doAuth(kind) {
+    if (kind === 'logout') { setAuth(null); toast('You’ve been logged out. See you soon!'); return; }
+    const pending = ui.pendingItem; ui.pendingItem = null;
+    closeModal(false); setAuth('customer');
+    toast(kind === 'signup' ? 'Account created — welcome to PizzaHub, Maya!' : 'Signed in as Maya Rahman');
+    if (pending) setTimeout(() => addToCart(pending, null), 600);
+  }
+
+  // Coupon copy
+  async function copyCoupon() {
+    const code = $('#couponCode').textContent.trim(), btn = $('#copyCoupon'), label = $('span', btn);
+    try { await navigator.clipboard.writeText(code); }
+    catch (_) { const t = document.createElement('textarea'); t.value = code; t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (__) {} t.remove(); }
+    label.textContent = 'Copied!'; toast(`Code ${code} copied to clipboard`);
+    setTimeout(() => (label.textContent = 'Copy code'), 1800);
+  }
+
+  /* ---------- 8. Events -------------------------------------------------- */
+  document.addEventListener('click', e => {
+    const t = e.target;
+
+    // Outside click closes dropdown
+    if (dropdownOpen() && !t.closest('#profile')) closeDropdown(false);
+
+    // Auth buttons
+    const authBtn = t.closest('[data-auth]');
+    if (authBtn) { doAuth(authBtn.dataset.auth); return; }
+
+    // Page links that aren't built in this demo (role links, dropdown items, cart)
+    const page = t.closest('[data-page]');
+    if (page) {
+      e.preventDefault();
+      if (page.classList.contains('nav-link')) { ui.active = page.dataset.navId; updateActive(); }
+      closeDropdown(false); closeDrawer(false);
+      toast(`Demo: “${page.dataset.label}” would open here.`);
+      return;
+    }
+    // Real in-page nav links (Home / Browse Menu) mark active and close the drawer
+    const nav = t.closest('.nav-link[data-nav-id]');
+    if (nav) { ui.active = nav.dataset.navId; updateActive(); closeDrawer(false); return; }
+    if (t.closest('[data-nav-home]')) { ui.active = 'home'; updateActive(); closeDrawer(false); return; }
+
+    // Placeholder links
+    const demo = t.closest('[data-demo]');
+    if (demo) { e.preventDefault(); toast(`Demo: “${demo.dataset.demo}” isn’t part of this home page.`); return; }
+
+    // Profile toggle
+    if (t.closest('#profileBtn')) { dropdownOpen() ? closeDropdown(false) : openDropdown(false); return; }
+
+    // Hamburger / drawer
+    if (t.closest('#hamburger')) { drawer.classList.contains('open') ? closeDrawer() : openDrawer(); return; }
+    if (t.closest('#drawerClose') || t === overlay) { closeDrawer(); return; }
+
+    // Modal close
+    if (t.closest('[data-close-modal]')) { ui.pendingItem = null; closeModal(); return; }
+
+    // Menu tabs + add to cart
+    const tab = t.closest('.tab[data-cat]');
+    if (tab) { selectTab(tab.dataset.cat, false); return; }
+    const add = t.closest('[data-add]');
+    if (add) { addToCart(add.dataset.add, add); return; }
+
+    if (t.closest('#copyCoupon')) { copyCoupon(); return; }
+    if (t.closest('#vendorCta')) {
+      if (auth.isLoggedIn && auth.user.role === 'vendor') toast('Demo: opening “My Restaurant”.');
+      else toast('Demo: restaurant registration form would open here.');
+      return;
+    }
+    if (t.closest('#locateBtn')) { $('#address').value = 'Current location'; $('#searchHint').textContent = ''; toast('Using your current location (demo)'); return; }
+    if (t.closest('#demoToggle')) {
+      const b = $('#demoToggle'), open = b.getAttribute('aria-expanded') === 'true';
+      b.setAttribute('aria-expanded', String(!open)); $('#demoBody').hidden = open; return;
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (!modal.hidden) { ui.pendingItem = null; closeModal(); return; }
+      if (drawer.classList.contains('open')) { closeDrawer(); return; }
+      if (dropdownOpen()) { closeDropdown(true); return; }
+    }
+    if (e.key === 'Tab') {
+      if (!modal.hidden) trapFocus(modal, e);
+      else if (drawer.classList.contains('open')) trapFocus(drawer, e);
+    }
+    // Profile menu keyboard support
+    const btn = e.target.closest && e.target.closest('#profileBtn');
+    if (btn && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { e.preventDefault(); openDropdown(true); return; }
+    if (e.target.closest && e.target.closest('#profileMenu') && ['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
+      e.preventDefault();
+      const items = $$('[role="menuitem"]', $('#profileMenu')), i = items.indexOf(document.activeElement);
+      const next = e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1 : (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      items[next].focus();
+    }
+    // Tabs: roving arrow-key navigation
+    if (e.target.matches && e.target.matches('.tab') && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
+      e.preventDefault();
+      const i = CATS.findIndex(c => c.id === ui.menuCat);
+      const n = e.key === 'Home' ? 0 : e.key === 'End' ? CATS.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + CATS.length) % CATS.length;
+      selectTab(CATS[n].id, true);
+    }
+  });
+
+  // Close dropdown when focus leaves it (Tab out)
+  document.addEventListener('focusout', e => {
+    const p = $('#profile');
+    if (p && p.classList.contains('open') && e.relatedTarget && !p.contains(e.relatedTarget)) closeDropdown(false);
+  });
+
+  // Demo controls
+  $$('input[name="demoRole"]').forEach(r => r.addEventListener('change', () => {
+    setAuth(r.value === 'guest' ? null : r.value);
+  }));
+
+  // Hero search
+  $('#heroSearch').addEventListener('submit', e => {
+    e.preventDefault();
+    const input = $('#address'), v = input.value.trim(), hint = $('#searchHint');
+    if (!v) { hint.textContent = 'Please enter your delivery address to see shops nearby.'; input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
+    hint.textContent = ''; input.removeAttribute('aria-invalid');
+    $('#shopsNote').textContent = `Showing top-rated shops near “${v}”`;
+    $('#shops').scrollIntoView({ behavior: 'smooth' });
+  });
+  $('#address').addEventListener('input', () => { $('#searchHint').textContent = ''; $('#address').removeAttribute('aria-invalid'); });
+
+  // Newsletter
+  $('#newsForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const input = $('#newsEmail'), msg = $('#newsMsg'), v = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+      input.setAttribute('aria-invalid', 'true'); msg.className = 'form-msg error'; msg.textContent = 'Please enter a valid email address.'; input.focus(); return;
+    }
+    input.removeAttribute('aria-invalid'); msg.className = 'form-msg success'; msg.textContent = '🎉 You’re in! Check your inbox for a welcome slice.'; input.value = '';
+  });
+
+  // Sticky header shadow + scroll-spy for Home / Browse Menu
+  const header = $('#siteHeader'), menuSection = $('#menu'); let ticking = false;
+  function onScroll() {
+    header.classList.toggle('is-scrolled', window.scrollY > 8);
+    if (ui.active === 'home' || ui.active === 'menu') {
+      const r = menuSection.getBoundingClientRect();
+      const next = (r.top < window.innerHeight * 0.45 && r.bottom > window.innerHeight * 0.25) ? 'menu' : 'home';
+      if (next !== ui.active) { ui.active = next; updateActive(); }
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+
+  // Scroll-reveal
+  const revealObserver = 'IntersectionObserver' in window
+    ? new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); revealObserver.unobserve(en.target); } }), { threshold: .12, rootMargin: '0px 0px -40px 0px' })
+    : null;
+  function observeReveals() {
+    $$('.reveal:not(.in)').forEach(el => revealObserver ? revealObserver.observe(el) : el.classList.add('in'));
+  }
+
+  /* ---------- 9. Init ---------------------------------------------------- */
+  subscribers.push(renderNavbar, renderWelcome, syncDemoPanel);
+
+  renderShops(); renderTabs(); renderMenu(); renderQuotes();
+  $('#year').textContent = new Date().getFullYear();
+  renderNavbar(); renderWelcome(); syncDemoPanel();
+  observeReveals(); onScroll();
+
+  // Start the demo collapsed on very small screens so it doesn't cover content
+  if (window.matchMedia('(max-width: 480px)').matches) { $('#demoToggle').setAttribute('aria-expanded', 'false'); $('#demoBody').hidden = true; }
+
+  // Expose for quick console testing: PizzaHub.setAuth('vendor')
+  window.PizzaHub = { setAuth, auth };
+})();
+</script>
+</body>
+</html>

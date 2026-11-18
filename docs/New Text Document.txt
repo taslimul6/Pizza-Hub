@@ -1,0 +1,19 @@
+PizzaHub — Branding Plan
+
+Tagline: Hot, fresh, and on its way.
+Personality: warm, fast, trustworthy, playful.
+
+Colors: Tomato red 
+#C8261B (primary), basil green 
+#2F6B3A (secondary), cheese gold 
+#FFB81C (accent), espresso 
+#2A1A14 (text), cream 
+#FFF8EE (background).
+
+Fonts: Fraunces (headings), DM Sans (body).
+
+Style: pill buttons, rounded cards, warm shadows, 4/8px spacing.
+
+Home page: role-based navbar (Customer, Vendor, Admin), hero search, shops, menu tabs, offers, vendor CTA, reviews, app/newsletter, footer.
+
+Next steps: real login, shop and menu data, cart and checkout.
