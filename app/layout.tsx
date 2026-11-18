@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
-import Navbar from "./components/navbar/Navbar";
+import Footer from "./components/shared/Footer";
+import Navbar from "./components/shared/Navbar";
 import "./globals.css";
 
 // Brand fonts (see docs): Fraunces for headings, DM Sans for body text.
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Guest navbar for now; real auth state will be wired in later. */}
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
