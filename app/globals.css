@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/*
+ * PizzaHub design tokens (see docs/New Text Document.txt).
+ * Declared in @theme so Tailwind generates utilities such as
+ * `bg-primary`, `text-dark`, `border-border`, `font-display`, `shadow-warm-md`.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Brand colors */
+  --color-primary: #c8261b; /* Tomato red - brand / primary CTAs */
+  --color-primary-600: #a81d14; /* Hover / pressed */
+  --color-primary-100: #fde6e3; /* Soft tint (active nav) */
+  --color-secondary: #2f6b3a; /* Basil green */
+  --color-secondary-600: #245530;
+  --color-secondary-100: #e3f1e5;
+  --color-accent: #ffb81c; /* Cheese gold */
+  --color-error: #b3261e;
+  --color-focus: #1a5fd4; /* Keyboard focus ring */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Neutrals */
+  --color-dark: #2a1a14; /* Espresso - body text */
+  --color-light: #fff8ee; /* Cream - page background */
+  --color-muted: #6b5e50; /* Secondary text */
+  --color-sand-100: #f1eae0; /* Hover backgrounds */
+  --color-border: #e4dacb;
+
+  /* Fonts (CSS variables are provided by next/font in app/layout.tsx) */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+
+  /* Warm shadows */
+  --shadow-warm-md: 0 6px 20px rgba(42, 26, 20, 0.1);
+  --shadow-warm-xl: 0 28px 60px rgba(42, 26, 20, 0.2);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-light);
+  color: var(--color-dark);
+  font-family: var(--font-sans);
 }
