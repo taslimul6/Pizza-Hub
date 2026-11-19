@@ -1,17 +1,18 @@
-"use client"; // needed because we use useState for the category tabs
-
-import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { MenuCategory, MenuItem } from "@/types";
 import SectionHeading from "./SectionHeading";
 
 // Tab buttons
-const categories = [
+const categories: MenuCategory[] = [
   { id: "pizzas", label: "Pizzas" },
   { id: "sides", label: "Sides" },
   { id: "drinks", label: "Drinks" },
 ];
 
 // Sample menu data (will come from a database later)
-const menuItems = [
+const menuItems: MenuItem[] = [
   { cat: "pizzas", emoji: "🍕", name: "Margherita Classica", desc: "San Marzano tomato, mozzarella, fresh basil and olive oil.", price: 11.5, shop: "Napoli Slice", flag: "Veg" },
   { cat: "pizzas", emoji: "🌶️", name: "Spicy Pepperoni", desc: "Double pepperoni, mozzarella, chili flakes and hot honey.", price: 13.95, shop: "The Pepperoni Club", flag: "Bestseller" },
   { cat: "pizzas", emoji: "🥦", name: "Garden Veggie Supreme", desc: "Roasted peppers, onion, mushrooms, olives and basil.", price: 12.95, shop: "Basil & Dough", flag: "Veg" },
@@ -24,13 +25,9 @@ const menuItems = [
   { cat: "drinks", emoji: "🍑", name: "Peach Iced Tea", desc: "Black tea brewed daily, lightly sweetened with peach.", price: 3.25, shop: "Basil & Dough" },
 ];
 
+// The Tabs component remembers the selected tab by itself,
+// so this section needs no useState.
 export default function FeaturedMenu() {
-  // Which tab is selected right now
-  const [activeCategory, setActiveCategory] = useState("pizzas");
-
-  // Only show items from the selected tab
-  const visibleItems = menuItems.filter((item) => item.cat === activeCategory);
-
   return (
     <section id="menu" className="bg-white px-4 py-16 sm:px-6 lg:py-24">
       <div className="mx-auto max-w-[1200px]">
@@ -40,51 +37,65 @@ export default function FeaturedMenu() {
           subtitle="Hand-picked favorites from our top-rated kitchens."
         />
 
-        {/* Tabs */}
-        <div role="tablist" aria-label="Menu categories" className="mb-8 flex gap-2">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              role="tab"
-              aria-selected={activeCategory === category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`rounded-full px-6 py-2.5 font-bold transition-colors ${
-                activeCategory === category.id
-                  ? "bg-primary text-white"
-                  : "bg-sand-100 hover:bg-border"
-              }`}
-            >
-              {category.label}
-            </button>
-          ))}
-        </div>
+        <Tabs defaultValue="pizzas" className="gap-0">
+          {/* Tab buttons */}
+          <TabsList
+            aria-label="Menu categories"
+            className="mb-8 h-auto justify-start gap-2 bg-transparent p-0"
+          >
+            {categories.map((category) => (
+              <TabsTrigger
+                key={category.id}
+                value={category.id}
+                className="h-auto flex-none rounded-full bg-muted px-6 py-2.5 text-base font-bold text-foreground hover:bg-border data-active:bg-primary data-active:text-primary-foreground data-active:hover:bg-primary"
+              >
+                {category.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-        {/* Items */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {visibleItems.map((item) => (
-            <article
-              key={item.name}
-              className="overflow-hidden rounded-3xl border border-border bg-light"
-            >
-              <div className="relative grid h-32 place-items-center bg-primary-100 text-5xl">
-                {item.emoji}
-                {item.flag && (
-                  <span className="absolute left-3 top-3 rounded-full bg-secondary px-2.5 py-0.5 text-xs font-bold text-white">
-                    {item.flag}
-                  </span>
-                )}
+          {/* Items of each tab */}
+          {categories.map((category) => (
+            <TabsContent key={category.id} value={category.id} className="text-base">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {menuItems
+                  .filter((item) => item.cat === category.id)
+                  .map((item) => (
+                    <Card
+                      key={item.name}
+                      className="gap-0 rounded-3xl border border-border bg-light py-0 ring-0"
+                    >
+                      <div className="relative grid h-32 place-items-center bg-primary-100 text-5xl">
+                        {item.emoji}
+                        {item.flag && (
+                          <Badge
+                            variant="secondary"
+                            className="absolute left-3 top-3"
+                          >
+                            {item.flag}
+                          </Badge>
+                        )}
+                      </div>
+                      <CardContent className="p-5">
+                        <h3 className="font-display text-lg font-bold">
+                          {item.name}
+                        </h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {item.desc}
+                        </p>
+                        <p className="mt-3 text-sm text-muted-foreground">
+                          from {item.shop}
+                        </p>
+                        <p className="mt-1 text-lg font-bold text-primary">
+                          ${item.price.toFixed(2)}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ))}
               </div>
-              <div className="p-5">
-                <h3 className="font-display text-lg font-bold">{item.name}</h3>
-                <p className="mt-1 text-sm text-muted">{item.desc}</p>
-                <p className="mt-3 text-sm text-muted">from {item.shop}</p>
-                <p className="mt-1 text-lg font-bold text-primary">
-                  ${item.price.toFixed(2)}
-                </p>
-              </div>
-            </article>
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
       </div>
     </section>
   );

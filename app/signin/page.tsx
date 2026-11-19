@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 import GoogleButton from "../components/shared/GoogleButton";
 import SignInForm from "../components/signin/SignInForm";
 
@@ -55,24 +56,24 @@ export default function SignInPage() {
           <h1 className="font-display text-3xl font-black tracking-tight">
             Welcome back
           </h1>
-          <p className="mt-2 text-muted">
+          <p className="mt-2 text-muted-foreground">
             Sign in to order your favorite pizza.
           </p>
 
           <SignInForm />
 
           {/* Divider */}
-          <div className="my-6 flex items-center gap-4 text-sm text-muted">
-            <span className="h-px flex-1 bg-border" />
+          <div className="my-6 flex items-center gap-4 text-sm text-muted-foreground">
+            <Separator className="flex-1" />
             or
-            <span className="h-px flex-1 bg-border" />
+            <Separator className="flex-1" />
           </div>
 
           {/* Sign in with Google */}
           <GoogleButton label="Sign in with Google" />
 
           {/* Link to the other page */}
-          <p className="mt-6 text-center text-muted">
+          <p className="mt-6 text-center text-muted-foreground">
             New to PizzaHub?{" "}
             <Link
               href="/signup"

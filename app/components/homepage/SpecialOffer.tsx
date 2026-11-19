@@ -1,6 +1,8 @@
 "use client"; // needed because we use useState for the "Copied!" message
 
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const COUPON_CODE = "PIZZA30";
 
@@ -23,9 +25,9 @@ export default function SpecialOffer() {
     <section id="offers" className="px-4 py-16 sm:px-6 lg:py-24">
       <div className="mx-auto grid max-w-[1200px] items-center gap-8 rounded-[2rem] bg-dark p-8 text-white sm:p-12 md:grid-cols-[1fr_auto]">
         <div>
-          <span className="inline-block rounded-full bg-accent px-3 py-1 text-sm font-bold text-dark">
+          <Badge variant="accent" className="h-auto py-1 text-sm">
             🔥 Limited-time offer
-          </span>
+          </Badge>
           <h2 className="mt-4 font-display text-3xl font-black sm:text-4xl">
             Your first slice is on us — 30% off.
           </h2>
@@ -39,12 +41,9 @@ export default function SpecialOffer() {
             <code className="rounded-xl border-2 border-dashed border-accent px-5 py-3 text-xl font-bold tracking-widest">
               {COUPON_CODE}
             </code>
-            <button
-              onClick={handleCopy}
-              className="rounded-full bg-accent px-6 py-3 font-bold text-dark hover:bg-white"
-            >
+            <Button variant="accent" onClick={handleCopy}>
               {copied ? "Copied!" : "Copy code"}
-            </button>
+            </Button>
           </div>
           <p className="mt-4 text-sm text-white/70">
             Valid on first orders over $15 · max discount $9 · ends Dec 31.

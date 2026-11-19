@@ -71,14 +71,14 @@ export default function SignUpPage() {
           <h1 className="font-display text-3xl font-black tracking-tight">
             Create your account
           </h1>
-          <p className="mt-2 text-muted">
+          <p className="mt-2 text-muted-foreground">
             Join PizzaHub and get hot, fresh pizza delivered.
           </p>
 
           <SignUpForm />
 
           {/* Link to the other page */}
-          <p className="mt-6 text-center text-muted">
+          <p className="mt-6 text-center text-muted-foreground">
             Already have an account?{" "}
             <Link
               href="/signin"

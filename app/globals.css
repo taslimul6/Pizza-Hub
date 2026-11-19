@@ -1,34 +1,72 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-/*
- ---break---
- */
+
+/* Dark styles only apply under a ".dark" class (the site has no dark mode) */
 @custom-variant dark (&:is(.dark *));
 
 /*
  * PizzaHub design tokens (see docs/New Text Document.txt).
- * Declared in @theme so Tailwind generates utilities such as
- * `bg-primary`, `text-dark`, `border-border`, `font-display`, `shadow-warm-md`.
+ *
+ * Part 1 (:root) holds the real color values using shadcn/ui's semantic
+ * names, but filled with the PizzaHub palette instead of shadcn's grey.
+ * Part 2 (@theme) turns them into Tailwind utilities such as `bg-primary`,
+ * `text-muted-foreground`, `border-border`, `font-display`, `shadow-warm-md`.
+ * Both shadcn components and our own markup use the same tokens.
  */
+:root {
+  --background: #fff8ee; /* Cream - page background */
+  --foreground: #2a1a14; /* Espresso - body text */
+  --card: #ffffff;
+  --card-foreground: #2a1a14;
+  --popover: #ffffff;
+  --popover-foreground: #2a1a14;
+  --primary: #c8261b; /* Tomato red - brand / primary CTAs */
+  --primary-foreground: #ffffff;
+  --secondary: #2f6b3a; /* Basil green */
+  --secondary-foreground: #ffffff;
+  --muted: #f1eae0; /* Sand - soft backgrounds (hover, tabs) */
+  --muted-foreground: #6b5e50; /* Secondary text */
+  --accent: #ffb81c; /* Cheese gold */
+  --accent-foreground: #2a1a14;
+  --destructive: #b3261e; /* Errors */
+  --border: #e4dacb;
+  --input: #e4dacb;
+  --ring: #1a5fd4; /* Keyboard focus ring */
+  --radius: 0.625rem;
+}
+
 @theme inline {
-  /* Brand colors */
-  --color-primary: #c8261b; /* Tomato red - brand / primary CTAs */
+  /* shadcn/ui semantic colors (values come from :root above) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Extra PizzaHub shades */
   --color-primary-600: #a81d14; /* Hover / pressed */
   --color-primary-100: #fde6e3; /* Soft tint (active nav) */
-  --color-secondary: #2f6b3a; /* Basil green */
   --color-secondary-600: #245530;
   --color-secondary-100: #e3f1e5;
-  --color-accent: #ffb81c; /* Cheese gold */
   --color-error: #b3261e;
-  --color-focus: #1a5fd4; /* Keyboard focus ring */
-
-  /* Neutrals */
-  --color-dark: #2a1a14; /* Espresso - body text */
-  --color-light: #fff8ee; /* Cream - page background */
-  --color-muted: #6b5e50; /* Secondary text */
-  --color-sand-100: #f1eae0; /* Hover backgrounds */
-  --color-border: #e4dacb;
+  --color-focus: #1a5fd4;
+  --color-dark: #2a1a14; /* Espresso */
+  --color-light: #fff8ee; /* Cream */
+  --color-sand-100: #f1eae0;
 
   /* Fonts (CSS variables are provided by next/font in app/layout.tsx) */
   --font-display: var(--font-fraunces), Georgia, serif;
@@ -37,116 +75,10 @@
   /* Warm shadows */
   --shadow-warm-md: 0 6px 20px rgba(42, 26, 20, 0.1);
   --shadow-warm-xl: 0 28px 60px rgba(42, 26, 20, 0.2);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 body {
   background: var(--color-light);
   color: var(--color-dark);
   font-family: var(--font-sans);
-}
-/*
- ---break---
- */
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-/*
- ---break---
- */
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }

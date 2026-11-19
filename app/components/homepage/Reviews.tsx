@@ -1,7 +1,10 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import type { Review } from "@/types";
 import SectionHeading from "./SectionHeading";
 
 // Sample customer reviews
-const reviews = [
+const reviews: Review[] = [
   {
     name: "Amira Khan",
     meta: "Ordered 14 times",
@@ -34,31 +37,43 @@ export default function Reviews() {
 
         <div className="grid gap-6 md:grid-cols-3">
           {reviews.map((review) => (
-            <figure
+            <Card
               key={review.name}
-              className="rounded-3xl border border-border bg-white p-6"
+              className="rounded-3xl border border-border py-0 text-base ring-0"
             >
-              {/* "★★★★☆" - filled stars first, then empty ones */}
-              <div
-                role="img"
-                aria-label={`${review.stars} out of 5 stars`}
-                className="text-xl text-accent"
-              >
-                {"★".repeat(review.stars)}
-                {"☆".repeat(5 - review.stars)}
-              </div>
-              <blockquote className="mt-3 text-muted">“{review.text}”</blockquote>
-              <figcaption className="mt-5 flex items-center gap-3">
-                {/* Avatar with the first letter of the name */}
-                <span className="grid size-10 place-items-center rounded-full bg-secondary-100 font-bold text-secondary-600">
-                  {review.name[0]}
-                </span>
-                <span>
-                  <strong className="block leading-tight">{review.name}</strong>
-                  <span className="text-sm text-muted">{review.meta}</span>
-                </span>
-              </figcaption>
-            </figure>
+              <CardContent className="p-6">
+                <figure>
+                  {/* "★★★★☆" - filled stars first, then empty ones */}
+                  <div
+                    role="img"
+                    aria-label={`${review.stars} out of 5 stars`}
+                    className="text-xl text-accent"
+                  >
+                    {"★".repeat(review.stars)}
+                    {"☆".repeat(5 - review.stars)}
+                  </div>
+                  <blockquote className="mt-3 text-muted-foreground">
+                    “{review.text}”
+                  </blockquote>
+                  <figcaption className="mt-5 flex items-center gap-3">
+                    {/* Avatar with the first letter of the name */}
+                    <Avatar size="lg">
+                      <AvatarFallback className="bg-secondary-100 text-base font-bold text-secondary-600">
+                        {review.name[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>
+                      <strong className="block leading-tight">
+                        {review.name}
+                      </strong>
+                      <span className="text-sm text-muted-foreground">
+                        {review.meta}
+                      </span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

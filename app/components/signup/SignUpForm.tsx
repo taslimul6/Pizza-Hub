@@ -4,25 +4,29 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { authClient } from "@/lib/auth-client";
+import { getRoleHome, isRole } from "@/lib/roles";
+import type { AccountType, Role } from "@/types";
+import { Separator } from "@/components/ui/separator";
 import GoogleButton from "../shared/GoogleButton";
 
 // Account types the user can pick
-const accountTypes = [
+const accountTypes: AccountType[] = [
   { value: "customer", label: "Customer" },
   { value: "vendor", label: "Restaurant" },
   { value: "admin", label: "Admin" },
 ];
 
-// Shared style for all text inputs
-const inputClass =
-  "h-12 w-full rounded-full border border-border px-5 outline-none focus:border-focus";
-
 // Sign up form: checks the fields, then creates the account with Better Auth.
 export default function SignUpForm() {
   const router = useRouter();
 
-  const [role, setRole] = useState("customer");
+  const [role, setRole] = useState<Role>("customer");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +58,7 @@ export default function SignUpForm() {
     }
 
     setLoading(true);
-    const { error: signUpError } = await authClient.signUp.email({
+    const { data, error: signUpError } = await authClient.signUp.email({
       name: name.trim(),
       email,
       password,
@@ -69,9 +73,9 @@ export default function SignUpForm() {
       return;
     }
 
-    // Account created and signed in: show a message, go to the home page
+    // Account created and signed in: show a message, go to the page for their role
     toast.success("Sign up successful! Welcome to PizzaHub.");
-    router.push("/");
+    router.push(getRoleHome(data?.user.role));
     router.refresh();
   }
 
@@ -80,32 +84,29 @@ export default function SignUpForm() {
       {/* Account type */}
       <fieldset>
         <legend className="mb-1.5 font-bold">I am a...</legend>
-        <div className="grid gap-3 min-[440px]:grid-cols-3">
+        <RadioGroup
+          value={role}
+          onValueChange={(value) => isRole(value) && setRole(value)}
+          className="grid gap-3 min-[440px]:grid-cols-3"
+        >
           {accountTypes.map((type) => (
-            <label
+            <Label
               key={type.value}
-              className="flex cursor-pointer items-center gap-2.5 rounded-full border border-border px-4 py-3 has-[:checked]:border-primary has-[:checked]:bg-primary-100"
+              className="cursor-pointer gap-2.5 rounded-full border border-border px-4 py-3 text-base has-[[data-checked]]:border-primary has-[[data-checked]]:bg-primary-100"
             >
-              <input
-                type="radio"
-                name="role"
-                value={type.value}
-                checked={role === type.value}
-                onChange={() => setRole(type.value)}
-                className="accent-primary"
-              />
+              <RadioGroupItem value={type.value} />
               <strong>{type.label}</strong>
-            </label>
+            </Label>
           ))}
-        </div>
+        </RadioGroup>
       </fieldset>
 
       {/* Full name */}
       <div>
-        <label htmlFor="name" className="mb-1.5 block font-bold">
+        <Label htmlFor="name" className="mb-1.5 text-base font-bold">
           Full name
-        </label>
-        <input
+        </Label>
+        <Input
           id="name"
           type="text"
           required
@@ -113,16 +114,15 @@ export default function SignUpForm() {
           placeholder="Maya Rahman"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className={inputClass}
         />
       </div>
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="mb-1.5 block font-bold">
+        <Label htmlFor="email" className="mb-1.5 text-base font-bold">
           Email
-        </label>
-        <input
+        </Label>
+        <Input
           id="email"
           type="email"
           required
@@ -130,17 +130,16 @@ export default function SignUpForm() {
           placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={inputClass}
         />
       </div>
 
       {/* Password + confirm (side by side on larger screens) */}
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="password" className="mb-1.5 block font-bold">
+          <Label htmlFor="password" className="mb-1.5 text-base font-bold">
             Password
-          </label>
-          <input
+          </Label>
+          <Input
             id="password"
             type="password"
             required
@@ -148,14 +147,13 @@ export default function SignUpForm() {
             placeholder="Create a password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={inputClass}
           />
         </div>
         <div>
-          <label htmlFor="confirm" className="mb-1.5 block font-bold">
+          <Label htmlFor="confirm" className="mb-1.5 text-base font-bold">
             Confirm password
-          </label>
-          <input
+          </Label>
+          <Input
             id="confirm"
             type="password"
             required
@@ -163,20 +161,19 @@ export default function SignUpForm() {
             placeholder="Repeat password"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            className={inputClass}
           />
         </div>
       </div>
 
       {/* Terms */}
-      <label className="flex items-start gap-2 text-sm">
-        <input
-          type="checkbox"
+      <div className="flex items-start gap-2">
+        <Checkbox
+          id="terms"
           checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-          className="mt-0.5 size-4 accent-primary"
+          onCheckedChange={(checked) => setAgreed(checked)}
+          className="mt-0.5"
         />
-        <span>
+        <Label htmlFor="terms" className="block font-normal leading-normal">
           I agree to the{" "}
           <Link href="#" className="font-bold text-primary-600 hover:underline">
             Terms
@@ -185,8 +182,8 @@ export default function SignUpForm() {
           <Link href="#" className="font-bold text-primary-600 hover:underline">
             Privacy Policy
           </Link>
-        </span>
-      </label>
+        </Label>
+      </div>
 
       {/* Error message */}
       {error !== "" && (
@@ -195,19 +192,15 @@ export default function SignUpForm() {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-full bg-primary px-6 py-3.5 text-lg font-bold text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-60"
-      >
+      <Button type="submit" size="lg" disabled={loading} className="w-full">
         {loading ? "Creating account..." : "Create account"}
-      </button>
+      </Button>
 
       {/* Divider */}
-      <div className="flex items-center gap-3 text-sm text-muted">
-        <span className="h-px flex-1 bg-border" />
+      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <Separator className="flex-1" />
         or
-        <span className="h-px flex-1 bg-border" />
+        <Separator className="flex-1" />
       </div>
 
       <GoogleButton label="Sign up with Google" role={role} />

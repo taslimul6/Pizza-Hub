@@ -2,9 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import type { PepperoniSpot, Stat } from "@/types";
 
 // Pepperoni positions on the pizza drawing: [x, y, radius]
-const pepperoni = [
+const pepperoni: PepperoniSpot[] = [
   [200, 196, 22],
   [276, 152, 24],
   [276, 240, 24],
@@ -15,7 +20,7 @@ const pepperoni = [
 ];
 
 // Numbers shown under the buttons
-const stats = [
+const stats: Stat[] = [
   { value: "1,200+", label: "Local pizza shops" },
   { value: "25 min", label: "Average delivery" },
   { value: "4.8 ★", label: "From 48k reviews" },
@@ -46,12 +51,15 @@ export default function Hero() {
         {/* ===== Left side: text, search, buttons, stats ===== */}
         <div>
           {/* Small badge above the title */}
-          <p className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-border bg-white py-1.5 pl-2 pr-4 text-sm font-bold">
+          <Badge
+            variant="outline"
+            className="mb-6 h-auto gap-2.5 bg-white py-1.5 pl-2 pr-4 text-sm"
+          >
             <span className="grid size-6 place-items-center rounded-full bg-accent text-xs">
               ⚡
             </span>
             Now delivering in 120+ neighborhoods
-          </p>
+          </Badge>
 
           <h1 className="font-display text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
             Hot,{" "}
@@ -61,7 +69,7 @@ export default function Hero() {
             pizza from the shops you love.
           </h1>
 
-          <p className="mt-4 max-w-[52ch] text-lg text-muted">
+          <p className="mt-4 max-w-[52ch] text-lg text-muted-foreground">
             Browse menus from local pizzerias, build your order in seconds, and
             track it all the way to your door — usually in about 25 minutes.
           </p>
@@ -72,20 +80,15 @@ export default function Hero() {
             role="search"
             className="mt-8 flex max-w-xl items-center gap-2 rounded-full border border-border bg-white py-2 pl-5 pr-2 shadow-warm-md focus-within:border-focus"
           >
-            <input
+            <Input
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Find pizza near you — enter your address"
               aria-label="Delivery address"
-              className="h-12 min-w-0 flex-1 bg-transparent outline-none"
+              className="min-w-0 flex-1 border-0 bg-transparent px-0 focus-visible:border-0"
             />
-            <button
-              type="submit"
-              className="rounded-full bg-primary px-5 py-3 font-bold text-white hover:bg-primary-600"
-            >
-              Find pizza
-            </button>
+            <Button type="submit">Find pizza</Button>
           </form>
 
           {/* Error message (empty space is kept so the layout doesn't jump) */}
@@ -95,15 +98,12 @@ export default function Hero() {
 
           {/* Call-to-action buttons */}
           <div className="mt-4 flex flex-wrap gap-3">
-            <Link
-              href="/#menu"
-              className="rounded-full bg-primary px-7 py-3.5 text-lg font-bold text-white hover:bg-primary-600"
-            >
+            <Link href="/#menu" className={buttonVariants({ size: "lg" })}>
               Order Now
             </Link>
             <Link
               href="/#partner"
-              className="rounded-full border-2 border-dark px-7 py-3.5 text-lg font-bold hover:bg-dark hover:text-white"
+              className={buttonVariants({ variant: "outline", size: "lg" })}
             >
               Become a Partner
             </Link>
@@ -116,7 +116,9 @@ export default function Hero() {
                 <strong className="font-display text-3xl leading-tight">
                   {stat.value}
                 </strong>
-                <span className="text-sm text-muted">{stat.label}</span>
+                <span className="text-sm text-muted-foreground">
+                  {stat.label}
+                </span>
               </li>
             ))}
           </ul>
@@ -148,14 +150,14 @@ export default function Hero() {
           </svg>
 
           {/* Floating info cards */}
-          <div className="absolute left-0 top-[8%] rounded-2xl bg-white px-4 py-2.5 text-sm shadow-warm-xl">
+          <Card className="absolute left-0 top-[8%] gap-0 rounded-2xl px-4 py-2.5 shadow-warm-xl ring-0">
             Out for delivery
             <strong className="block">Arrives in 12 min</strong>
-          </div>
-          <div className="absolute bottom-[10%] right-0 rounded-2xl bg-white px-4 py-2.5 text-sm shadow-warm-xl">
+          </Card>
+          <Card className="absolute bottom-[10%] right-0 gap-0 rounded-2xl px-4 py-2.5 shadow-warm-xl ring-0">
             Napoli Slice
             <strong className="block">4.9 ★ · 1.2k reviews</strong>
-          </div>
+          </Card>
         </div>
       </div>
     </section>

@@ -1,7 +1,9 @@
+import { Card } from "@/components/ui/card";
+import type { Step } from "@/types";
 import SectionHeading from "./SectionHeading";
 
 // The three steps shown in the cards
-const steps = [
+const steps: Step[] = [
   {
     number: "01",
     icon: "📍",
@@ -38,24 +40,23 @@ export default function HowItWorks() {
 
         <ol className="grid gap-5 md:grid-cols-3">
           {steps.map((step) => (
-            <li
-              key={step.number}
-              className="relative rounded-3xl border border-border bg-light p-8 text-center transition-transform hover:-translate-y-1.5"
-            >
-              {/* Big faded number in the corner */}
-              <span
-                aria-hidden="true"
-                className="absolute right-5 top-3 font-display text-4xl font-black text-border"
-              >
-                {step.number}
-              </span>
-              <div
-                className={`mx-auto mb-5 grid size-20 -rotate-6 place-items-center rounded-3xl text-3xl ${step.color}`}
-              >
-                {step.icon}
-              </div>
-              <h3 className="font-display text-xl font-bold">{step.title}</h3>
-              <p className="mt-2 text-muted">{step.text}</p>
+            <li key={step.number}>
+              <Card className="relative h-full gap-0 rounded-3xl border border-border bg-light p-8 text-center text-base ring-0 transition-transform hover:-translate-y-1.5">
+                {/* Big faded number in the corner */}
+                <span
+                  aria-hidden="true"
+                  className="absolute right-5 top-3 font-display text-4xl font-black text-border"
+                >
+                  {step.number}
+                </span>
+                <div
+                  className={`mx-auto mb-5 grid size-20 -rotate-6 place-items-center rounded-3xl text-3xl ${step.color}`}
+                >
+                  {step.icon}
+                </div>
+                <h3 className="font-display text-xl font-bold">{step.title}</h3>
+                <p className="mt-2 text-muted-foreground">{step.text}</p>
+              </Card>
             </li>
           ))}
         </ol>

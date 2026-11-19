@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-
-type GoogleButtonProps = {
-  label: string; // Button text, e.g. "Sign in with Google"
-  role?: string; // Account type for brand-new users (signup page only)
-};
+import type { GoogleButtonProps } from "@/types";
 
 // Google login / signup button. Google handles both: if the email is new an
 // account is created, if it already exists the user is just signed in.
@@ -19,7 +16,9 @@ export default function GoogleButton({ label, role }: GoogleButtonProps) {
     setLoading(true);
     const { error: googleError } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/",
+      // Come back to /signin: the proxy sees the new session and redirects
+      // to the right page for the user's role.
+      callbackURL: "/signin",
       // Only sent on the signup page; new users get "customer" otherwise
       ...(role ? { additionalData: { role } } : {}),
     });
@@ -32,11 +31,13 @@ export default function GoogleButton({ label, role }: GoogleButtonProps) {
 
   return (
     <div>
-      <button
+      <Button
         type="button"
+        variant="outline"
+        size="lg"
         onClick={handleClick}
         disabled={loading}
-        className="flex w-full items-center justify-center gap-3 rounded-full border-2 border-border px-6 py-3 font-bold hover:bg-sand-100 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full border-2 border-border bg-transparent hover:bg-muted hover:text-foreground"
       >
         {/* Google "G" logo */}
         <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
@@ -46,7 +47,7 @@ export default function GoogleButton({ label, role }: GoogleButtonProps) {
           <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z" />
         </svg>
         {loading ? "Redirecting..." : label}
-      </button>
+      </Button>
       {error !== "" && (
         <p role="alert" className="mt-2 text-sm font-bold text-primary-600">
           {error}

@@ -4,11 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
-
-// Shared style for all text inputs
-const inputClass =
-  "h-12 w-full rounded-full border border-border px-5 outline-none focus:border-focus";
+import { getRoleHome } from "@/lib/roles";
 
 // Sign in form: logs the user in with email and password using Better Auth.
 export default function SignInForm() {
@@ -25,7 +26,7 @@ export default function SignInForm() {
     setError("");
     setLoading(true);
 
-    const { error: signInError } = await authClient.signIn.email({
+    const { data, error: signInError } = await authClient.signIn.email({
       email,
       password,
       rememberMe,
@@ -41,9 +42,9 @@ export default function SignInForm() {
       return;
     }
 
-    // Logged in: show a message, go to the home page
+    // Logged in: show a message, go to the page for their role
     toast.success("Signed in successfully. Welcome back!");
-    router.push("/");
+    router.push(getRoleHome(data?.user.role));
     router.refresh();
   }
 
@@ -51,10 +52,10 @@ export default function SignInForm() {
     <form onSubmit={handleSubmit} className="mt-8 space-y-5">
       {/* Email */}
       <div>
-        <label htmlFor="email" className="mb-1.5 block font-bold">
+        <Label htmlFor="email" className="mb-1.5 text-base font-bold">
           Email
-        </label>
-        <input
+        </Label>
+        <Input
           id="email"
           type="email"
           required
@@ -62,16 +63,15 @@ export default function SignInForm() {
           placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={inputClass}
         />
       </div>
 
       {/* Password */}
       <div>
         <div className="mb-1.5 flex items-center justify-between">
-          <label htmlFor="password" className="font-bold">
+          <Label htmlFor="password" className="text-base font-bold">
             Password
-          </label>
+          </Label>
           <Link
             href="#"
             className="text-sm font-bold text-primary-600 hover:underline"
@@ -79,7 +79,7 @@ export default function SignInForm() {
             Forgot password?
           </Link>
         </div>
-        <input
+        <Input
           id="password"
           type="password"
           required
@@ -87,20 +87,20 @@ export default function SignInForm() {
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={inputClass}
         />
       </div>
 
       {/* Remember me */}
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
+      <div className="flex items-center gap-2">
+        <Checkbox
+          id="remember"
           checked={rememberMe}
-          onChange={(e) => setRememberMe(e.target.checked)}
-          className="size-4 accent-primary"
+          onCheckedChange={(checked) => setRememberMe(checked)}
         />
-        Remember me
-      </label>
+        <Label htmlFor="remember" className="font-normal">
+          Remember me
+        </Label>
+      </div>
 
       {/* Error message */}
       {error !== "" && (
@@ -109,13 +109,9 @@ export default function SignInForm() {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-full bg-primary px-6 py-3.5 text-lg font-bold text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-60"
-      >
+      <Button type="submit" size="lg" disabled={loading} className="w-full">
         {loading ? "Signing in..." : "Sign In"}
-      </button>
+      </Button>
     </form>
   );
 }

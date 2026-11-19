@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
+import type { FooterColumn } from "@/types";
 
 // Footer link columns. Pages that don't exist yet point to "#".
-const columns = [
+const columns: FooterColumn[] = [
   {
     title: "Company",
     links: [
@@ -78,7 +80,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-6 text-sm text-white/70">
+        <Separator className="mt-12 bg-white/15" />
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-6 text-sm text-white/70">
           <p>© 2026 PizzaHub, Inc. All rights reserved.</p>
           <ul className="flex gap-5">
             <li><Link href="#" className="hover:text-white">Privacy</Link></li>

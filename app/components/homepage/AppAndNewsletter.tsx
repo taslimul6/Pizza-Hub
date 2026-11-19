@@ -1,6 +1,9 @@
 "use client"; // needed because we use useState for the newsletter form
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function AppAndNewsletter() {
   // What the user typed in the email box
@@ -66,30 +69,25 @@ export default function AppAndNewsletter() {
         </div>
 
         {/* ===== Newsletter ===== */}
-        <div className="rounded-3xl border border-border bg-white p-8">
+        <Card className="gap-0 rounded-3xl border border-border p-8 text-base ring-0">
           <h3 className="font-display text-2xl font-black">
             Get hot deals in your inbox
           </h3>
-          <p className="mt-2 text-muted">
+          <p className="mt-2 text-muted-foreground">
             Weekly offers, new shop alerts and the occasional pizza joke. No
             spam, unsubscribe anytime.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-5 flex flex-wrap gap-3">
-            <input
+            <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               aria-label="Email address"
-              className="h-12 min-w-0 flex-1 rounded-full border border-border px-5 outline-none focus:border-focus"
+              className="min-w-0 flex-1"
             />
-            <button
-              type="submit"
-              className="rounded-full bg-primary px-6 py-3 font-bold text-white hover:bg-primary-600"
-            >
-              Subscribe
-            </button>
+            <Button type="submit">Subscribe</Button>
           </form>
 
           <p
@@ -100,7 +98,7 @@ export default function AppAndNewsletter() {
           >
             {message}
           </p>
-        </div>
+        </Card>
       </div>
     </section>
   );

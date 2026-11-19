@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import type { Benefit } from "@/types";
 import SectionHeading from "./SectionHeading";
 
 // Reasons for restaurants to join
-const benefits = [
+const benefits: Benefit[] = [
   { icon: "👥", title: "Reach more customers", text: "Get discovered by hungry locals searching nearby." },
   { icon: "🛎️", title: "Easy order dashboard", text: "Accept, prepare and track orders in one place." },
   { icon: "🍴", title: "Publish menus instantly", text: "Add pizzas, sides and drinks — update any time." },
@@ -39,13 +42,18 @@ export default function VendorCta() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/signup"
-              className="rounded-full bg-accent px-7 py-3.5 text-lg font-bold text-dark hover:bg-white"
+              className={buttonVariants({ variant: "accent", size: "lg" })}
             >
               Register your restaurant
             </Link>
             <Link
               href="/partners"
-              className="rounded-full border-2 border-white/60 px-7 py-3.5 text-lg font-bold hover:bg-white hover:text-dark"
+              className={buttonVariants({
+                variant: "outline",
+                size: "lg",
+                className:
+                  "border-white/60 text-white hover:bg-white hover:text-dark",
+              })}
             >
               Learn more
             </Link>
@@ -55,14 +63,16 @@ export default function VendorCta() {
         {/* Right: picture area with two small stat cards */}
         <div className="relative grid h-80 place-items-center rounded-[2rem] bg-secondary text-8xl sm:h-96">
           👩‍🍳
-          <div className="absolute left-4 top-6 rounded-2xl bg-white px-4 py-2 text-dark shadow-warm-xl">
+          <Card className="absolute left-4 top-6 gap-0 rounded-2xl px-4 py-2 text-dark shadow-warm-xl ring-0">
             <strong className="block text-xl">+38%</strong>
-            <span className="text-sm text-muted">Avg. order growth</span>
-          </div>
-          <div className="absolute bottom-6 right-4 rounded-2xl bg-white px-4 py-2 text-dark shadow-warm-xl">
+            <span className="text-sm text-muted-foreground">
+              Avg. order growth
+            </span>
+          </Card>
+          <Card className="absolute bottom-6 right-4 gap-0 rounded-2xl px-4 py-2 text-dark shadow-warm-xl ring-0">
             <strong className="block text-xl">48</strong>
-            <span className="text-sm text-muted">Orders today</span>
-          </div>
+            <span className="text-sm text-muted-foreground">Orders today</span>
+          </Card>
         </div>
       </div>
     </section>

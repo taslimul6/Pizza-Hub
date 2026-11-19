@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import type { Shop } from "@/types";
 import SectionHeading from "./SectionHeading";
 
 // Sample shop data (will come from a database later)
-const shops = [
+const shops: Shop[] = [
   { name: "Napoli Slice", emoji: "🍕", rating: 4.9, reviews: "1.2k", time: "20–30 min", fee: 1.49, tags: ["Neapolitan", "Wood-fired"], open: true },
   { name: "Brooklyn Crust Co.", emoji: "🗽", rating: 4.7, reviews: "860", time: "25–35 min", fee: 0, tags: ["New York style", "By the slice"], open: true },
   { name: "Basil & Dough", emoji: "🌿", rating: 4.8, reviews: "640", time: "30–40 min", fee: 2.49, tags: ["Vegetarian", "Organic"], open: true },
@@ -30,10 +33,10 @@ export default function PopularShops() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {shops.map((shop) => (
-            <article
+            <Card
               key={shop.name}
               // Closed shops are faded out
-              className={`overflow-hidden rounded-3xl border border-border bg-white transition-shadow hover:shadow-warm-md ${
+              className={`gap-0 rounded-3xl border border-border py-0 ring-0 transition-shadow hover:shadow-warm-md ${
                 shop.open ? "" : "opacity-70"
               }`}
             >
@@ -41,35 +44,34 @@ export default function PopularShops() {
               <div className="relative grid h-36 place-items-center bg-accent/30 text-6xl">
                 {shop.emoji}
                 {!shop.open && (
-                  <span className="absolute left-3 top-3 rounded-full bg-dark px-3 py-1 text-xs font-bold text-white">
+                  <Badge variant="dark" className="absolute left-3 top-3">
                     Closed
-                  </span>
+                  </Badge>
                 )}
               </div>
 
-              <div className="p-5">
+              <CardContent className="p-5">
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-display text-lg font-bold">{shop.name}</h3>
-                  <span className="shrink-0 rounded-full bg-accent px-2.5 py-0.5 text-sm font-bold">
+                  <Badge variant="accent" className="shrink-0 text-sm">
                     {shop.rating} ★
-                  </span>
+                  </Badge>
                 </div>
-                <p className="mt-1 text-sm text-muted">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {shop.reviews} reviews · {shop.time} ·{" "}
-                  {shop.fee === 0 ? "Free delivery" : `$${shop.fee.toFixed(2)} delivery`}
+                  {shop.fee === 0
+                    ? "Free delivery"
+                    : `$${shop.fee.toFixed(2)} delivery`}
                 </p>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {shop.tags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="rounded-full bg-sand-100 px-3 py-1 text-xs font-medium"
-                    >
-                      {tag}
+                    <li key={tag}>
+                      <Badge variant="muted">{tag}</Badge>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </article>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
