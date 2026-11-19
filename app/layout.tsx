@@ -3,6 +3,7 @@ import { DM_Sans, Fraunces } from "next/font/google";
 import Footer from "./components/shared/Footer";
 import Navbar from "./components/shared/Navbar";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 // Brand fonts (see docs): Fraunces for headings, DM Sans for body text.
 const fraunces = Fraunces({
@@ -27,10 +28,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${fraunces.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {/* Guest navbar for now; real auth state will be wired in later. */}
+        {/* Navbar reads the login session itself (guest or logged in) */}
         <Navbar />
         {children}
         <Footer />
+        {/* Shows toast messages (e.g. "Signed in successfully") */}
+        <Toaster theme="light" position="top-center" richColors />
       </body>
     </html>
   );
