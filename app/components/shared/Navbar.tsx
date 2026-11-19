@@ -2,15 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 // The three roles a logged-in user can have
 type Role = "customer" | "vendor" | "admin";
-
-// Props: pass a user to show the logged-in navbar, or nothing for a guest
-type NavbarProps = {
-  user?: { name: string; role: Role } | null;
-  onLogout?: () => void;
-};
 
 // Links everyone sees
 const commonLinks = [
@@ -36,7 +32,26 @@ const roleLinks = {
   ],
 };
 
-export default function Navbar({ user = null, onLogout }: NavbarProps) {
+export default function Navbar() {
+  const router = useRouter();
+
+  // Current login session (comes from Better Auth, updates by itself)
+  const { data: session, isPending } = authClient.useSession();
+  const role = session?.user.role as Role | undefined;
+  const user = session
+    ? {
+        name: session.user.name,
+        role: role && role in roleLinks ? role : "customer",
+      }
+    : null;
+
+  // Sign out, then go back to the home page
+  async function onLogout() {
+    await authClient.signOut();
+    router.push("/");
+    router.refresh();
+  }
+
   // State 1: is the mobile menu open?
   const [menuOpen, setMenuOpen] = useState(false);
   // State 2: is the profile dropdown open?
@@ -71,7 +86,7 @@ export default function Navbar({ user = null, onLogout }: NavbarProps) {
 
         {/* Right side */}
         <div className="ml-auto flex items-center gap-2">
-          {user ? (
+          {isPending ? null : user ? (
             // Logged in: profile button + dropdown (desktop only)
             <div className="relative hidden lg:block">
               <button
@@ -102,11 +117,11 @@ export default function Navbar({ user = null, onLogout }: NavbarProps) {
                   <button
                     onClick={() => {
                       setProfileOpen(false);
-                      onLogout?.();
+                      onLogout();
                     }}
                     className="block w-full rounded-lg px-3 py-2 text-left text-error hover:bg-sand-100"
                   >
-                    Logout
+                    Sign Out
                   </button>
                 </div>
               )}
@@ -158,16 +173,21 @@ export default function Navbar({ user = null, onLogout }: NavbarProps) {
           </ul>
 
           <div className="mt-4 grid gap-2">
-            {user ? (
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  onLogout?.();
-                }}
-                className="rounded-full border-2 border-dark px-5 py-2.5 font-bold"
-              >
-                Logout
-              </button>
+            {isPending ? null : user ? (
+              <>
+                <p className="px-4 py-2 text-center text-sm text-muted">
+                  {user.name} · {user.role}
+                </p>
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onLogout();
+                  }}
+                  className="rounded-full border-2 border-dark px-5 py-2.5 font-bold"
+                >
+                  Sign Out
+                </button>
+              </>
             ) : (
               <>
                 <Link

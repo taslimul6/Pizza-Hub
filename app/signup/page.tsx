@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SignUpForm from "../components/signup/SignUpForm";
 
 export const metadata: Metadata = {
   title: "Sign Up | PizzaHub",
 };
-
-// Account types the user can pick
-const accountTypes = [
-  { value: "customer", label: "Customer" },
-  { value: "vendor", label: "Restaurant" },
-  { value: "admin", label: "Admin" },
-];
 
 // Selling points shown on the left panel
 const perks = [
@@ -20,11 +14,7 @@ const perks = [
   "Restaurants: reach new customers and get weekly payouts",
 ];
 
-// Shared style for all text inputs
-const inputClass =
-  "h-12 w-full rounded-full border border-border px-5 outline-none focus:border-focus";
-
-// Sign Up page - layout only. The form has no functionality yet.
+// Sign Up page - layout. The working form is in SignUpForm.
 // The left panel is taller than on the Sign In page (bigger pizza, extra
 // perk and a review card) so it matches the longer form.
 export default function SignUpPage() {
@@ -85,103 +75,7 @@ export default function SignUpPage() {
             Join PizzaHub and get hot, fresh pizza delivered.
           </p>
 
-          <form className="mt-8 space-y-5">
-            {/* Account type */}
-            <fieldset>
-              <legend className="mb-1.5 font-bold">I am a...</legend>
-              <div className="grid gap-3 min-[440px]:grid-cols-3">
-                {accountTypes.map((type, index) => (
-                  <label
-                    key={type.value}
-                    className="flex cursor-pointer items-center gap-2.5 rounded-full border border-border px-4 py-3 has-[:checked]:border-primary has-[:checked]:bg-primary-100"
-                  >
-                    <input
-                      type="radio"
-                      name="role"
-                      value={type.value}
-                      defaultChecked={index === 0}
-                      className="accent-primary"
-                    />
-                    <strong>{type.label}</strong>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-
-            {/* Full name */}
-            <div>
-              <label htmlFor="name" className="mb-1.5 block font-bold">
-                Full name
-              </label>
-              <input
-                id="name"
-                type="text"
-                placeholder="Maya Rahman"
-                className={inputClass}
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="mb-1.5 block font-bold">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                className={inputClass}
-              />
-            </div>
-
-            {/* Password + confirm (side by side on larger screens) */}
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div>
-                <label htmlFor="password" className="mb-1.5 block font-bold">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="Create a password"
-                  className={inputClass}
-                />
-              </div>
-              <div>
-                <label htmlFor="confirm" className="mb-1.5 block font-bold">
-                  Confirm password
-                </label>
-                <input
-                  id="confirm"
-                  type="password"
-                  placeholder="Repeat password"
-                  className={inputClass}
-                />
-              </div>
-            </div>
-
-            {/* Terms */}
-            <label className="flex items-start gap-2 text-sm">
-              <input type="checkbox" className="mt-0.5 size-4 accent-primary" />
-              <span>
-                I agree to the{" "}
-                <Link href="#" className="font-bold text-primary-600 hover:underline">
-                  Terms
-                </Link>{" "}
-                and{" "}
-                <Link href="#" className="font-bold text-primary-600 hover:underline">
-                  Privacy Policy
-                </Link>
-              </span>
-            </label>
-
-            <button
-              type="submit"
-              className="w-full rounded-full bg-primary px-6 py-3.5 text-lg font-bold text-white hover:bg-primary-600"
-            >
-              Create account
-            </button>
-          </form>
+          <SignUpForm />
 
           {/* Link to the other page */}
           <p className="mt-6 text-center text-muted">
