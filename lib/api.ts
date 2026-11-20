@@ -12,3 +12,18 @@ export async function getList<T>(path: string): Promise<T[]> {
     return [];
   }
 }
+
+// Get one JSON object from the API (for example /stats).
+// Returns null when the API is down or sends an error.
+export async function getObject<T>(path: string): Promise<T | null> {
+  const base = process.env.API_URL;
+  if (!base) return null;
+
+  try {
+    const res = await fetch(new URL(path, base), { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
