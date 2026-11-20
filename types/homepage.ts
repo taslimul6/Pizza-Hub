@@ -19,33 +19,23 @@ export type Step = {
   color: string; // Tailwind background class for the icon box
 };
 
-// A pizza shop card
-export type Shop = {
+// A featured pizza from the /featured API
+export type FeaturedPizza = {
+  _id: string;
   name: string;
+  slug: string;
+  description: string;
   emoji: string;
-  rating: number;
-  reviews: string;
-  time: string;
-  fee: number; // 0 means free delivery
-  tags: string[];
-  open: boolean;
-};
-
-// A menu tab (Pizzas / Sides / Drinks)
-export type MenuCategory = {
-  id: string;
-  label: string;
-};
-
-// A menu item card
-export type MenuItem = {
-  cat: string; // matches MenuCategory.id
-  emoji: string;
-  name: string;
-  desc: string;
+  category: string; // category slug, e.g. "classic-pizzas"
+  shop: string; // shop slug, e.g. "pizzahub-downtown"
   price: number;
-  shop: string;
-  flag?: string; // small badge such as "Veg" or "Bestseller"
+  isVeg: boolean;
+  isSpicy: boolean;
+  flag?: string; // e.g. "Bestseller"
+  rating: number;
+  available: boolean;
+  prepTimeMin: number;
+  toppings: string[];
 };
 
 // A reason for restaurants to join
@@ -61,4 +51,12 @@ export type Review = {
   meta: string;
   stars: number; // 1 to 5
   text: string;
+};
+
+// A "Why choose PizzaHub" card
+export type Feature = {
+  icon: string;
+  title: string;
+  text: string;
+  color: string; // Tailwind background class for the icon box
 };

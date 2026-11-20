@@ -1,18 +1,104 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import type { Shop } from "@/types";
+import type { FeaturedPizza } from "@/types";
 import SectionHeading from "./SectionHeading";
 
-// Sample shop data (will come from a database later)
-const shops: Shop[] = [
-  { name: "Napoli Slice", emoji: "🍕", rating: 4.9, reviews: "1.2k", time: "20–30 min", fee: 1.49, tags: ["Neapolitan", "Wood-fired"], open: true },
-  { name: "Brooklyn Crust Co.", emoji: "🗽", rating: 4.7, reviews: "860", time: "25–35 min", fee: 0, tags: ["New York style", "By the slice"], open: true },
-  { name: "Basil & Dough", emoji: "🌿", rating: 4.8, reviews: "640", time: "30–40 min", fee: 2.49, tags: ["Vegetarian", "Organic"], open: true },
-  { name: "The Pepperoni Club", emoji: "🌶️", rating: 4.6, reviews: "2.1k", time: "15–25 min", fee: 0.99, tags: ["Pepperoni", "Late night"], open: true },
-  { name: "Mamma Rosa's Kitchen", emoji: "👵", rating: 4.9, reviews: "430", time: "35–45 min", fee: 1.99, tags: ["Family size", "Homestyle"], open: false },
-  { name: "Fire & Fold", emoji: "🔥", rating: 4.5, reviews: "390", time: "20–30 min", fee: 1.29, tags: ["Calzones", "Stone-baked"], open: true },
-];
+// Turn "pizzahub-downtown" into "Pizzahub Downtown"
+function formatShop(slug: string) {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+// Get the featured pizzas from the API (URL comes from .env)
+async function getFeatured(): Promise<FeaturedPizza[]> {
+  const url = process.env.FEATURED_API_URL;
+  if (!url) return [];
+
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    // API is down: show an empty state instead of crashing the page
+    return [];
+  }
+}
+
+async function FeaturedList() {
+  const pizzas = await getFeatured();
+
+  if (pizzas.length === 0) {
+    return (
+      <p className="text-muted-foreground">
+        Featured pizzas are not available right now. Please check back soon.
+      </p>
+    );
+  }
+
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {pizzas.map((pizza) => (
+        <Card
+          key={pizza._id}
+          // Unavailable pizzas are faded out
+          className={`gap-0 rounded-3xl border border-border py-0 ring-0 transition-shadow hover:shadow-warm-md ${
+            pizza.available ? "" : "opacity-70"
+          }`}
+        >
+          {/* Picture area (emoji placeholder until we have photos) */}
+          <div className="relative grid h-36 place-items-center bg-accent/30 text-6xl">
+            {pizza.emoji}
+            {pizza.flag && (
+              <Badge variant="accent" className="absolute left-3 top-3">
+                {pizza.flag}
+              </Badge>
+            )}
+            {!pizza.available && (
+              <Badge variant="dark" className="absolute right-3 top-3">
+                Unavailable
+              </Badge>
+            )}
+          </div>
+
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="font-display text-lg font-bold">{pizza.name}</h3>
+              <Badge variant="accent" className="shrink-0 text-sm">
+                {pizza.rating} ★
+              </Badge>
+            </div>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {formatShop(pizza.shop)} · {pizza.prepTimeMin} min · from $
+              {pizza.price.toFixed(2)}
+            </p>
+            <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+              {pizza.description}
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              <li>
+                <Badge variant="muted">{pizza.isVeg ? "Veg" : "Non-veg"}</Badge>
+              </li>
+              {pizza.isSpicy && (
+                <li>
+                  <Badge variant="muted">Spicy</Badge>
+                </li>
+              )}
+              {pizza.toppings.slice(0, 2).map((topping) => (
+                <li key={topping}>
+                  <Badge variant="muted">{topping}</Badge>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
 
 export default function PopularShops() {
   return (
@@ -31,49 +117,12 @@ export default function PopularShops() {
           </Link>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {shops.map((shop) => (
-            <Card
-              key={shop.name}
-              // Closed shops are faded out
-              className={`gap-0 rounded-3xl border border-border py-0 ring-0 transition-shadow hover:shadow-warm-md ${
-                shop.open ? "" : "opacity-70"
-              }`}
-            >
-              {/* Picture area (emoji placeholder until we have photos) */}
-              <div className="relative grid h-36 place-items-center bg-accent/30 text-6xl">
-                {shop.emoji}
-                {!shop.open && (
-                  <Badge variant="dark" className="absolute left-3 top-3">
-                    Closed
-                  </Badge>
-                )}
-              </div>
-
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-display text-lg font-bold">{shop.name}</h3>
-                  <Badge variant="accent" className="shrink-0 text-sm">
-                    {shop.rating} ★
-                  </Badge>
-                </div>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {shop.reviews} reviews · {shop.time} ·{" "}
-                  {shop.fee === 0
-                    ? "Free delivery"
-                    : `$${shop.fee.toFixed(2)} delivery`}
-                </p>
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {shop.tags.map((tag) => (
-                    <li key={tag}>
-                      <Badge variant="muted">{tag}</Badge>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* The API data loads here (Cache Components needs a Suspense boundary) */}
+        <Suspense
+          fallback={<p className="text-muted-foreground">Loading pizzas…</p>}
+        >
+          <FeaturedList />
+        </Suspense>
       </div>
     </section>
   );
