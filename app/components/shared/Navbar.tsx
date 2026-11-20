@@ -27,7 +27,7 @@ import type { NavbarUser, NavLink, Role } from "@/types";
 // Links everyone sees
 const commonLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/#menu", label: "Browse Menu" },
+  { href: "/menu", label: "Browse Menu" },
 ];
 
 // Extra links for each role

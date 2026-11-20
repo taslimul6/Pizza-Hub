@@ -16,7 +16,7 @@ const columns: FooterColumn[] = [
   {
     title: "For Customers",
     links: [
-      { label: "Browse menu", href: "/#menu" },
+      { label: "Browse menu", href: "/menu" },
       { label: "Track an order", href: "#" },
       { label: "Gift cards", href: "#" },
       { label: "Offers & coupons", href: "/#offers" },
