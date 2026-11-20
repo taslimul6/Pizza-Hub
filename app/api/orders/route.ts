@@ -1,0 +1,78 @@
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import { getList } from "@/lib/api";
+import { auth } from "@/lib/auth";
+import type { FeaturedPizza } from "@/types";
+
+// POST /api/orders
+// The browser sends only the customer's choice. Here on the server we:
+// 1. check the login session (name and email come from the session),
+// 2. look up the item and work out the price ourselves,
+// 3. save the order through the Express API (POST /orders).
+// Card details are never sent to the API: only the last 4 digits are kept.
+export async function POST(request: Request) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) {
+    return NextResponse.json({ error: "Please sign in first" }, { status: 401 });
+  }
+
+  const body = await request.json().catch(() => null);
+  const { itemId, size, crust, quantity, cardLast4 } = body ?? {};
+
+  if (
+    typeof itemId !== "string" ||
+    typeof size !== "string" ||
+    typeof crust !== "string" ||
+    !Number.isInteger(quantity) ||
+    quantity < 1 ||
+    quantity > 10 ||
+    !/^\d{4}$/.test(cardLast4)
+  ) {
+    return NextResponse.json({ error: "Invalid order details" }, { status: 400 });
+  }
+
+  // Find the item and its price (never trust a price from the browser)
+  const items = await getList<FeaturedPizza>("/");
+  const item = items.find((i) => i._id === itemId && i.available);
+  const chosenSize = item?.sizes.find((s) => s.label === size);
+
+  if (!item || !chosenSize || !item.crust.includes(crust)) {
+    return NextResponse.json({ error: "Item is not available" }, { status: 400 });
+  }
+
+  const total = Math.round(chosenSize.price * quantity * 100) / 100;
+
+  // Save the order in the Express API
+  let res: Response;
+  try {
+    res = await fetch(new URL("/orders", process.env.API_URL), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: session.user.name,
+        email: session.user.email,
+        orderDetails: {
+          itemId: item._id,
+          itemName: item.name,
+          shop: item.shop,
+          size,
+          crust,
+          quantity,
+          unitPrice: chosenSize.price,
+          total,
+          cardLast4,
+          status: "pending",
+        },
+      }),
+    });
+  } catch {
+    return NextResponse.json({ error: "Order service is down" }, { status: 502 });
+  }
+
+  if (!res.ok) {
+    return NextResponse.json({ error: "Could not save the order" }, { status: 502 });
+  }
+
+  const saved = await res.json();
+  return NextResponse.json({ orderId: saved.orderId, total }, { status: 201 });
+}

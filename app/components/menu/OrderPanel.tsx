@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import type { FeaturedPizza } from "@/types";
+import PaymentDialog from "./PaymentDialog";
 
 const selectStyle =
   "h-12 w-full rounded-full border border-input bg-white px-5 text-base outline-none focus-visible:border-ring";
@@ -18,17 +18,12 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
   const [size, setSize] = useState(item.sizes[0]?.label ?? "");
   const [crust, setCrust] = useState(item.crust[0] ?? "");
   const [quantity, setQuantity] = useState(1);
+  // Is the payment popup open?
+  const [payOpen, setPayOpen] = useState(false);
 
   const unitPrice =
     item.sizes.find((s) => s.label === size)?.price ?? item.price;
   const total = unitPrice * quantity;
-
-  function handleOrder() {
-    // There is no orders backend yet, so this only confirms the choice.
-    toast.success("Order request received", {
-      description: `${quantity} × ${size} ${item.name} (${crust}) — $${total.toFixed(2)}`,
-    });
-  }
 
   return (
     <div className="rounded-3xl border border-border bg-white p-6">
@@ -101,7 +96,7 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
         {isPending ? (
           <Button disabled>Checking login…</Button>
         ) : session ? (
-          <Button size="lg" onClick={handleOrder} disabled={!item.available}>
+          <Button size="lg" onClick={() => setPayOpen(true)} disabled={!item.available}>
             {item.available ? "Order now" : "Unavailable"}
           </Button>
         ) : (
@@ -110,6 +105,21 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
           </Link>
         )}
       </div>
+
+      {session && (
+        <PaymentDialog
+          open={payOpen}
+          onOpenChange={setPayOpen}
+          customerName={session.user.name}
+          customerEmail={session.user.email}
+          summary={`${quantity} × ${size} ${item.name} (${crust})`}
+          total={total}
+          itemId={item._id}
+          size={size}
+          crust={crust}
+          quantity={quantity}
+        />
+      )}
 
       {!isPending && !session && (
         <p className="mt-3 text-sm text-muted-foreground">
