@@ -1,10 +1,14 @@
 import { betterAuth } from "better-auth";
 import { APIError } from "better-auth/api";
+import { jwt } from "better-auth/plugins";
 import { MongoClient, ObjectId } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
 const client = new MongoClient(process.env.MONGODB_URI as string);
 const db = client.db("pizzaPulse");
+
+// The Express API checks every token against this address (issuer and audience)
+const authOrigin = new URL(process.env.BETTER_AUTH_URL ?? "http://localhost:3000").origin;
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
@@ -19,6 +23,20 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
+  plugins: [
+    // Signs short-lived JWTs for the logged-in user (GET /api/auth/token) and
+    // publishes the public keys that verify them (GET /api/auth/jwks).
+    // The Express API uses these to check the Bearer token of each request.
+    jwt({
+      jwt: {
+        issuer: authOrigin,
+        audience: authOrigin,
+        expirationTime: "15m", // a short life keeps a stolen token harmless
+        // Only what the API needs. It reads the real role from the database.
+        definePayload: ({ user }) => ({ email: user.email, role: user.role }),
+      },
+    }),
+  ],
   user: {
     additionalFields: {
       // "customer", "vendor" or "admin"

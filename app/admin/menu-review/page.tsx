@@ -33,7 +33,7 @@ async function Items() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (session?.user.role !== "admin") return null;
 
-  const raw = await getList<ApiItem>("/admin/menu");
+  const raw = await getList<ApiItem>("/admin/menu", { auth: true });
 
   const items: AdminMenuItem[] = raw.map((item) => ({
     id: item._id,

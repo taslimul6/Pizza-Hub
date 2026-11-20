@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { authFetch } from "@/lib/api-auth";
 import { auth } from "@/lib/auth";
 
 // PATCH /api/users/:id  { isBlocked: true | false }
@@ -30,7 +31,7 @@ export async function PATCH(
   }
 
   try {
-    const res = await fetch(new URL(`/users/${id}/block`, process.env.API_URL), {
+    const res = await authFetch(`/users/${id}/block`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isBlocked: body.isBlocked }),

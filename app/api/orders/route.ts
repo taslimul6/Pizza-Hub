@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { getList } from "@/lib/api";
+import { authFetch } from "@/lib/api-auth";
 import { auth } from "@/lib/auth";
 import type { FeaturedPizza } from "@/types";
 
@@ -72,13 +73,11 @@ export async function POST(request: Request) {
   // Save the order in the Express API
   let res: Response;
   try {
-    res = await fetch(new URL("/orders", process.env.API_URL), {
+    // The API knows the customer from the token
+    res = await authFetch("/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: session.user.name,
-        customerId: session.user.id,
-        email: session.user.email,
         orderDetails: {
           itemId: item._id,
           itemName: item.itemName,

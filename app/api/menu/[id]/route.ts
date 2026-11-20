@@ -1,12 +1,13 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { authFetch } from "@/lib/api-auth";
 import { auth } from "@/lib/auth";
 import { readMenuForm, uploadToImgbb } from "@/lib/menu-form";
 
 type Context = { params: Promise<{ id: string }> };
 
 // Checks the login + vendor role and the item id.
-// The vendor id always comes from the session, so a vendor can only change their own items.
+// The API reads the vendor from the token, so a vendor can only change their own items.
 async function check(context: Context) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
@@ -21,13 +22,13 @@ async function check(context: Context) {
     return { error: NextResponse.json({ error: "Invalid item id" }, { status: 400 }) };
   }
 
-  return { id, vendorId: session.user.id };
+  return { id };
 }
 
 // Send the request to the Express API and pass its answer back
-async function forward(url: URL, init: RequestInit) {
+async function forward(path: string, init: RequestInit) {
   try {
-    const res = await fetch(url, init);
+    const res = await authFetch(path, init);
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch {
@@ -45,10 +46,10 @@ export async function PATCH(request: Request, context: Context) {
     return NextResponse.json({ error: "active must be true or false" }, { status: 400 });
   }
 
-  return forward(new URL(`/menu/${checked.id}`, process.env.API_URL), {
+  return forward(`/menu/${checked.id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ vendorId: checked.vendorId, active: body.active }),
+    body: JSON.stringify({ active: body.active }),
   });
 }
 
@@ -89,11 +90,10 @@ export async function PUT(request: Request, context: Context) {
     }
   }
 
-  return forward(new URL(`/menu/${checked.id}`, process.env.API_URL), {
+  return forward(`/menu/${checked.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      vendorId: checked.vendorId,
       itemName: values.name,
       category: values.category,
       description: values.description,
@@ -109,7 +109,5 @@ export async function DELETE(_request: Request, context: Context) {
   const checked = await check(context);
   if ("error" in checked) return checked.error;
 
-  const url = new URL(`/menu/${checked.id}`, process.env.API_URL);
-  url.searchParams.set("vendorId", checked.vendorId);
-  return forward(url, { method: "DELETE" });
+  return forward(`/menu/${checked.id}`, { method: "DELETE" });
 }

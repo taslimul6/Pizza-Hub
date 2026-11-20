@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { authFetch } from "@/lib/api-auth";
 import { auth } from "@/lib/auth";
 import { readMenuForm, uploadToImgbb } from "@/lib/menu-form";
 
@@ -40,13 +41,11 @@ export async function POST(request: Request) {
   // Save the item (status "pending" is set by the API)
   let res: Response;
   try {
-    res = await fetch(new URL("/menu", process.env.API_URL), {
+    // The API knows the vendor from the token
+    res = await authFetch("/menu", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        vendorId: session.user.id,
-        // The shop name: the vendor's business name, or their own name
-        vendorName: session.user.businessName || session.user.name,
         itemName: values.name,
         category: values.category,
         description: values.description,

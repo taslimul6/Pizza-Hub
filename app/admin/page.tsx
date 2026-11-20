@@ -17,7 +17,7 @@ async function Overview() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (session?.user.role !== "admin") return null;
 
-  const data = await getObject<AdminStats>("/stats");
+  const data = await getObject<AdminStats>("/stats", { auth: true });
 
   if (!data) {
     return (

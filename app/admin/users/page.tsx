@@ -29,7 +29,7 @@ async function Users() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (session?.user.role !== "admin") return null;
 
-  const raw = await getList<ApiUser>("/users");
+  const raw = await getList<ApiUser>("/users", { auth: true });
 
   const users: AdminUser[] = raw.map((user) => ({
     id: user._id,

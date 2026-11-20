@@ -17,9 +17,7 @@ async function MyOrders() {
   // The proxy already blocks guests; this is only a safety net
   if (!session) return null;
 
-  const orders = await getList<Order>(
-    `/orders/vendor?vendorId=${session.user.id}`,
-  );
+  const orders = await getList<Order>("/orders/vendor", { auth: true });
 
   return <VendorOrdersList orders={orders} />;
 }

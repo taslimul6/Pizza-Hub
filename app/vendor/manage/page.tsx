@@ -34,9 +34,7 @@ async function MyItems() {
   if (!session) return null;
 
   const [raw, categories] = await Promise.all([
-    getList<ApiItem>(
-      `/menu/mine?vendorId=${session.user.id}`,
-    ),
+    getList<ApiItem>("/menu/mine", { auth: true }),
     getList<string>("/category"),
   ]);
 

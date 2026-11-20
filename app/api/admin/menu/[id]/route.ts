@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { authFetch } from "@/lib/api-auth";
 import { auth } from "@/lib/auth";
 
 type Context = { params: Promise<{ id: string }> };
@@ -24,7 +25,7 @@ async function check(context: Context) {
 // Send the request to the Express API and pass its answer back
 async function forward(path: string, init: RequestInit) {
   try {
-    const res = await fetch(new URL(path, process.env.API_URL), init);
+    const res = await authFetch(path, init);
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch {

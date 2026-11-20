@@ -1,12 +1,13 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { authFetch } from "@/lib/api-auth";
 import { auth } from "@/lib/auth";
 
 // PATCH /api/orders/:id  { action: "accept" | "reject" | "complete" | "cancel" }
 // - accept / reject / complete: vendor only, for orders that belong to that vendor
 // - cancel: customer only, for their own pending order (the order stays in the
 //   database with the status "cancelled")
-// The ids always come from the session, so nobody can change someone else's order.
+// The API reads the user from the token, so nobody can change someone else's order.
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -38,12 +39,11 @@ export async function PATCH(
   }
 
   const path = isCancel ? `/orders/${id}/cancel` : `/orders/${id}/status`;
-  const payload = isCancel
-    ? { customerId: session.user.id }
-    : { vendorId: session.user.id, action };
+  // The API knows who is asking from the token
+  const payload = isCancel ? {} : { action };
 
   try {
-    const res = await fetch(new URL(path, process.env.API_URL), {
+    const res = await authFetch(path, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

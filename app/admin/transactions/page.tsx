@@ -31,7 +31,7 @@ async function Transactions() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (session?.user.role !== "admin") return null;
 
-  const raw = await getList<ApiTransaction>("/admin/transactions");
+  const raw = await getList<ApiTransaction>("/admin/transactions", { auth: true });
 
   const transactions: AdminTransaction[] = raw.map((t) => ({
     id: t._id,
