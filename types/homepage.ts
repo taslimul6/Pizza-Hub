@@ -65,3 +65,23 @@ export type Feature = {
   text: string;
   color: string; // Tailwind background class for the icon box
 };
+
+// An order saved by the API (POST /orders)
+export type Order = {
+  _id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  orderDetails: {
+    itemId: string;
+    itemName: string;
+    shop: string;
+    size: string;
+    crust: string;
+    quantity: number;
+    unitPrice: number;
+    total: number;
+    cardLast4: string;
+    status: string;
+  };
+};

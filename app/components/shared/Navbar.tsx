@@ -33,7 +33,7 @@ const commonLinks: NavLink[] = [
 // Extra links for each role
 const roleLinks: Record<Role, NavLink[]> = {
   customer: [
-    { href: "/orders", label: "My Orders" },
+    { href: "/customer/myorder", label: "My Orders" },
     { href: "/cart", label: "Cart" },
   ],
   vendor: [
