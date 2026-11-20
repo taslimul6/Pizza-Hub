@@ -36,6 +36,11 @@ export type FeaturedPizza = {
   available: boolean;
   prepTimeMin: number;
   toppings: string[];
+  sizes: { label: string; price: number }[];
+  crust: string[];
+  calories: number;
+  image: string; // path on the API server
+  images?: string[]; // extra photos, if the API sends them
 };
 
 // A reason for restaurants to join

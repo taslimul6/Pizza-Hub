@@ -46,7 +46,7 @@ export default function MenuCard({ item }: { item: FeaturedPizza }) {
           <Button
             size="sm"
             nativeButton={false}
-            render={<Link href={`/menu/${item.slug}`} />}
+            render={<Link href={`/menu/${item._id}`} />}
           >
             View Details
           </Button>
