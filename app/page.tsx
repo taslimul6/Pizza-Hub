@@ -6,6 +6,7 @@ import PopularShops from "./components/homepage/PopularShops";
 import Reviews from "./components/homepage/Reviews";
 import SpecialOffer from "./components/homepage/SpecialOffer";
 import VendorCta from "./components/homepage/VendorCta";
+import WhyChooseUs from "./components/homepage/WhyChooseUs";
 
 // Home page - sections appear in this order, top to bottom.
 // The navbar and footer are rendered by app/layout.tsx.
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero />
       <HowItWorks />
       <PopularShops />
+      <WhyChooseUs />
       <FeaturedMenu />
       <SpecialOffer />
       <VendorCta />
