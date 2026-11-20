@@ -38,7 +38,7 @@ const roleLinks: Record<Role, NavLink[]> = {
   ],
   vendor: [
     { href: "/vendor/restaurant", label: "My Restaurant" },
-    { href: "/vendor/menu", label: "Manage Menu" },
+    { href: "/vendor/manage", label: "Manage Menu" },
     { href: "/vendor/addMenu", label: "Add Menu Item" },
     { href: "/vendor/orders", label: "Incoming Orders" },
   ],

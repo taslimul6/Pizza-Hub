@@ -1,21 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatSlug } from "@/lib/format-slug";
-
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
-const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+import {
+  validateImage,
+  validateMenuFields,
+  type MenuErrors,
+} from "@/lib/menu-validation";
 
 const fieldStyle =
   "w-full rounded-2xl border border-input bg-white px-5 text-base outline-none focus-visible:border-ring aria-invalid:border-destructive";
 
-type Errors = Partial<
-  Record<"name" | "category" | "description" | "price" | "location" | "image", string>
->;
+type Errors = MenuErrors;
 
 // Form a vendor uses to add a new menu item. The item is saved as "pending"
 // until an admin approves it.
@@ -31,30 +32,18 @@ export default function AddMenuItemForm({ categories }: { categories: string[] }
   const [fileKey, setFileKey] = useState(0);
   const [errors, setErrors] = useState<Errors>({});
   const [saving, setSaving] = useState(false);
+  const router = useRouter();
 
   function validate() {
-    const next: Errors = {};
-    if (name.trim().length < 2 || name.trim().length > 60) {
-      next.name = "Enter a name (2 to 60 characters)";
-    }
-    if (!category) next.category = "Choose a category";
-    if (description.trim().length < 10 || description.trim().length > 500) {
-      next.description = "Write a description (10 to 500 characters)";
-    }
-    const priceNumber = Number(price);
-    if (!price || !Number.isFinite(priceNumber) || priceNumber <= 0 || priceNumber > 1000) {
-      next.price = "Enter a price above 0 (up to 1000)";
-    }
-    if (location.trim().length < 2 || location.trim().length > 60) {
-      next.location = "Enter an area or city";
-    }
-    if (!image) {
-      next.image = "Item image is required";
-    } else if (!IMAGE_TYPES.includes(image.type)) {
-      next.image = "Use a JPG, PNG, WEBP or GIF file";
-    } else if (image.size > MAX_IMAGE_SIZE) {
-      next.image = "Image must be 5 MB or smaller";
-    }
+    const next: Errors = validateMenuFields({
+      name,
+      category,
+      description,
+      price,
+      location,
+    });
+    const imageError = validateImage(image, true);
+    if (imageError) next.image = imageError;
     return next;
   }
 
@@ -103,6 +92,8 @@ export default function AddMenuItemForm({ categories }: { categories: string[] }
       if (preview) URL.revokeObjectURL(preview);
       setPreview("");
       setFileKey((key) => key + 1);
+      // Go to the manage page, where the new item shows as Pending
+      router.push("/vendor/manage");
     } catch {
       toast.error("Network error. Please try again.");
     } finally {

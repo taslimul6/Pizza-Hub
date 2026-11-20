@@ -4,3 +4,4 @@ export type * from "./auth";
 export type * from "./homepage";
 export type * from "./navigation";
 export type * from "./ui";
+export type * from "./vendor";

@@ -1,10 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { getList } from "@/lib/api";
 import { auth } from "@/lib/auth";
-
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
-const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+import { readMenuForm, uploadToImgbb } from "@/lib/menu-form";
 
 function bad(error: string, status = 400) {
   return NextResponse.json({ error }, { status });
@@ -28,50 +25,14 @@ export async function POST(request: Request) {
   const form = await request.formData().catch(() => null);
   if (!form) return bad("Invalid form data");
 
-  const name = String(form.get("name") ?? "").trim();
-  const category = String(form.get("category") ?? "").trim();
-  const description = String(form.get("description") ?? "").trim();
-  const location = String(form.get("location") ?? "").trim();
-  const price = Number(form.get("price"));
-  const image = form.get("image");
-
-  // Validate
-  if (name.length < 2 || name.length > 60) {
-    return bad("Item name must be 2 to 60 characters");
-  }
-  if (description.length < 10 || description.length > 500) {
-    return bad("Description must be 10 to 500 characters");
-  }
-  if (location.length < 2 || location.length > 60) {
-    return bad("Location must be 2 to 60 characters");
-  }
-  if (!Number.isFinite(price) || price <= 0 || price > 1000) {
-    return bad("Price must be more than 0 and at most 1000");
-  }
-
-  const categories = await getList<string>("/category");
-  if (!categories.includes(category)) return bad("Please choose a valid category");
-
-  if (!(image instanceof File) || image.size === 0) {
-    return bad("Item image is required");
-  }
-  if (!IMAGE_TYPES.includes(image.type)) {
-    return bad("Image must be a JPG, PNG, WEBP or GIF file");
-  }
-  if (image.size > MAX_IMAGE_SIZE) return bad("Image must be 5 MB or smaller");
+  const result = await readMenuForm(form, true);
+  if ("error" in result) return bad(result.error);
+  const { image, ...values } = result.values;
 
   // Upload the image file to ImgBB
   let imageUrl: string;
   try {
-    const upload = new FormData();
-    upload.set("image", image);
-    const res = await fetch(
-      `https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`,
-      { method: "POST", body: upload },
-    );
-    const data = await res.json();
-    if (!res.ok || !data?.data?.url) throw new Error("upload failed");
-    imageUrl = data.data.url;
+    imageUrl = await uploadToImgbb(image as File, apiKey);
   } catch {
     return bad("Could not upload the image. Please try again.", 502);
   }
@@ -83,11 +44,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name,
-        category,
-        description,
-        price,
-        location,
+        ...values,
         image: imageUrl,
         vendor: {
           id: session.user.id,
