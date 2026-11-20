@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
-import { MongoClient } from "mongodb";
+import { APIError } from "better-auth/api";
+import { MongoClient, ObjectId } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
 const client = new MongoClient(process.env.MONGODB_URI as string);
@@ -27,6 +28,13 @@ export const auth = betterAuth({
         defaultValue: "customer",
         input: true,
       },
+      // Set to true by an admin. Blocked users cannot log in.
+      blocked: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+        input: false, // nobody can set this from the sign up form
+      },
     },
   },
   databaseHooks: {
@@ -40,6 +48,22 @@ export const auth = betterAuth({
             ? (user.role as string)
             : "customer";
           return { data: { ...user, role } };
+        },
+      },
+    },
+    session: {
+      create: {
+        // Stop blocked users from logging in (email or Google)
+        before: async (session) => {
+          if (!ObjectId.isValid(session.userId)) return;
+          const user = await db
+            .collection("user")
+            .findOne({ _id: new ObjectId(session.userId) });
+          if (user?.blocked === true) {
+            throw new APIError("FORBIDDEN", {
+              message: "Your account has been blocked. Please contact support.",
+            });
+          }
         },
       },
     },
