@@ -48,3 +48,19 @@ export type AdminMenuItem = {
   status: "pending" | "publish" | "rejected";
   available: boolean;
 };
+
+// One row of the admin "Transactions" list (read only)
+export type AdminTransaction = {
+  id: string;
+  vendorName: string;
+  vendorEmail: string | null;
+  vendorShop: string | null;
+  customerName: string;
+  customerEmail: string;
+  itemName: string;
+  amount: number;
+  cardLast4: string;
+  orderStatus: string;
+  paymentStatus: "paid" | "pending" | "refunded";
+  createdAt: string;
+};
