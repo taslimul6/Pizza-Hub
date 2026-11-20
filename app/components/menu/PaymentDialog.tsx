@@ -63,6 +63,10 @@ export default function PaymentDialog({
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
   const [paying, setPaying] = useState(false);
+  // Delivery details
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [message, setMessage] = useState("");
 
   async function handlePay(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -78,7 +82,10 @@ export default function PaymentDialog({
           size,
           crust,
           quantity,
-          cardLast4: cardNumber.replace(/D/g, "").slice(-4),
+          cardLast4: cardNumber.replace(/\D/g, "").slice(-4),
+          deliveryDate,
+          deliveryAddress: deliveryAddress.trim(),
+          message: message.trim(),
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -94,6 +101,9 @@ export default function PaymentDialog({
       setCardName("");
       setExpiry("");
       setCvc("");
+      setDeliveryDate("");
+      setDeliveryAddress("");
+      setMessage("");
       onOpenChange(false);
     } catch {
       toast.error("Network error. Please try again.");
@@ -132,6 +142,47 @@ export default function PaymentDialog({
                 className="bg-muted"
               />
             </div>
+          </div>
+
+          {/* Delivery details */}
+          <div className="space-y-1.5">
+            <Label htmlFor="pay-date">Delivery date</Label>
+            <Input
+              id="pay-date"
+              type="date"
+              value={deliveryDate}
+              onChange={(e) => setDeliveryDate(e.target.value)}
+              min={new Date().toLocaleDateString("en-CA")}
+              required
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="pay-address">Delivery address</Label>
+            <textarea
+              id="pay-address"
+              rows={2}
+              className="w-full rounded-2xl border border-input bg-white px-5 py-3 text-base outline-none focus-visible:border-ring"
+              placeholder="House, street, area, city"
+              value={deliveryAddress}
+              onChange={(e) => setDeliveryAddress(e.target.value)}
+              required
+              minLength={5}
+              maxLength={200}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="pay-message">Message for the vendor (optional)</Label>
+            <textarea
+              id="pay-message"
+              rows={2}
+              className="w-full rounded-2xl border border-input bg-white px-5 py-3 text-base outline-none focus-visible:border-ring"
+              placeholder="e.g. No onions, ring the bell twice"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              maxLength={300}
+            />
           </div>
 
           <div className="space-y-1.5">

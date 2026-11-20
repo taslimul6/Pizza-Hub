@@ -71,6 +71,15 @@ export type Order = {
   _id: string;
   name: string;
   email: string;
+  customer?: { id: string | null; name: string; email: string };
+  // The vendor who sells the item (id and email are null for older items)
+  vendor?: {
+    id: string | null;
+    name: string;
+    email: string | null;
+    shop: string | null;
+    location: string | null;
+  };
   createdAt: string;
   orderDetails: {
     itemId: string;
@@ -82,6 +91,10 @@ export type Order = {
     unitPrice: number;
     total: number;
     cardLast4: string;
+    // Delivery details (orders placed before they were added do not have them)
+    deliveryDate?: string;
+    deliveryAddress?: string;
+    message?: string;
     status: string;
   };
 };

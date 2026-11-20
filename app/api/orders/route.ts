@@ -17,7 +17,9 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json().catch(() => null);
-  const { itemId, size, crust, quantity, cardLast4 } = body ?? {};
+  const { itemId, size, crust, quantity, cardLast4, deliveryDate } = body ?? {};
+  const deliveryAddress = String(body?.deliveryAddress ?? "").trim();
+  const message = String(body?.message ?? "").trim();
 
   if (
     typeof itemId !== "string" ||
@@ -29,6 +31,31 @@ export async function POST(request: Request) {
     !/^\d{4}$/.test(cardLast4)
   ) {
     return NextResponse.json({ error: "Invalid order details" }, { status: 400 });
+  }
+
+  // Delivery details: a date that is not in the past, an address, an optional message
+  // (one day of slack so time zones cannot reject a valid "today")
+  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+  if (
+    typeof deliveryDate !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(deliveryDate) ||
+    deliveryDate < yesterday
+  ) {
+    return NextResponse.json({ error: "Choose a valid delivery date" }, { status: 400 });
+  }
+  if (deliveryAddress.length < 5 || deliveryAddress.length > 200) {
+    return NextResponse.json(
+      { error: "Delivery address must be 5 to 200 characters" },
+      { status: 400 },
+    );
+  }
+  if (message.length > 300) {
+    return NextResponse.json(
+      { error: "Message must be 300 characters or less" },
+      { status: 400 },
+    );
   }
 
   // Find the item and its price (never trust a price from the browser)
@@ -50,6 +77,7 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: session.user.name,
+        customerId: session.user.id,
         email: session.user.email,
         orderDetails: {
           itemId: item._id,
@@ -61,6 +89,9 @@ export async function POST(request: Request) {
           unitPrice: chosenSize.price,
           total,
           cardLast4,
+          deliveryDate,
+          deliveryAddress,
+          message,
           status: "pending",
         },
       }),
