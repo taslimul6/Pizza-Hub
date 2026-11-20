@@ -22,8 +22,8 @@ export default function MenuBrowse({ categories, items }: MenuBrowseProps) {
   const [category, setCategory] = useState("all");
   const [location, setLocation] = useState("all");
 
-  // Only active items are shown to visitors
-  const activeItems = items.filter((item) => item.available);
+  // The API only sends approved items, so every item here can be shown
+  const activeItems = items;
 
   // Location list is built from the items we have
   const locations = [
@@ -33,7 +33,7 @@ export default function MenuBrowse({ categories, items }: MenuBrowseProps) {
   const text = search.trim().toLowerCase();
   const visibleItems = activeItems.filter(
     (item) =>
-      item.name.toLowerCase().includes(text) &&
+      item.itemName.toLowerCase().includes(text) &&
       (category === "all" || item.category === category) &&
       (location === "all" || getShopLocation(item.shop) === location),
   );

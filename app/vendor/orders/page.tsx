@@ -18,7 +18,7 @@ async function MyOrders() {
   if (!session) return null;
 
   const orders = await getList<Order>(
-    `/orders/vendor?email=${encodeURIComponent(session.user.email)}`,
+    `/orders/vendor?vendorId=${session.user.id}`,
   );
 
   return <VendorOrdersList orders={orders} />;

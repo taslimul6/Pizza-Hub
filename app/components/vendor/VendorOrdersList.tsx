@@ -23,17 +23,19 @@ const statusInfo: Record<
   { label: string; variant: "accent" | "secondary" | "muted" | "destructive" }
 > = {
   pending: { label: "Pending", variant: "accent" },
-  "in process": { label: "In process", variant: "secondary" },
+  accepted: { label: "Accepted", variant: "secondary" },
   completed: { label: "Completed", variant: "muted" },
   rejected: { label: "Rejected", variant: "destructive" },
+  cancelled: { label: "Cancelled", variant: "muted" },
 };
 
 const filters = [
   { value: "all", label: "All" },
   { value: "pending", label: "Pending" },
-  { value: "in process", label: "In process" },
+  { value: "accepted", label: "Accepted" },
   { value: "completed", label: "Completed" },
   { value: "rejected", label: "Rejected" },
+  { value: "cancelled", label: "Cancelled" },
 ];
 
 // "2026-11-24" -> "Nov 24, 2026"
@@ -52,7 +54,7 @@ function formatDateTime(value: string) {
   });
 }
 
-// The vendor's orders with Accept / Reject (pending) and Complete (in process).
+// The vendor's orders with Accept / Reject (pending) and Complete (accepted).
 // Changes are saved through /api/orders/:id and then the list is reloaded.
 export default function VendorOrdersList({ orders }: { orders: Order[] }) {
   const router = useRouter();
@@ -171,9 +173,9 @@ export default function VendorOrdersList({ orders }: { orders: Order[] }) {
                   <div>
                     <dt className="font-bold">Customer</dt>
                     <dd className="text-muted-foreground">
-                      {order.customer?.name ?? order.name}
+                      {order.name}
                       <br />
-                      {order.customer?.email ?? order.email}
+                      {order.email}
                     </dd>
                   </div>
                   <div>
@@ -203,14 +205,14 @@ export default function VendorOrdersList({ orders }: { orders: Order[] }) {
                   </p>
 
                   {/* Only pending orders can be accepted or rejected, and only once.
-                      Only orders in process can be completed. */}
+                      Only accepted orders can be completed. */}
                   {d.status === "pending" && (
                     <div className="flex gap-2">
                       <Button
                         size="sm"
                         disabled={busy}
                         onClick={() =>
-                          act(order, "accept", "Order accepted: in process")
+                          act(order, "accept", "Order accepted")
                         }
                       >
                         Accept
@@ -225,7 +227,7 @@ export default function VendorOrdersList({ orders }: { orders: Order[] }) {
                       </Button>
                     </div>
                   )}
-                  {d.status === "in process" && (
+                  {d.status === "accepted" && (
                     <Button
                       size="sm"
                       variant="secondary"
@@ -251,7 +253,7 @@ export default function VendorOrdersList({ orders }: { orders: Order[] }) {
             <DialogTitle>Reject this order?</DialogTitle>
             <DialogDescription>
               {rejecting?.orderDetails.quantity} × {rejecting?.orderDetails.itemName}{" "}
-              for {rejecting?.customer?.name ?? rejecting?.name}. This cannot be
+              for {rejecting?.name}. This cannot be
               undone.
             </DialogDescription>
           </DialogHeader>

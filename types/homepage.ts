@@ -22,7 +22,7 @@ export type Step = {
 // A featured pizza from the /featured API
 export type FeaturedPizza = {
   _id: string;
-  name: string;
+  itemName: string;
   slug: string;
   description: string;
   emoji: string;
@@ -33,14 +33,12 @@ export type FeaturedPizza = {
   isSpicy: boolean;
   flag?: string; // e.g. "Bestseller"
   rating: number;
-  available: boolean;
   prepTimeMin: number;
   toppings: string[];
   sizes: { label: string; price: number }[];
   crust: string[];
   calories: number;
-  image: string; // path on the API server
-  images?: string[]; // extra photos, if the API sends them
+  images: string[]; // picture links (ImgBB links, or paths on the API server)
 };
 
 // A reason for restaurants to join
@@ -71,12 +69,11 @@ export type Order = {
   _id: string;
   name: string;
   email: string;
-  customer?: { id: string | null; name: string; email: string };
-  // The vendor who sells the item (id and email are null for older items)
+  customerId: string | null; // ref: user
+  vendorId: string | null; // ref: user (null for older seed items)
+  // Vendor name and shop at the time of the order
   vendor?: {
-    id: string | null;
-    name: string;
-    email: string | null;
+    name: string | null;
     shop: string | null;
     location: string | null;
   };
@@ -95,6 +92,7 @@ export type Order = {
     deliveryDate?: string;
     deliveryAddress?: string;
     message?: string;
+    // pending | accepted | rejected | cancelled | completed
     status: string;
   };
 };

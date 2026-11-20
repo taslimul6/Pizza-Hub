@@ -6,7 +6,7 @@ import { readMenuForm, uploadToImgbb } from "@/lib/menu-form";
 type Context = { params: Promise<{ id: string }> };
 
 // Checks the login + vendor role and the item id.
-// The email always comes from the session, so a vendor can only change their own items.
+// The vendor id always comes from the session, so a vendor can only change their own items.
 async function check(context: Context) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
@@ -21,7 +21,7 @@ async function check(context: Context) {
     return { error: NextResponse.json({ error: "Invalid item id" }, { status: 400 }) };
   }
 
-  return { id, email: session.user.email };
+  return { id, vendorId: session.user.id };
 }
 
 // Send the request to the Express API and pass its answer back
@@ -35,20 +35,20 @@ async function forward(url: URL, init: RequestInit) {
   }
 }
 
-// PATCH /api/menu/:id  { available: true | false }
+// PATCH /api/menu/:id  { active: true | false }  (approved <-> inactive)
 export async function PATCH(request: Request, context: Context) {
   const checked = await check(context);
   if ("error" in checked) return checked.error;
 
   const body = await request.json().catch(() => null);
-  if (typeof body?.available !== "boolean") {
-    return NextResponse.json({ error: "available must be true or false" }, { status: 400 });
+  if (typeof body?.active !== "boolean") {
+    return NextResponse.json({ error: "active must be true or false" }, { status: 400 });
   }
 
   return forward(new URL(`/menu/${checked.id}`, process.env.API_URL), {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: checked.email, available: body.available }),
+    body: JSON.stringify({ vendorId: checked.vendorId, active: body.active }),
   });
 }
 
@@ -92,7 +92,15 @@ export async function PUT(request: Request, context: Context) {
   return forward(new URL(`/menu/${checked.id}`, process.env.API_URL), {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...values, image: imageUrl, email: checked.email }),
+    body: JSON.stringify({
+      vendorId: checked.vendorId,
+      itemName: values.name,
+      category: values.category,
+      description: values.description,
+      price: values.price,
+      location: values.location,
+      image: imageUrl,
+    }),
   });
 }
 
@@ -102,6 +110,6 @@ export async function DELETE(_request: Request, context: Context) {
   if ("error" in checked) return checked.error;
 
   const url = new URL(`/menu/${checked.id}`, process.env.API_URL);
-  url.searchParams.set("email", checked.email);
+  url.searchParams.set("vendorId", checked.vendorId);
   return forward(url, { method: "DELETE" });
 }

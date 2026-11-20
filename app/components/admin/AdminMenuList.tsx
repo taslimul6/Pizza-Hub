@@ -23,7 +23,8 @@ const statusInfo: Record<
   Status,
   { label: string; variant: "secondary" | "accent" | "destructive"; note: string }
 > = {
-  publish: { label: "Published", variant: "secondary", note: "Shown on the public menu" },
+  approved: { label: "Approved", variant: "secondary", note: "Shown on the public menu" },
+  inactive: { label: "Inactive", variant: "accent", note: "Switched off, hidden from customers" },
   pending: { label: "Pending", variant: "accent", note: "Waiting for review, hidden from customers" },
   rejected: { label: "Rejected", variant: "destructive", note: "Hidden from customers" },
 };
@@ -31,7 +32,8 @@ const statusInfo: Record<
 const statusFilters: { value: "all" | Status; label: string }[] = [
   { value: "all", label: "All" },
   { value: "pending", label: "Pending" },
-  { value: "publish", label: "Published" },
+  { value: "approved", label: "Approved" },
+  { value: "inactive", label: "Inactive" },
   { value: "rejected", label: "Rejected" },
 ];
 
@@ -222,16 +224,16 @@ export default function AdminMenuList({ items }: { items: AdminMenuItem[] }) {
                   </Button>
 
                   {/* Review actions depend on the current status */}
-                  {item.status !== "publish" && (
+                  {item.status !== "approved" && (
                     <Button
                       size="sm"
                       disabled={busy}
-                      onClick={() => setStatus(item, "publish", "Item approved")}
+                      onClick={() => setStatus(item, "approved", "Item approved")}
                     >
                       Approve
                     </Button>
                   )}
-                  {item.status === "publish" && (
+                  {item.status === "approved" && (
                     <Button
                       variant="secondary"
                       size="sm"
@@ -293,7 +295,7 @@ export default function AdminMenuList({ items }: { items: AdminMenuItem[] }) {
                 <div>
                   <dt className="text-muted-foreground">Availability</dt>
                   <dd className="font-bold">
-                    {viewing.available ? "Available" : "Unavailable"}
+                    {statusInfo[viewing.status].label}
                   </dd>
                 </div>
                 <div className="col-span-2">

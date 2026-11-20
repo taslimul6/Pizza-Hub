@@ -29,11 +29,30 @@ export const auth = betterAuth({
         input: true,
       },
       // Set to true by an admin. Blocked users cannot log in.
-      blocked: {
+      isBlocked: {
         type: "boolean",
         required: false,
         defaultValue: false,
         input: false, // nobody can set this from the sign up form
+      },
+      // Vendor only: the name of the shop or business
+      businessName: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+      // "free" or "premium" (changed by the system, not by the user)
+      subscriptionPlan: {
+        type: "string",
+        required: false,
+        defaultValue: "free",
+        input: false,
+      },
+      // When the premium plan ends (null for the free plan)
+      subscriptionExpiresAt: {
+        type: "date",
+        required: false,
+        input: false,
       },
     },
   },
@@ -59,7 +78,7 @@ export const auth = betterAuth({
           const user = await db
             .collection("user")
             .findOne({ _id: new ObjectId(session.userId) });
-          if (user?.blocked === true) {
+          if (user?.isBlocked === true) {
             throw new APIError("FORBIDDEN", {
               message: "Your account has been blocked. Please contact support.",
             });

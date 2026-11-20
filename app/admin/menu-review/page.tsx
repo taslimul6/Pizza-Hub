@@ -14,17 +14,17 @@ export const metadata: Metadata = {
 // An item as the API sends it (only the fields we use)
 type ApiItem = {
   _id: string;
-  name: string;
+  itemName: string;
   emoji?: string;
-  image?: string;
+  images?: string[];
   category: string;
   description: string;
   price: number;
   location?: string;
   shop: string;
-  vendor?: { name?: string; email?: string };
-  status?: AdminMenuItem["status"]; // older items have no status
-  available: boolean;
+  vendorName: string;
+  vendorEmail: string | null;
+  status: AdminMenuItem["status"];
 };
 
 // Loads every submitted item, whatever its status
@@ -37,19 +37,19 @@ async function Items() {
 
   const items: AdminMenuItem[] = raw.map((item) => ({
     id: item._id,
-    name: item.name,
+    name: item.itemName,
     emoji: item.emoji ?? "🍕",
     // Only real web links are shown as pictures
-    image: item.image?.startsWith("http") ? item.image : undefined,
+    image: item.images?.find((src) => src.startsWith("http")),
     category: item.category,
     description: item.description,
     price: item.price,
     location: item.location ?? "Not set",
     shop: item.shop,
-    vendorName: item.vendor?.name ?? item.shop,
-    vendorEmail: item.vendor?.email ?? null,
-    status: item.status ?? "publish",
-    available: item.available,
+    vendorName: item.vendorName,
+    vendorEmail: item.vendorEmail,
+    status: item.status,
+    available: item.status === "approved",
   }));
 
   return <AdminMenuList items={items} />;

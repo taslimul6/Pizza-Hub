@@ -54,9 +54,7 @@ export default function MenuBrowser({ categories, items }: MenuBrowserProps) {
           {visibleItems.map((item) => (
             <Card
               key={item._id}
-              className={`gap-0 rounded-3xl border border-border bg-light py-0 ring-0 ${
-                item.available ? "" : "opacity-70"
-              }`}
+              className="gap-0 rounded-3xl border border-border bg-light py-0 ring-0"
             >
               <div className="relative grid h-32 place-items-center bg-primary-100 text-5xl">
                 {item.emoji}
@@ -67,7 +65,7 @@ export default function MenuBrowser({ categories, items }: MenuBrowserProps) {
                 )}
               </div>
               <CardContent className="p-5">
-                <h3 className="font-display text-lg font-bold">{item.name}</h3>
+                <h3 className="font-display text-lg font-bold">{item.itemName}</h3>
                 <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                   {item.description}
                 </p>

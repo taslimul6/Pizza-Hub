@@ -16,16 +16,15 @@ export const metadata: Metadata = {
 // An item as the API sends it (only the fields we use)
 type ApiItem = {
   _id: string;
-  name: string;
+  itemName: string;
   emoji?: string;
-  image?: string;
+  images?: string[];
   category: string;
   description: string;
   price: number;
   location?: string;
   shop: string;
-  status?: ItemStatus; // older items have no status
-  available: boolean;
+  status: ItemStatus;
 };
 
 // Loads only the logged-in vendor's own items (every status)
@@ -36,23 +35,23 @@ async function MyItems() {
 
   const [raw, categories] = await Promise.all([
     getList<ApiItem>(
-      `/menu/mine?email=${encodeURIComponent(session.user.email)}`,
+      `/menu/mine?vendorId=${session.user.id}`,
     ),
     getList<string>("/category"),
   ]);
 
   const items: VendorMenuItem[] = raw.map((item) => ({
     id: item._id,
-    name: item.name,
+    name: item.itemName,
     emoji: item.emoji ?? "🍕",
     // Only real web links are shown as pictures
-    image: item.image?.startsWith("http") ? item.image : undefined,
+    image: item.images?.find((src) => src.startsWith("http")),
     category: item.category,
     description: item.description,
     price: item.price,
     location: item.location ?? "Not set",
-    status: item.status ?? "publish",
-    available: item.available,
+    status: item.status,
+    available: item.status === "approved",
   }));
 
   return <ManageMenuList items={items} categories={categories} />;

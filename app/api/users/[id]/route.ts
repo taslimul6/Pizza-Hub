@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
-// PATCH /api/users/:id  { blocked: true | false }
+// PATCH /api/users/:id  { isBlocked: true | false }
 // Admin only. Blocks or unblocks a user through the Express API.
 export async function PATCH(
   request: Request,
@@ -25,15 +25,15 @@ export async function PATCH(
   }
 
   const body = await request.json().catch(() => null);
-  if (typeof body?.blocked !== "boolean") {
-    return NextResponse.json({ error: "blocked must be true or false" }, { status: 400 });
+  if (typeof body?.isBlocked !== "boolean") {
+    return NextResponse.json({ error: "isBlocked must be true or false" }, { status: 400 });
   }
 
   try {
     const res = await fetch(new URL(`/users/${id}/block`, process.env.API_URL), {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ blocked: body.blocked }),
+      body: JSON.stringify({ isBlocked: body.isBlocked }),
     });
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });

@@ -44,10 +44,7 @@ async function FeaturedList() {
       {pizzas.map((pizza) => (
         <Card
           key={pizza._id}
-          // Unavailable pizzas are faded out
-          className={`gap-0 rounded-3xl border border-border py-0 ring-0 transition-shadow hover:shadow-warm-md ${
-            pizza.available ? "" : "opacity-70"
-          }`}
+          className="gap-0 rounded-3xl border border-border py-0 ring-0 transition-shadow hover:shadow-warm-md"
         >
           {/* Picture area (emoji placeholder until we have photos) */}
           <div className="relative grid h-36 place-items-center bg-accent/30 text-6xl">
@@ -57,16 +54,11 @@ async function FeaturedList() {
                 {pizza.flag}
               </Badge>
             )}
-            {!pizza.available && (
-              <Badge variant="dark" className="absolute right-3 top-3">
-                Unavailable
-              </Badge>
-            )}
           </div>
 
           <CardContent className="p-5">
             <div className="flex items-start justify-between gap-2">
-              <h3 className="font-display text-lg font-bold">{pizza.name}</h3>
+              <h3 className="font-display text-lg font-bold">{pizza.itemName}</h3>
               <Badge variant="accent" className="shrink-0 text-sm">
                 {pizza.rating} ★
               </Badge>

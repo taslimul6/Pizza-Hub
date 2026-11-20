@@ -44,13 +44,15 @@ export async function POST(request: Request) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...values,
+        vendorId: session.user.id,
+        // The shop name: the vendor's business name, or their own name
+        vendorName: session.user.businessName || session.user.name,
+        itemName: values.name,
+        category: values.category,
+        description: values.description,
+        price: values.price,
+        location: values.location,
         image: imageUrl,
-        vendor: {
-          id: session.user.id,
-          name: session.user.name,
-          email: session.user.email,
-        },
       }),
     });
   } catch {

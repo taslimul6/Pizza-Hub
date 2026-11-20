@@ -1,8 +1,8 @@
 // Types for the vendor dashboard.
 
 // Approval status of a menu item.
-// "pending" and "rejected" items are never shown to customers.
-export type ItemStatus = "pending" | "publish" | "rejected";
+// Only "approved" items are shown to customers.
+export type ItemStatus = "pending" | "approved" | "rejected" | "inactive";
 
 // One menu item in the vendor's "Manage menu" list
 export type VendorMenuItem = {
@@ -15,5 +15,5 @@ export type VendorMenuItem = {
   price: number;
   location: string;
   status: ItemStatus;
-  available: boolean; // vendor can switch an item off (e.g. sold out)
+  available: boolean; // true when approved, false when inactive (switched off)
 };

@@ -26,7 +26,7 @@ export type AdminUser = {
   name: string;
   email: string;
   role: string; // "customer", "vendor" or "admin"
-  blocked: boolean;
+  isBlocked: boolean;
   emailVerified: boolean;
   image?: string;
   createdAt: string;
@@ -45,7 +45,7 @@ export type AdminMenuItem = {
   shop: string;
   vendorName: string;
   vendorEmail: string | null; // older items have no vendor email
-  status: "pending" | "publish" | "rejected";
+  status: "pending" | "approved" | "rejected" | "inactive";
   available: boolean;
 };
 

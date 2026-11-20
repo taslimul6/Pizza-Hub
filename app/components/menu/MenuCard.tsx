@@ -22,7 +22,7 @@ export default function MenuCard({ item }: { item: FeaturedPizza }) {
 
       <CardContent className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display text-lg font-bold">{item.name}</h3>
+          <h3 className="font-display text-lg font-bold">{item.itemName}</h3>
           <Badge variant="accent" className="shrink-0 text-sm">
             {item.rating} ★
           </Badge>

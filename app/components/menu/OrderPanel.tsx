@@ -96,8 +96,8 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
         {isPending ? (
           <Button disabled>Checking login…</Button>
         ) : session ? (
-          <Button size="lg" onClick={() => setPayOpen(true)} disabled={!item.available}>
-            {item.available ? "Order now" : "Unavailable"}
+          <Button size="lg" onClick={() => setPayOpen(true)}>
+            Order now
           </Button>
         ) : (
           <Link href="/signin" className={buttonVariants({ size: "lg" })}>
@@ -112,7 +112,7 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
           onOpenChange={setPayOpen}
           customerName={session.user.name}
           customerEmail={session.user.email}
-          summary={`${quantity} × ${size} ${item.name} (${crust})`}
+          summary={`${quantity} × ${size} ${item.itemName} (${crust})`}
           total={total}
           itemId={item._id}
           size={size}

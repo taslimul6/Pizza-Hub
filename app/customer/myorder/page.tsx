@@ -29,9 +29,9 @@ async function OrderList() {
   // The proxy already blocks guests; this is only a safety net
   if (!session) return null;
 
-  const email = session.user.email.toLowerCase();
-  const all = await getList<Order>("/orders");
-  const orders = all.filter((order) => order.email?.toLowerCase() === email);
+  const orders = await getList<Order>(
+    `/orders/customer?customerId=${session.user.id}`,
+  );
 
   if (orders.length === 0) {
     return (

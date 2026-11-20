@@ -42,13 +42,11 @@ async function ItemDetails({ params }: { params: Promise<{ id: string }> }) {
   const item = items.find((i) => i._id === id);
   if (!item) notFound();
 
-  const images = [item.image, ...(item.images ?? [])]
-    .filter(Boolean)
-    .map(imageUrl);
+  const images = (item.images ?? []).filter(Boolean).map(imageUrl);
 
   return (
     <div className="grid gap-10 lg:grid-cols-2">
-      <ItemGallery name={item.name} emoji={item.emoji} images={images} />
+      <ItemGallery name={item.itemName} emoji={item.emoji} images={images} />
 
       <div>
         <div className="flex flex-wrap items-center gap-2">
@@ -58,7 +56,7 @@ async function ItemDetails({ params }: { params: Promise<{ id: string }> }) {
         </div>
 
         <h1 className="mt-3 font-display text-4xl font-black tracking-tight">
-          {item.name}
+          {item.itemName}
         </h1>
         <p className="mt-2 text-2xl font-black text-primary">
           from ${item.price.toFixed(2)}

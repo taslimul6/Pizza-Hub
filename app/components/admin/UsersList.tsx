@@ -63,7 +63,7 @@ export default function UsersList({
       const res = await fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ blocked }),
+        body: JSON.stringify({ isBlocked: blocked }),
       });
       const data = await res.json().catch(() => ({}));
 
@@ -143,8 +143,8 @@ export default function UsersList({
                   <Badge variant={roleVariant[user.role] ?? "muted"} className="capitalize">
                     {user.role}
                   </Badge>
-                  <Badge variant={user.blocked ? "destructive" : "muted"}>
-                    {user.blocked ? "Blocked" : "Active"}
+                  <Badge variant={user.isBlocked ? "destructive" : "muted"}>
+                    {user.isBlocked ? "Blocked" : "Active"}
                   </Badge>
                 </div>
                 <p className="mt-1 truncate text-sm text-muted-foreground">
@@ -157,7 +157,7 @@ export default function UsersList({
                   View details
                 </Button>
                 {canBlock(user) &&
-                  (user.blocked ? (
+                  (user.isBlocked ? (
                     <Button
                       variant="secondary"
                       size="sm"
@@ -198,7 +198,7 @@ export default function UsersList({
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Account</dt>
-                  <dd className="font-bold">{viewing.blocked ? "Blocked" : "Active"}</dd>
+                  <dd className="font-bold">{viewing.isBlocked ? "Blocked" : "Active"}</dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Email verified</dt>

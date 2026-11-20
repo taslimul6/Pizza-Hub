@@ -32,13 +32,13 @@ async function forward(path: string, init: RequestInit) {
   }
 }
 
-// PATCH /api/admin/menu/:id  { status: "publish" | "pending" | "rejected" }
+// PATCH /api/admin/menu/:id  { status: "pending" | "approved" | "rejected" | "inactive" }
 export async function PATCH(request: Request, context: Context) {
   const checked = await check(context);
   if ("error" in checked) return checked.error;
 
   const body = await request.json().catch(() => null);
-  if (!["publish", "pending", "rejected"].includes(body?.status)) {
+  if (!["pending", "approved", "rejected", "inactive"].includes(body?.status)) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
 

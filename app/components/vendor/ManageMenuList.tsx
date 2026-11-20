@@ -21,7 +21,8 @@ const statusInfo: Record<
   ItemStatus,
   { label: string; variant: "secondary" | "accent" | "destructive"; note: string }
 > = {
-  publish: { label: "Published", variant: "secondary", note: "Visible to customers" },
+  approved: { label: "Approved", variant: "secondary", note: "Visible to customers" },
+  inactive: { label: "Inactive", variant: "accent", note: "Switched off by you, hidden from customers" },
   pending: { label: "Pending", variant: "accent", note: "Waiting for admin approval, hidden from customers" },
   rejected: { label: "Rejected", variant: "destructive", note: "Rejected by admin, never shown to customers" },
 };
@@ -71,7 +72,8 @@ export default function ManageMenuList({
 
   const counts = {
     all: items.length,
-    publish: items.filter((i) => i.status === "publish").length,
+    approved: items.filter((i) => i.status === "approved").length,
+    inactive: items.filter((i) => i.status === "inactive").length,
     pending: items.filter((i) => i.status === "pending").length,
     rejected: items.filter((i) => i.status === "rejected").length,
   };
@@ -103,9 +105,9 @@ export default function ManageMenuList({
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ available: !item.available }),
+        body: JSON.stringify({ active: !item.available }),
       },
-      item.available ? "Marked unavailable" : "Marked available",
+      item.available ? "Item switched off (inactive)" : "Item switched on (approved)",
     );
   }
 
@@ -121,7 +123,8 @@ export default function ManageMenuList({
       <ul className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           { label: "All items", value: counts.all },
-          { label: "Published", value: counts.publish },
+          { label: "Approved", value: counts.approved },
+          { label: "Inactive", value: counts.inactive },
           { label: "Pending", value: counts.pending },
           { label: "Rejected", value: counts.rejected },
         ].map((stat) => (
@@ -149,8 +152,8 @@ export default function ManageMenuList({
         <ul className="grid gap-4">
           {items.map((item) => {
             const status = statusInfo[item.status];
-            // Only published items can be switched on for customers
-            const canToggle = item.status === "publish";
+            // Only approved items can be switched off, and inactive ones back on
+            const canToggle = item.status === "approved" || item.status === "inactive";
             return (
               <li
                 key={item.id}

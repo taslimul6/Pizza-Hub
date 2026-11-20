@@ -29,7 +29,11 @@ export default function CancelOrderButton({
   async function handleCancel() {
     setCancelling(true);
     try {
-      const res = await fetch(`/api/orders/${orderId}`, { method: "DELETE" });
+      const res = await fetch(`/api/orders/${orderId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "cancel" }),
+      });
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {

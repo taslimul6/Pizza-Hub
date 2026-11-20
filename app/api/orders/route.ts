@@ -60,7 +60,7 @@ export async function POST(request: Request) {
 
   // Find the item and its price (never trust a price from the browser)
   const items = await getList<FeaturedPizza>("/");
-  const item = items.find((i) => i._id === itemId && i.available);
+  const item = items.find((i) => i._id === itemId);
   const chosenSize = item?.sizes.find((s) => s.label === size);
 
   if (!item || !chosenSize || !item.crust.includes(crust)) {
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
         email: session.user.email,
         orderDetails: {
           itemId: item._id,
-          itemName: item.name,
+          itemName: item.itemName,
           shop: item.shop,
           size,
           crust,

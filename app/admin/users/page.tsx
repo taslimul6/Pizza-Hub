@@ -17,7 +17,7 @@ type ApiUser = {
   name: string;
   email: string;
   role?: string;
-  blocked?: boolean;
+  isBlocked?: boolean;
   emailVerified?: boolean;
   image?: string;
   createdAt: string;
@@ -36,7 +36,7 @@ async function Users() {
     name: user.name,
     email: user.email,
     role: user.role ?? "customer",
-    blocked: user.blocked === true,
+    isBlocked: user.isBlocked === true,
     emailVerified: user.emailVerified === true,
     image: user.image,
     createdAt: user.createdAt,
