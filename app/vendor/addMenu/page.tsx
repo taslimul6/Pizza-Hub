@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
+import DashboardPageHeader from "@/app/components/dashboard/DashboardPageHeader";
 import AddMenuItemForm from "@/app/components/vendor/AddMenuItemForm";
 import { getList } from "@/lib/api";
 
@@ -17,13 +17,12 @@ async function Form() {
 // Vendor only (the proxy redirects everyone else)
 export default function AddMenuPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[720px]">
-        <SectionHeading
-          eyebrow="Vendor"
-          title="Add a menu item"
-          subtitle="Fill in the details and upload a photo. An admin will review it before it goes live."
-        />
+    <div className="max-w-[720px]">
+      <DashboardPageHeader
+        eyebrow="Vendor"
+        title="Add a menu item"
+        description="Fill in the details and upload a photo. An admin will review it before it goes live."
+      />
         <Suspense
           fallback={
             <div
@@ -35,7 +34,6 @@ export default function AddMenuPage() {
         >
           <Form />
         </Suspense>
-      </div>
-    </main>
+    </div>
   );
 }

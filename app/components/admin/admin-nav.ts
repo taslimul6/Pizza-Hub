@@ -1,20 +1,8 @@
-import {
-  ClipboardCheck,
-  LayoutDashboard,
-  ReceiptText,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
+import { ClipboardCheck, LayoutDashboard, ReceiptText, Users } from "lucide-react";
+import type { DashboardNavSection } from "@/app/components/dashboard/nav";
 
-// The pages of the admin panel (used by the sidebar and the mobile tabs)
-export type AdminNavItem = {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-  hint: string; // short line under the label in the sidebar
-};
-
-export const adminNav: { title: string; items: AdminNavItem[] }[] = [
+// The pages of the admin panel (sidebar + mobile tabs)
+export const adminNav: DashboardNavSection[] = [
   {
     title: "Overview",
     items: [
@@ -30,8 +18,3 @@ export const adminNav: { title: string; items: AdminNavItem[] }[] = [
     ],
   },
 ];
-
-// "/admin" is only active on the dashboard itself; the others also match sub-pages
-export function isActive(pathname: string, href: string) {
-  return href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
-}

@@ -154,7 +154,7 @@ export default function VendorOrdersList({ orders }: { orders: Order[] }) {
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="font-display text-xl font-bold">
+                    <h2 className="text-xl font-bold">
                       {d.quantity} × {d.itemName}
                     </h2>
                     <p className="mt-1 text-sm text-muted-foreground">
@@ -163,7 +163,7 @@ export default function VendorOrdersList({ orders }: { orders: Order[] }) {
                   </div>
                   <div className="text-right">
                     <Badge variant={status.variant}>{status.label}</Badge>
-                    <p className="mt-2 text-2xl font-black text-primary">
+                    <p className="mt-2 text-2xl font-extrabold tracking-tight text-primary tabular-nums">
                       ${d.total.toFixed(2)}
                     </p>
                   </div>

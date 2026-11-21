@@ -85,7 +85,7 @@ export default function SubscriptionPlans({ data }: { data: VendorSubscription }
         </div>
 
         <div className="text-right">
-          <p className="font-display text-3xl font-black text-primary">
+          <p className="text-3xl text-primary font-extrabold tracking-tight tabular-nums">
             {data.activeItems}
             {data.activeLimit !== null && (
               <span className="text-xl text-muted-foreground"> / {data.activeLimit}</span>
@@ -124,7 +124,7 @@ export default function SubscriptionPlans({ data }: { data: VendorSubscription }
               </div>
 
               <p className="mt-4">
-                <span className="font-display text-4xl font-black">
+                <span className="text-4xl font-extrabold tracking-tight tabular-nums">
                   {premiumCard ? `$${data.price.toFixed(2)}` : plan.priceLabel}
                 </span>{" "}
                 <span className="text-muted-foreground">

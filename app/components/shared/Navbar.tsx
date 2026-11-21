@@ -36,13 +36,7 @@ const roleLinks: Record<Role, NavLink[]> = {
     { href: "/customer/myorder", label: "My Orders" },
     { href: "/cart", label: "Cart" },
   ],
-  vendor: [
-    { href: "/vendor/restaurant", label: "My Restaurant" },
-    { href: "/vendor/manage", label: "Manage Menu" },
-    { href: "/vendor/addMenu", label: "Add Menu Item" },
-    { href: "/vendor/orders", label: "Incoming Orders" },
-    { href: "/vendor/subscription", label: "Subscription" },
-  ],
+  vendor: [], // vendor pages are in the vendor sidebar (app/components/vendor/vendor-nav.ts)
   admin: [], // admin pages are in the admin sidebar (app/components/admin/admin-nav.ts)
 };
 
@@ -69,9 +63,8 @@ export default function Navbar() {
   }
 
   // Guests get common links; logged-in users also get links for their role.
-  // Admins only get Home and Browse Menu: their pages live in the admin sidebar.
-  const links =
-    user && user.role !== "admin" ? [...commonLinks, ...roleLinks[user.role]] : commonLinks;
+  // Admins and vendors only get Home and Browse Menu: their pages live in their panel's sidebar.
+  const links = user ? [...commonLinks, ...roleLinks[user.role]] : commonLinks;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-light/95 backdrop-blur">
@@ -212,7 +205,7 @@ export default function Navbar() {
                       onClick={() => setMenuOpen(false)}
                       className={buttonVariants()}
                     >
-                      {user.role === "admin" ? "Admin panel" : "Dashboard"}
+                      {user.role === "admin" ? "Admin panel" : user.role === "vendor" ? "Vendor panel" : "Dashboard"}
                     </Link>
                     <Button
                       variant="outline"

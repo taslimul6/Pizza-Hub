@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
+import { PlusCircle } from "lucide-react";
+import DashboardPageHeader from "@/app/components/dashboard/DashboardPageHeader";
 import ManageMenuList from "@/app/components/vendor/ManageMenuList";
 import { buttonVariants } from "@/components/ui/button";
 import { getList } from "@/lib/api";
@@ -58,21 +59,18 @@ async function MyItems() {
 // Vendor only (the proxy redirects everyone else)
 export default function ManageMenuPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[900px]">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionHeading
-            eyebrow="Vendor"
-            title="Manage menu"
-            subtitle="Your items, their approval status and availability."
-          />
-          <Link
-            href="/vendor/addMenu"
-            className={`${buttonVariants()} mb-10`}
-          >
-            + Add menu item
+    <div className="max-w-[900px]">
+      <DashboardPageHeader
+        eyebrow="Vendor"
+        title="Manage menu"
+        description="Your items, their approval status and availability."
+        actions={
+          <Link href="/vendor/addMenu" className={buttonVariants()}>
+            <PlusCircle className="size-4" aria-hidden="true" />
+            Add menu item
           </Link>
-        </div>
+        }
+      />
 
         <Suspense
           fallback={
@@ -89,7 +87,6 @@ export default function ManageMenuPage() {
         >
           <MyItems />
         </Suspense>
-      </div>
-    </main>
+    </div>
   );
 }

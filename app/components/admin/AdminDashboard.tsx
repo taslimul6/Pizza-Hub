@@ -1,6 +1,4 @@
-import Link from "next/link";
 import {
-  ArrowRight,
   ClipboardCheck,
   CreditCard,
   ReceiptText,
@@ -8,21 +6,18 @@ import {
   UtensilsCrossed,
   Users,
   Wallet,
-  type LucideIcon,
 } from "lucide-react";
+import AttentionBanner from "@/app/components/dashboard/AttentionBanner";
+import {
+  formatMoney as money,
+  formatNumber as number,
+  formatShortDate as formatDate,
+  percent,
+} from "@/app/components/dashboard/format";
+import KpiCard, { type Kpi } from "@/app/components/dashboard/KpiCard";
+import Panel from "@/app/components/dashboard/Panel";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
 import type { AdminStats, AdminTransaction } from "@/types";
-
-const number = (value: number) => value.toLocaleString("en-US");
-const money = (value: number) =>
-  value.toLocaleString("en-US", { style: "currency", currency: "USD" });
-const percent = (part: number, whole: number) =>
-  whole === 0 ? 0 : Math.round((part / whole) * 100);
-
-function formatDate(value: string) {
-  return new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
 
 const paymentBadge: Record<
   AdminTransaction["paymentStatus"],
@@ -32,70 +27,6 @@ const paymentBadge: Record<
   pending: { label: "Pending", variant: "accent" },
   refunded: { label: "Refunded", variant: "muted" },
 };
-
-// ---- Small building blocks ----
-
-type Kpi = {
-  label: string;
-  value: string;
-  sub: string;
-  icon: LucideIcon;
-  tint: string; // icon chip colors
-  href: string;
-};
-
-function KpiCard({ kpi }: { kpi: Kpi }) {
-  const Icon = kpi.icon;
-  return (
-    <Link
-      href={kpi.href}
-      className="group flex h-full flex-col rounded-3xl border border-border bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-warm-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-    >
-      <div className="flex items-start justify-between gap-3">
-        <p className="text-sm font-bold text-muted-foreground">{kpi.label}</p>
-        <span className={`grid size-11 shrink-0 place-items-center rounded-2xl ${kpi.tint}`}>
-          <Icon className="size-5" aria-hidden="true" />
-        </span>
-      </div>
-      <p className="mt-3 text-3xl font-sans font-extrabold tracking-tight tabular-nums">{kpi.value}</p>
-      <p className="mt-auto flex items-center justify-between gap-2 pt-4 text-sm text-muted-foreground">
-        <span className="truncate">{kpi.sub}</span>
-        <ArrowRight
-          className="size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
-          aria-hidden="true"
-        />
-      </p>
-    </Link>
-  );
-}
-
-function Panel({
-  title,
-  action,
-  children,
-}: {
-  title: string;
-  action?: { label: string; href: string };
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="rounded-3xl border border-border bg-white p-6">
-      <div className="mb-5 flex items-center justify-between gap-3">
-        <h2 className="font-display text-xl font-bold">{title}</h2>
-        {action && (
-          <Link
-            href={action.href}
-            className="flex items-center gap-1 text-sm font-bold text-primary-600 hover:underline"
-          >
-            {action.label}
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
-        )}
-      </div>
-      {children}
-    </section>
-  );
-}
 
 // ---- The dashboard ----
 
@@ -162,39 +93,12 @@ export default function AdminDashboard({
     <div className="space-y-8">
       {/* Needs attention */}
       {stats.pendingItems > 0 && (
-        <div className="relative overflow-hidden rounded-3xl bg-dark p-6 text-light sm:p-8">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-16 -right-10 size-56 rounded-full bg-primary/40 blur-3xl"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -bottom-20 left-1/3 size-56 rounded-full bg-accent/25 blur-3xl"
-          />
-          <div className="relative flex flex-wrap items-center justify-between gap-5">
-            <div className="flex items-center gap-4">
-              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent text-accent-foreground">
-                <ClipboardCheck className="size-6" aria-hidden="true" />
-              </span>
-              <div>
-                <p className="font-display text-2xl font-black">
-                  {number(stats.pendingItems)} menu{" "}
-                  {stats.pendingItems === 1 ? "item is" : "items are"} waiting for review
-                </p>
-                <p className="mt-1 text-light/70">
-                  Customers only see items after you approve them.
-                </p>
-              </div>
-            </div>
-            <Link
-              href="/admin/menu-review"
-              className={buttonVariants({ variant: "accent", size: "lg" })}
-            >
-              Review now
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
+        <AttentionBanner
+          icon={ClipboardCheck}
+          title={`${number(stats.pendingItems)} menu ${stats.pendingItems === 1 ? "item is" : "items are"} waiting for review`}
+          text="Customers only see items after you approve them."
+          action={{ label: "Review now", href: "/admin/menu-review" }}
+        />
       )}
 
       {/* KPIs */}

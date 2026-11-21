@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
+import DashboardPageHeader from "@/app/components/dashboard/DashboardPageHeader";
 import StripeReturn from "@/app/components/vendor/StripeReturn";
 import SubscriptionPlans from "@/app/components/vendor/SubscriptionPlans";
 import { getObject } from "@/lib/api";
@@ -28,13 +28,12 @@ async function Plans() {
 // Vendor only (the proxy redirects everyone else)
 export default function SubscriptionPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[900px]">
-        <SectionHeading
-          eyebrow="Vendor"
-          title="Subscription"
-          subtitle="Pick the plan that fits your kitchen."
-        />
+    <div className="max-w-[900px]">
+      <DashboardPageHeader
+        eyebrow="Vendor"
+        title="Subscription"
+        description="Pick the plan that fits your kitchen."
+      />
         {/* Confirms the payment when Stripe sends the vendor back */}
         <Suspense>
           <StripeReturn />
@@ -53,7 +52,6 @@ export default function SubscriptionPage() {
         >
           <Plans />
         </Suspense>
-      </div>
-    </main>
+    </div>
   );
 }

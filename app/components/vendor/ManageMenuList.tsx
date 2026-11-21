@@ -132,7 +132,7 @@ export default function ManageMenuList({
             key={stat.label}
             className="rounded-3xl border border-border bg-white p-5 text-center"
           >
-            <p className="font-display text-3xl font-black text-primary">
+            <p className="text-3xl text-primary font-extrabold tracking-tight tabular-nums">
               {stat.value}
             </p>
             <p className="text-sm text-muted-foreground">{stat.label}</p>
@@ -164,7 +164,7 @@ export default function ManageMenuList({
 
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="font-display text-lg font-bold">
+                      <h2 className="text-lg font-bold">
                         {item.name}
                       </h2>
                       <Badge variant={status.variant}>{status.label}</Badge>
@@ -177,7 +177,7 @@ export default function ManageMenuList({
                     </p>
                   </div>
 
-                  <p className="text-xl font-black text-primary">
+                  <p className="text-xl font-extrabold tracking-tight text-primary tabular-nums">
                     ${item.price.toFixed(2)}
                   </p>
                 </div>

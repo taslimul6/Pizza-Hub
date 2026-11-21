@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Suspense } from "react";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
+import DashboardPageHeader from "@/app/components/dashboard/DashboardPageHeader";
 import VendorOrdersList from "@/app/components/vendor/VendorOrdersList";
 import { getList } from "@/lib/api";
 import { auth } from "@/lib/auth";
@@ -25,13 +25,12 @@ async function MyOrders() {
 // Vendor only (the proxy redirects everyone else)
 export default function VendorOrdersPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[900px]">
-        <SectionHeading
-          eyebrow="Vendor"
-          title="Incoming orders"
-          subtitle="Accept or reject new orders, then mark them completed once delivered."
-        />
+    <div className="max-w-[900px]">
+      <DashboardPageHeader
+        eyebrow="Vendor"
+        title="Incoming orders"
+        description="Accept or reject new orders, then mark them completed once delivered."
+      />
         <Suspense
           fallback={
             <div role="status" aria-label="Loading orders" className="grid gap-4">
@@ -43,7 +42,6 @@ export default function VendorOrdersPage() {
         >
           <MyOrders />
         </Suspense>
-      </div>
-    </main>
+    </div>
   );
 }

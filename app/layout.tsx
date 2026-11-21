@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import Footer from "./components/shared/Footer";
-import HideOnAdmin from "./components/shared/HideOnAdmin";
+import HideOnDashboard from "./components/shared/HideOnDashboard";
 import Navbar from "./components/shared/Navbar";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -32,10 +32,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Navbar reads the login session itself (guest or logged in) */}
         <Navbar />
         {children}
-        {/* The admin panel is an app screen: no marketing footer there */}
-        <HideOnAdmin>
+        {/* The admin and vendor panels are app screens: no marketing footer there */}
+        <HideOnDashboard>
           <Footer />
-        </HideOnAdmin>
+        </HideOnDashboard>
         {/* Shows toast messages (e.g. "Signed in successfully") */}
         <Toaster theme="light" position="top-center" richColors />
       </body>
