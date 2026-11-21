@@ -105,7 +105,12 @@ export async function POST(request: Request) {
   }
 
   if (!res.ok) {
-    return NextResponse.json({ error: "Could not save the order" }, { status: 502 });
+    // Pass the API's reason along (e.g. a duplicate active order)
+    const data = await res.json().catch(() => ({}));
+    return NextResponse.json(
+      { error: data.error ?? "Could not save the order", code: data.code },
+      { status: res.status >= 500 ? 502 : res.status },
+    );
   }
 
   const saved = await res.json();
