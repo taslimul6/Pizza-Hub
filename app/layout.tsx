@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Navbar reads the login session itself (guest or logged in) */}
         <Navbar />
         {children}
-        {/* The admin and vendor panels are app screens: no marketing footer there */}
+        {/* The dashboards are app screens: no marketing footer there */}
         <HideOnDashboard>
           <Footer />
         </HideOnDashboard>

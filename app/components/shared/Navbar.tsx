@@ -32,10 +32,7 @@ const commonLinks: NavLink[] = [
 
 // Extra links for each role
 const roleLinks: Record<Role, NavLink[]> = {
-  customer: [
-    { href: "/customer/myorder", label: "My Orders" },
-    { href: "/cart", label: "Cart" },
-  ],
+  customer: [], // customer pages are in the customer sidebar (app/components/customer/customer-nav.ts)
   vendor: [], // vendor pages are in the vendor sidebar (app/components/vendor/vendor-nav.ts)
   admin: [], // admin pages are in the admin sidebar (app/components/admin/admin-nav.ts)
 };
@@ -63,7 +60,7 @@ export default function Navbar() {
   }
 
   // Guests get common links; logged-in users also get links for their role.
-  // Admins and vendors only get Home and Browse Menu: their pages live in their panel's sidebar.
+  // Every role only gets Home and Browse Menu: their pages live in their panel's sidebar.
   const links = user ? [...commonLinks, ...roleLinks[user.role]] : commonLinks;
 
   return (
@@ -205,7 +202,7 @@ export default function Navbar() {
                       onClick={() => setMenuOpen(false)}
                       className={buttonVariants()}
                     >
-                      {user.role === "admin" ? "Admin panel" : user.role === "vendor" ? "Vendor panel" : "Dashboard"}
+                      {user.role === "admin" ? "Admin panel" : user.role === "vendor" ? "Vendor panel" : "My dashboard"}
                     </Link>
                     <Button
                       variant="outline"

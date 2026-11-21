@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
+import DashboardPageHeader from "@/app/components/dashboard/DashboardPageHeader";
 import CancelOrderButton from "@/app/components/orders/CancelOrderButton";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -57,7 +57,7 @@ async function OrderList() {
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h2 className="font-display text-xl font-bold">
+                <h2 className="text-xl font-bold">
                   {d.quantity} × {d.itemName}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -75,7 +75,7 @@ async function OrderList() {
                 <p>Card ending {d.cardLast4}</p>
                 <p className="mt-1 text-xs">Order #{order._id.slice(-6)}</p>
               </div>
-              <p className="text-2xl font-black text-primary">
+              <p className="text-2xl font-extrabold tracking-tight text-primary tabular-nums">
                 ${d.total.toFixed(2)}
               </p>
             </div>
@@ -99,13 +99,12 @@ async function OrderList() {
 // Customer only (the proxy redirects everyone else)
 export default function MyOrdersPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[800px]">
-        <SectionHeading
-          eyebrow="Customer"
-          title="My orders"
-          subtitle="Everything you have ordered from PizzaHub."
-        />
+    <div className="max-w-[800px]">
+      <DashboardPageHeader
+        eyebrow="Customer"
+        title="My orders"
+        description="Everything you have ordered from PizzaHub."
+      />
         <Suspense
           fallback={
             <div role="status" aria-label="Loading orders" className="grid gap-4">
@@ -120,7 +119,6 @@ export default function MyOrdersPage() {
         >
           <OrderList />
         </Suspense>
-      </div>
-    </main>
+    </div>
   );
 }
