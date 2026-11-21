@@ -31,7 +31,12 @@ export default function GoogleButton({ label, role }: GoogleButtonProps) {
     // On success the browser leaves for Google, so we only get here on error
     if (googleError) {
       setLoading(false);
-      setError(googleError.message || "Could not continue with Google.");
+      // When the server sends no message (for example a crash because an
+      // environment variable is missing) show the status code, so it is easy to look up
+      setError(
+        googleError.message ||
+          `Could not continue with Google (error ${googleError.status || "network"}).`,
+      );
     }
   }
 
