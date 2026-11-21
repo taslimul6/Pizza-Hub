@@ -118,3 +118,13 @@ export type MenuResult = {
   categories: string[];
   locations: string[];
 };
+
+// One step of the order history (shown as the order timeline)
+export type OrderStatusStep = { status: string; at: string | null };
+
+// GET /orders/:id: the order plus its picture and timeline
+export type OrderWithTimeline = Order & {
+  statusHistory: OrderStatusStep[];
+  itemImage: string | null;
+  itemEmoji: string;
+};
