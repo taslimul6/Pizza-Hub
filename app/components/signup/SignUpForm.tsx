@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { authClient } from "@/lib/auth-client";
+import { checkPassword } from "@/lib/password-rules";
 import { getRoleHome, isRole } from "@/lib/roles";
 import type { AccountType, Role } from "@/types";
 import { Separator } from "@/components/ui/separator";
@@ -19,7 +20,6 @@ import GoogleButton from "../shared/GoogleButton";
 const accountTypes: AccountType[] = [
   { value: "customer", label: "Customer" },
   { value: "vendor", label: "Restaurant" },
-  { value: "admin", label: "Admin" },
 ];
 
 // Sign up form: checks the fields, then creates the account with Better Auth.
@@ -44,8 +44,9 @@ export default function SignUpForm() {
       setError("Please enter your full name.");
       return;
     }
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    const passwordError = checkPassword(password);
+    if (passwordError) {
+      setError(passwordError);
       return;
     }
     if (password !== confirm) {
@@ -87,7 +88,7 @@ export default function SignUpForm() {
         <RadioGroup
           value={role}
           onValueChange={(value) => isRole(value) && setRole(value)}
-          className="grid gap-3 min-[440px]:grid-cols-3"
+          className="grid gap-3 min-[440px]:grid-cols-2"
         >
           {accountTypes.map((type) => (
             <Label
