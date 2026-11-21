@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 import UsersList from "@/app/components/admin/UsersList";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
+import AdminPageHeader from "@/app/components/admin/AdminPageHeader";
 import { getList } from "@/lib/api";
 import { auth } from "@/lib/auth";
 import type { AdminUser } from "@/types";
@@ -48,13 +48,11 @@ async function Users() {
 // Admin only (the proxy redirects everyone else)
 export default function ManageUsersPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[1000px]">
-        <SectionHeading
-          eyebrow="Admin"
-          title="Manage users"
-          subtitle="Search, view and block or unblock the people on PizzaHub."
-        />
+    <>
+      <AdminPageHeader
+        title="Manage users"
+        description="Search, view and block or unblock the people on PizzaHub."
+      />
         <Suspense
           fallback={
             <div role="status" aria-label="Loading users" className="grid gap-3">
@@ -66,7 +64,6 @@ export default function ManageUsersPage() {
         >
           <Users />
         </Suspense>
-      </div>
-    </main>
+    </>
   );
 }

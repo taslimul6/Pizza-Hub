@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 import AdminMenuList from "@/app/components/admin/AdminMenuList";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
+import AdminPageHeader from "@/app/components/admin/AdminPageHeader";
 import { getList } from "@/lib/api";
 import { auth } from "@/lib/auth";
 import type { AdminMenuItem } from "@/types";
@@ -58,13 +58,11 @@ async function Items() {
 // Admin only (the proxy redirects everyone else)
 export default function ReviewMenuPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[1000px]">
-        <SectionHeading
-          eyebrow="Admin"
-          title="Review menu items"
-          subtitle="Approve or reject new items, change the status of live ones and remove anything inappropriate."
-        />
+    <>
+      <AdminPageHeader
+        title="Review menu items"
+        description="Approve or reject new items, change the status of live ones and remove anything inappropriate."
+      />
         <Suspense
           fallback={
             <div role="status" aria-label="Loading items" className="grid gap-4">
@@ -76,7 +74,6 @@ export default function ReviewMenuPage() {
         >
           <Items />
         </Suspense>
-      </div>
-    </main>
+    </>
   );
 }

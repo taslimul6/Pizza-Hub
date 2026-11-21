@@ -2,29 +2,12 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 import TransactionsList from "@/app/components/admin/TransactionsList";
-import SectionHeading from "@/app/components/homepage/SectionHeading";
-import { getList } from "@/lib/api";
+import AdminPageHeader from "@/app/components/admin/AdminPageHeader";
+import { getAdminTransactions } from "@/lib/admin-data";
 import { auth } from "@/lib/auth";
-import { getShopName } from "@/lib/shop-info";
-import type { AdminTransaction } from "@/types";
 
 export const metadata: Metadata = {
   title: "Transactions | PizzaHub",
-};
-
-// A transaction as the API sends it
-type ApiTransaction = {
-  _id: string;
-  type: AdminTransaction["type"];
-  plan: string | null;
-  vendor: { name: string | null; email: string | null; shop: string | null };
-  customer: { name: string; email: string } | null; // null for subscriptions
-  itemName: string;
-  amount: number;
-  cardLast4: string;
-  orderStatus: string | null;
-  paymentStatus: AdminTransaction["paymentStatus"];
-  createdAt: string;
 };
 
 // Loads every transaction (read only: there is no way to change one)
@@ -33,24 +16,7 @@ async function Transactions() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (session?.user.role !== "admin") return null;
 
-  const raw = await getList<ApiTransaction>("/admin/transactions", { auth: true });
-
-  const transactions: AdminTransaction[] = raw.map((t) => ({
-    id: t._id,
-    type: t.type,
-    plan: t.plan,
-    vendorName: t.vendor.name ?? (t.vendor.shop ? getShopName(t.vendor.shop) : "Unknown vendor"),
-    vendorEmail: t.vendor.email,
-    vendorShop: t.vendor.shop,
-    customerName: t.customer?.name ?? null,
-    customerEmail: t.customer?.email ?? null,
-    itemName: t.itemName,
-    amount: t.amount,
-    cardLast4: t.cardLast4,
-    orderStatus: t.orderStatus,
-    paymentStatus: t.paymentStatus,
-    createdAt: t.createdAt,
-  }));
+  const transactions = await getAdminTransactions();
 
   return <TransactionsList transactions={transactions} />;
 }
@@ -58,13 +24,11 @@ async function Transactions() {
 // Admin only (the proxy redirects everyone else)
 export default function TransactionsPage() {
   return (
-    <main className="flex-1 px-4 py-12 sm:px-6 lg:py-16">
-      <div className="mx-auto max-w-[1000px]">
-        <SectionHeading
-          eyebrow="Admin"
-          title="Transactions"
-          subtitle="Every payment made on PizzaHub. Payment records are read only."
-        />
+    <>
+      <AdminPageHeader
+        title="Transactions"
+        description="Every payment made on PizzaHub. Payment records are read only."
+      />
         <Suspense
           fallback={
             <div role="status" aria-label="Loading transactions" className="grid gap-3">
@@ -76,7 +40,6 @@ export default function TransactionsPage() {
         >
           <Transactions />
         </Suspense>
-      </div>
-    </main>
+    </>
   );
 }

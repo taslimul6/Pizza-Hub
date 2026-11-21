@@ -43,11 +43,7 @@ const roleLinks: Record<Role, NavLink[]> = {
     { href: "/vendor/orders", label: "Incoming Orders" },
     { href: "/vendor/subscription", label: "Subscription" },
   ],
-  admin: [
-    { href: "/admin/users", label: "Manage Users" },
-    { href: "/admin/menu-review", label: "Review Menu Items" },
-    { href: "/admin/transactions", label: "Transactions" },
-  ],
+  admin: [], // admin pages are in the admin sidebar (app/components/admin/admin-nav.ts)
 };
 
 export default function Navbar() {
@@ -72,8 +68,10 @@ export default function Navbar() {
     router.refresh();
   }
 
-  // Guests get common links; logged-in users also get links for their role
-  const links = user ? [...commonLinks, ...roleLinks[user.role]] : commonLinks;
+  // Guests get common links; logged-in users also get links for their role.
+  // Admins only get Home and Browse Menu: their pages live in the admin sidebar.
+  const links =
+    user && user.role !== "admin" ? [...commonLinks, ...roleLinks[user.role]] : commonLinks;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-light/95 backdrop-blur">
@@ -208,6 +206,14 @@ export default function Navbar() {
                     <p className="px-4 py-2 text-center text-sm capitalize text-muted-foreground">
                       {user.name} · {user.role}
                     </p>
+                    {/* Same as "Dashboard" in the desktop profile menu (admins reach their panel here) */}
+                    <Link
+                      href={getRoleHome(user.role)}
+                      onClick={() => setMenuOpen(false)}
+                      className={buttonVariants()}
+                    >
+                      {user.role === "admin" ? "Admin panel" : "Dashboard"}
+                    </Link>
                     <Button
                       variant="outline"
                       onClick={() => {

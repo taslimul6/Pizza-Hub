@@ -139,7 +139,7 @@ export default function UsersList({
             >
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="font-display text-lg font-bold">{user.name}</h2>
+                  <h2 className="text-lg font-bold">{user.name}</h2>
                   <Badge variant={roleVariant[user.role] ?? "muted"} className="capitalize">
                     {user.role}
                   </Badge>
@@ -210,7 +210,7 @@ export default function UsersList({
                 </div>
                 <div className="col-span-2">
                   <dt className="text-muted-foreground">User ID</dt>
-                  <dd className="break-all font-mono text-xs">{viewing.id}</dd>
+                  <dd className="break-all text-xs text-muted-foreground tabular-nums">{viewing.id}</dd>
                 </div>
               </dl>
             </>

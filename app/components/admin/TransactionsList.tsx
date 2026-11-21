@@ -77,7 +77,7 @@ export default function TransactionsList({
             key={stat.label}
             className="rounded-3xl border border-border bg-white p-5 text-center"
           >
-            <p className="font-display text-2xl font-black text-primary">{stat.value}</p>
+            <p className="text-2xl text-primary font-sans font-extrabold tracking-tight tabular-nums">{stat.value}</p>
             <p className="text-sm text-muted-foreground">{stat.label}</p>
           </li>
         ))}
@@ -134,7 +134,7 @@ export default function TransactionsList({
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="font-display text-lg font-bold">{t.vendorName}</h2>
+                      <h2 className="text-lg font-bold">{t.vendorName}</h2>
                       <Badge variant={t.type === "subscription" ? "dark" : "muted"}>
                         {t.type === "subscription" ? "Subscription" : "Order"}
                       </Badge>
@@ -144,7 +144,7 @@ export default function TransactionsList({
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-display text-2xl font-black text-primary">
+                    <p className="text-2xl text-primary font-sans font-extrabold tracking-tight tabular-nums">
                       {money(t.amount)}
                     </p>
                     <Badge variant={status.variant}>{status.label}</Badge>

@@ -1,15 +1,5 @@
 // Types for the admin dashboard.
 
-// One number card in the admin overview
-export type AdminStat = {
-  label: string;
-  value: string;
-  icon: string;
-  hint: string; // small line under the number
-  color: string; // Tailwind background class for the icon box
-  href?: string; // optional link to the page that manages it
-};
-
 // The numbers returned by GET /stats
 export type AdminStats = {
   users: number;

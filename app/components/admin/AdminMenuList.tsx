@@ -200,7 +200,7 @@ export default function AdminMenuList({ items }: { items: AdminMenuItem[] }) {
 
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="font-display text-lg font-bold">{item.name}</h2>
+                      <h2 className="text-lg font-bold">{item.name}</h2>
                       <Badge variant={status.variant}>{status.label}</Badge>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
@@ -213,7 +213,7 @@ export default function AdminMenuList({ items }: { items: AdminMenuItem[] }) {
                     <p className="mt-1 text-xs text-muted-foreground">{status.note}</p>
                   </div>
 
-                  <p className="text-xl font-black text-primary">
+                  <p className="text-xl font-extrabold tracking-tight text-primary tabular-nums">
                     ${item.price.toFixed(2)}
                   </p>
                 </div>
