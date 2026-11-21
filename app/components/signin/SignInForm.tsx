@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
 import { getRoleHome } from "@/lib/roles";
+import { nextFromLocation } from "@/lib/safe-next";
 
 // Sign in form: logs the user in with email and password using Better Auth.
 export default function SignInForm() {
@@ -47,9 +48,10 @@ export default function SignInForm() {
       return;
     }
 
-    // Logged in: show a message, go to the page for their role
+    // Logged in: show a message, go back to the page they wanted (?next=...),
+    // otherwise to the page for their role
     toast.success("Signed in successfully. Welcome back!");
-    router.push(getRoleHome(data?.user.role));
+    router.push(nextFromLocation() ?? getRoleHome(data?.user.role));
     router.refresh();
   }
 

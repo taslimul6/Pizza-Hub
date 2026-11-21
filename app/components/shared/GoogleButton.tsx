@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { nextFromLocation } from "@/lib/safe-next";
 import type { GoogleButtonProps } from "@/types";
 
 // Google login / signup button. Google handles both: if the email is new an
@@ -17,8 +18,10 @@ export default function GoogleButton({ label, role }: GoogleButtonProps) {
     const { error: googleError } = await authClient.signIn.social({
       provider: "google",
       // Come back to /signin: the proxy sees the new session and redirects
-      // to the right page for the user's role.
-      callbackURL: "/signin",
+      // to ?next=... (the page they wanted) or to the page for their role.
+      callbackURL: nextFromLocation()
+        ? `/signin?next=${encodeURIComponent(nextFromLocation() as string)}`
+        : "/signin",
       // On an error (e.g. a blocked account) go to the home page with ?error=...
       // where AuthErrorToast shows a message
       errorCallbackURL: "/",
