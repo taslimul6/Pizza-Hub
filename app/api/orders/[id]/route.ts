@@ -30,10 +30,11 @@ export async function PATCH(
 
   // Cancel belongs to the customer, the other actions to the vendor
   const isCancel = action === "cancel";
-  const neededRole = isCancel ? "customer" : "vendor";
-  if (session.user.role !== neededRole) {
+  // (vendors and admins can cancel their own orders too, but only their own order: the API checks the owner)
+  const allowedRoles = isCancel ? ["customer", "vendor", "admin"] : ["vendor"];
+  if (!allowedRoles.includes(session.user.role as string)) {
     return NextResponse.json(
-      { error: `Only ${neededRole}s can do this` },
+      { error: `Only ${isCancel ? "customers" : "vendors"} can do this` },
       { status: 403 },
     );
   }

@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   PlusCircle,
   ShoppingBag,
+  ShoppingCart,
   Sparkles,
   UserCog,
   UtensilsCrossed,
@@ -26,7 +27,8 @@ export const vendorNav: DashboardNavSection[] = [
   {
     title: "Business",
     items: [
-      { href: "/vendor/orders", label: "Orders", icon: ShoppingBag, hint: "Accept and complete" },
+      { href: "/vendor/orders", label: "Customer orders", icon: ShoppingBag, hint: "Accept and complete" },
+      { href: "/vendor/myorder", label: "My orders", icon: ShoppingCart, hint: "Orders you placed as a customer" },
       { href: "/vendor/subscription", label: "Subscription", icon: Sparkles, hint: "Free or Premium plan" },
     ],
   },
