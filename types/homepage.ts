@@ -35,6 +35,8 @@ export type FeaturedPizza = {
   flag?: string; // e.g. "Bestseller"
   rating: number;
   vendorPremium?: boolean; // the vendor has an active Premium plan
+  vendorName?: string | null; // restaurant name of the vendor (from GET /menu)
+  location?: string; // area / city of the item
   prepTimeMin: number;
   toppings: string[];
   sizes: { label: string; price: number }[];
@@ -97,4 +99,22 @@ export type Order = {
     // pending | accepted | rejected | cancelled | completed
     status: string;
   };
+};
+
+// The filters of the Browse Menu page (they live in the address: /menu?search=...)
+export type MenuQuery = {
+  search: string;
+  category: string;
+  location: string;
+  minPrice: string;
+  maxPrice: string;
+  sort: "newest" | "price_asc" | "price_desc" | "rating";
+};
+
+// What GET /menu answers
+export type MenuResult = {
+  items: FeaturedPizza[];
+  total: number;
+  categories: string[];
+  locations: string[];
 };

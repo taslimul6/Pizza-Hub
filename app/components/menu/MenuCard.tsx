@@ -38,10 +38,10 @@ export default function MenuCard({ item }: { item: FeaturedPizza }) {
         </p>
 
         <p className="mt-3 text-sm text-muted-foreground">
-          📍 {getShopLocation(item.shop)}
+          📍 {item.location ?? getShopLocation(item.shop)}
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          🏪 {getShopName(item.shop)} · {item.prepTimeMin} min prep
+          🏪 {item.vendorName ?? getShopName(item.shop)} · {item.prepTimeMin} min prep
         </p>
 
         <div className="mt-auto flex items-center justify-between gap-3 pt-5">
