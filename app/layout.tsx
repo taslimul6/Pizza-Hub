@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { DM_Sans, Fraunces } from "next/font/google";
 import Footer from "./components/shared/Footer";
 import HideOnDashboard from "./components/shared/HideOnDashboard";
@@ -37,9 +38,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Navbar />
         {children}
         {/* The dashboards are app screens: no marketing footer there */}
+        {/* usePathname() must sit inside Suspense so dynamic routes can prerender */}
+        <Suspense fallback={null}>
         <HideOnDashboard>
           <Footer />
         </HideOnDashboard>
+        </Suspense>
         {/* Shows toast messages (e.g. "Signed in successfully") */}
         <Toaster position="top-center" richColors />
         </ThemeProvider>
