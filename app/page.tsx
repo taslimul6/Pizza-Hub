@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AppAndNewsletter from "./components/homepage/AppAndNewsletter";
 import FeaturedMenu from "./components/homepage/FeaturedMenu";
 import Hero from "./components/homepage/Hero";
@@ -7,12 +8,17 @@ import Reviews from "./components/homepage/Reviews";
 import SpecialOffer from "./components/homepage/SpecialOffer";
 import VendorCta from "./components/homepage/VendorCta";
 import WhyChooseUs from "./components/homepage/WhyChooseUs";
+import AuthErrorToast from "./components/shared/AuthErrorToast";
 
 // Home page - sections appear in this order, top to bottom.
 // The navbar and footer are rendered by app/layout.tsx.
 export default function Home() {
   return (
     <main className="flex-1">
+      {/* Toast for a failed login, e.g. a blocked account (?error=...) */}
+      <Suspense>
+        <AuthErrorToast />
+      </Suspense>
       <Hero />
       <HowItWorks />
       <PopularShops />

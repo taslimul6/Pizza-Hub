@@ -19,6 +19,9 @@ export default function GoogleButton({ label, role }: GoogleButtonProps) {
       // Come back to /signin: the proxy sees the new session and redirects
       // to the right page for the user's role.
       callbackURL: "/signin",
+      // On an error (e.g. a blocked account) go to the home page with ?error=...
+      // where AuthErrorToast shows a message
+      errorCallbackURL: "/",
       // Only sent on the signup page; new users get "customer" otherwise
       ...(role ? { additionalData: { role } } : {}),
     });

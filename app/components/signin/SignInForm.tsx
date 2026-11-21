@@ -35,6 +35,11 @@ export default function SignInForm() {
     setLoading(false);
 
     if (signInError) {
+      // Blocked account: send them to the home page, which shows a toast
+      if (signInError.code === "ACCOUNT_BLOCKED") {
+        router.replace("/?error=ACCOUNT_BLOCKED");
+        return;
+      }
       const message =
         signInError.message || "Could not sign in. Please try again.";
       setError(message);

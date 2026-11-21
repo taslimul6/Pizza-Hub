@@ -97,8 +97,10 @@ export const auth = betterAuth({
             .collection("user")
             .findOne({ _id: new ObjectId(session.userId) });
           if (user?.isBlocked === true) {
+            // The code is how the sign in form and the Google redirect recognise it
             throw new APIError("FORBIDDEN", {
               message: "Your account has been blocked. Please contact support.",
+              code: "ACCOUNT_BLOCKED",
             });
           }
         },
