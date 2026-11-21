@@ -41,6 +41,7 @@ const roleLinks: Record<Role, NavLink[]> = {
     { href: "/vendor/manage", label: "Manage Menu" },
     { href: "/vendor/addMenu", label: "Add Menu Item" },
     { href: "/vendor/orders", label: "Incoming Orders" },
+    { href: "/vendor/subscription", label: "Subscription" },
   ],
   admin: [
     { href: "/admin/users", label: "Manage Users" },

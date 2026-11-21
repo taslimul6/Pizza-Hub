@@ -33,6 +33,7 @@ export type FeaturedPizza = {
   isSpicy: boolean;
   flag?: string; // e.g. "Bestseller"
   rating: number;
+  vendorPremium?: boolean; // the vendor has an active Premium plan
   prepTimeMin: number;
   toppings: string[];
   sizes: { label: string; price: number }[];

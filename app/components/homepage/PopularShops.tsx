@@ -54,6 +54,11 @@ async function FeaturedList() {
                 {pizza.flag}
               </Badge>
             )}
+            {pizza.vendorPremium && (
+              <Badge variant="dark" className="absolute right-3 top-3">
+                ⭐ Premium vendor
+              </Badge>
+            )}
           </div>
 
           <CardContent className="p-5">

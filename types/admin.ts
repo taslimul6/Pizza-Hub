@@ -52,15 +52,17 @@ export type AdminMenuItem = {
 // One row of the admin "Transactions" list (read only)
 export type AdminTransaction = {
   id: string;
+  type: "order" | "subscription";
+  plan: string | null; // subscription plan, e.g. "premium" (null for orders)
   vendorName: string;
   vendorEmail: string | null;
   vendorShop: string | null;
-  customerName: string;
-  customerEmail: string;
+  customerName: string | null; // null for subscription payments
+  customerEmail: string | null;
   itemName: string;
   amount: number;
   cardLast4: string;
-  orderStatus: string;
+  orderStatus: string | null;
   paymentStatus: "paid" | "pending" | "refunded";
   createdAt: string;
 };

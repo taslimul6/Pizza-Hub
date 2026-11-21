@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { formatCardNumber, formatExpiry } from "@/lib/card-format";
 
 type PaymentDialogProps = {
   open: boolean;
@@ -28,21 +29,6 @@ type PaymentDialogProps = {
   crust: string;
   quantity: number;
 };
-
-// "1234123412341234" -> "1234 1234 1234 1234"
-function formatCardNumber(value: string) {
-  return value
-    .replace(/\D/g, "")
-    .slice(0, 16)
-    .replace(/(.{4})/g, "$1 ")
-    .trim();
-}
-
-// "1228" -> "12/28"
-function formatExpiry(value: string) {
-  const digits = value.replace(/\D/g, "").slice(0, 4);
-  return digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
-}
 
 // Payment popup that opens when the customer clicks "Order now".
 // This is the design only: no payment is taken and no card data is stored.

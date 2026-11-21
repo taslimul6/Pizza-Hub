@@ -52,6 +52,7 @@ async function ItemDetails({ params }: { params: Promise<{ id: string }> }) {
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="muted">{formatSlug(item.category)}</Badge>
           {item.flag && <Badge variant="secondary">{item.flag}</Badge>}
+          {item.vendorPremium && <Badge variant="dark">⭐ Premium vendor</Badge>}
           <Badge variant="accent">{item.rating} ★</Badge>
         </div>
 

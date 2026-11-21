@@ -15,12 +15,14 @@ export const metadata: Metadata = {
 // A transaction as the API sends it
 type ApiTransaction = {
   _id: string;
+  type: AdminTransaction["type"];
+  plan: string | null;
   vendor: { name: string | null; email: string | null; shop: string | null };
-  customer: { name: string; email: string };
+  customer: { name: string; email: string } | null; // null for subscriptions
   itemName: string;
   amount: number;
   cardLast4: string;
-  orderStatus: string;
+  orderStatus: string | null;
   paymentStatus: AdminTransaction["paymentStatus"];
   createdAt: string;
 };
@@ -35,11 +37,13 @@ async function Transactions() {
 
   const transactions: AdminTransaction[] = raw.map((t) => ({
     id: t._id,
+    type: t.type,
+    plan: t.plan,
     vendorName: t.vendor.name ?? (t.vendor.shop ? getShopName(t.vendor.shop) : "Unknown vendor"),
     vendorEmail: t.vendor.email,
     vendorShop: t.vendor.shop,
-    customerName: t.customer.name,
-    customerEmail: t.customer.email,
+    customerName: t.customer?.name ?? null,
+    customerEmail: t.customer?.email ?? null,
     itemName: t.itemName,
     amount: t.amount,
     cardLast4: t.cardLast4,

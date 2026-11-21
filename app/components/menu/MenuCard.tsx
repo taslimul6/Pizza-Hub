@@ -18,6 +18,11 @@ export default function MenuCard({ item }: { item: FeaturedPizza }) {
             {item.flag}
           </Badge>
         )}
+        {item.vendorPremium && (
+          <Badge variant="dark" className="absolute right-3 top-3">
+            ⭐ Premium vendor
+          </Badge>
+        )}
       </div>
 
       <CardContent className="flex flex-1 flex-col p-5">

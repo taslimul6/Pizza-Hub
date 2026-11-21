@@ -53,8 +53,8 @@ export default function TransactionsList({
   const visible = transactions.filter(
     (t) =>
       (filter === "all" || t.paymentStatus === filter) &&
-      [t.vendorName, t.vendorEmail ?? "", t.customerName, t.customerEmail, t.itemName].some(
-        (field) => field.toLowerCase().includes(text),
+      [t.vendorName, t.vendorEmail, t.customerName, t.customerEmail, t.itemName, t.plan].some(
+        (field) => (field ?? "").toLowerCase().includes(text),
       ),
   );
 
@@ -133,7 +133,12 @@ export default function TransactionsList({
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <h2 className="font-display text-lg font-bold">{t.vendorName}</h2>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="font-display text-lg font-bold">{t.vendorName}</h2>
+                      <Badge variant={t.type === "subscription" ? "dark" : "muted"}>
+                        {t.type === "subscription" ? "Subscription" : "Order"}
+                      </Badge>
+                    </div>
                     <p className="text-sm text-muted-foreground">
                       {t.vendorEmail ?? "No vendor email on record"}
                     </p>
@@ -152,15 +157,20 @@ export default function TransactionsList({
                     <dd className="font-bold">{formatDate(t.createdAt)}</dd>
                   </div>
                   <div>
-                    <dt className="text-muted-foreground">Order</dt>
+                    <dt className="text-muted-foreground">
+                      {t.type === "subscription" ? "Subscription plan" : "Order"}
+                    </dt>
                     <dd className="font-bold">
-                      {t.itemName} <span className="font-normal capitalize">({t.orderStatus})</span>
+                      {t.itemName}{" "}
+                      {t.orderStatus && (
+                        <span className="font-normal capitalize">({t.orderStatus})</span>
+                      )}
                     </dd>
                   </div>
                   <div>
                     <dt className="text-muted-foreground">Paid by</dt>
                     <dd className="font-bold">
-                      {t.customerName}
+                      {t.customerName ?? t.vendorName}
                       <span className="block font-normal text-muted-foreground">
                         card ending {t.cardLast4}
                       </span>
