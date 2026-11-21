@@ -75,6 +75,11 @@ export default function AddMenuItemForm({ categories }: { categories: string[] }
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
+        if (data.code === "FREE_ITEM_LIMIT") {
+          // The subscription page explains the limit with a toast
+          router.push("/vendor/subscription?limit=reached");
+          return;
+        }
         toast.error(data.error ?? "Could not add the menu item");
         return;
       }

@@ -61,7 +61,7 @@ export default function VendorDashboard({
 
   const isPremium = subscription.plan === "premium";
   const atLimit =
-    subscription.activeLimit !== null && subscription.activeItems >= subscription.activeLimit;
+    subscription.itemLimit !== null && subscription.totalItems >= subscription.itemLimit;
 
   const kpis: Kpi[] = [
     {
@@ -81,12 +81,15 @@ export default function VendorDashboard({
       href: "/vendor/orders",
     },
     {
-      label: "Active items",
+      label: "Menu items",
       value:
-        subscription.activeLimit === null
-          ? number(subscription.activeItems)
-          : `${number(subscription.activeItems)} / ${subscription.activeLimit}`,
-      sub: subscription.activeLimit === null ? "Unlimited on Premium" : "Free plan limit",
+        subscription.itemLimit === null
+          ? number(subscription.totalItems)
+          : `${number(subscription.totalItems)} / ${subscription.itemLimit}`,
+      sub:
+        subscription.itemLimit === null
+          ? `${number(subscription.activeItems)} live · unlimited on Premium`
+          : `${number(subscription.activeItems)} live · Free plan limit`,
       icon: UtensilsCrossed,
       tint: "bg-accent/30 text-foreground",
       href: "/vendor/manage",

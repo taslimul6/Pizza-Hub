@@ -62,6 +62,11 @@ export async function POST(request: Request) {
   // Find the item and its price (never trust a price from the browser)
   const items = await getList<FeaturedPizza>("/");
   const item = items.find((i) => i._id === itemId);
+
+  // A vendor cannot order their own item (the API checks this again)
+  if (item?.vendorId && item.vendorId === session.user.id) {
+    return NextResponse.json({ error: "You cannot order your own item." }, { status: 403 });
+  }
   const chosenSize = item?.sizes.find((s) => s.label === size);
 
   if (!item || !chosenSize || !item.crust.includes(crust)) {

@@ -22,6 +22,7 @@ export type Step = {
 // A featured pizza from the /featured API
 export type FeaturedPizza = {
   _id: string;
+  vendorId?: string | null; // the vendor who sells it (null for older seed items)
   itemName: string;
   slug: string;
   description: string;

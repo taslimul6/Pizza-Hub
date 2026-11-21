@@ -1,8 +1,10 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { getObject } from "@/lib/api";
 import { authFetch } from "@/lib/api-auth";
 import { auth } from "@/lib/auth";
 import { readMenuForm, uploadToImgbb } from "@/lib/menu-form";
+import type { VendorSubscription } from "@/types";
 
 function bad(error: string, status = 400) {
   return NextResponse.json({ error }, { status });
@@ -18,6 +20,19 @@ export async function POST(request: Request) {
   if (!session) return bad("Please sign in first", 401);
   if (session.user.role !== "vendor") {
     return bad("Only vendors can add menu items", 403);
+  }
+
+  // Free plan: max 3 menu items in total. Check before uploading the photo.
+  // (The API checks it again when saving.)
+  const plan = await getObject<VendorSubscription>("/subscription", { auth: true });
+  if (plan && plan.itemLimit !== null && plan.totalItems >= plan.itemLimit) {
+    return NextResponse.json(
+      {
+        error: `The Free plan allows ${plan.itemLimit} menu items. Upgrade to Premium to add more.`,
+        code: "FREE_ITEM_LIMIT",
+      },
+      { status: 403 },
+    );
   }
 
   const apiKey = process.env.IMGBB_API_KEY;
@@ -58,7 +73,14 @@ export async function POST(request: Request) {
     return bad("Menu service is down", 502);
   }
 
-  if (!res.ok) return bad("Could not save the menu item", 502);
+  if (!res.ok) {
+    // Pass the API's reason along (e.g. the Free plan limit)
+    const data = await res.json().catch(() => ({}));
+    return NextResponse.json(
+      { error: data.error ?? "Could not save the menu item", code: data.code },
+      { status: res.status >= 500 ? 502 : res.status },
+    );
+  }
 
   const saved = await res.json();
   return NextResponse.json(

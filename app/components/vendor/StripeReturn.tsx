@@ -7,21 +7,27 @@ import { toast } from "sonner";
 // Runs when Stripe sends the vendor back to /vendor/subscription:
 //   ?session_id=cs_...  -> ask the server to confirm the payment
 //   ?cancelled=1        -> the vendor left the Stripe page without paying
+//   ?limit=reached      -> a Free vendor tried to create a 4th menu item
 // Then it removes the query from the address and reloads the plan.
 export default function StripeReturn() {
   const router = useRouter();
   const params = useSearchParams();
   const sessionId = params.get("session_id");
   const cancelled = params.get("cancelled");
+  const limit = params.get("limit");
   // Only once, even if React runs the effect twice in development
   const handled = useRef(false);
 
   useEffect(() => {
-    if (handled.current || (!sessionId && !cancelled)) return;
+    if (handled.current || (!sessionId && !cancelled && !limit)) return;
     handled.current = true;
 
     async function confirm() {
-      if (cancelled) {
+      if (limit) {
+        toast.warning("You have reached the Free plan limit of 3 menu items", {
+          description: "Upgrade to Premium to add unlimited items.",
+        });
+      } else if (cancelled) {
         toast.info("Payment cancelled. You were not charged.");
       } else {
         const id = toast.loading("Confirming your payment…");
@@ -51,7 +57,7 @@ export default function StripeReturn() {
     }
 
     confirm();
-  }, [sessionId, cancelled, router]);
+  }, [sessionId, cancelled, limit, router]);
 
   return null;
 }

@@ -15,7 +15,7 @@ const plans = [
     priceLabel: "$0",
     note: "forever",
     features: [
-      "Max 3 active menu items",
+      "Up to 3 menu items",
       "Basic vendor dashboard",
       "Order management",
     ],
@@ -26,7 +26,7 @@ const plans = [
     priceLabel: "", // filled in from the API
     note: "",
     features: [
-      "Unlimited active items",
+      "Unlimited menu items",
       "Premium vendor badge on your items",
       "Featured menu placement",
       "All Free features",
@@ -60,7 +60,7 @@ export default function SubscriptionPlans({ data }: { data: VendorSubscription }
     }
   }
   const isPremium = data.plan === "premium";
-  const atLimit = data.activeLimit !== null && data.activeItems >= data.activeLimit;
+  const atLimit = data.itemLimit !== null && data.totalItems >= data.itemLimit;
 
   return (
     <>
@@ -86,22 +86,22 @@ export default function SubscriptionPlans({ data }: { data: VendorSubscription }
 
         <div className="text-right">
           <p className="text-3xl text-primary font-extrabold tracking-tight tabular-nums">
-            {data.activeItems}
-            {data.activeLimit !== null && (
-              <span className="text-xl text-muted-foreground"> / {data.activeLimit}</span>
+            {data.totalItems}
+            {data.itemLimit !== null && (
+              <span className="text-xl text-muted-foreground"> / {data.itemLimit}</span>
             )}
           </p>
           <p className="text-sm text-muted-foreground">
-            active {data.activeItems === 1 ? "item" : "items"}
-            {data.activeLimit === null && " (unlimited)"}
+            menu {data.totalItems === 1 ? "item" : "items"}
+            {data.itemLimit === null && " (unlimited)"}
           </p>
         </div>
       </section>
 
       {atLimit && (
         <p className="mb-8 rounded-2xl border border-accent bg-accent/25 p-4 text-sm font-bold">
-          You have reached the Free limit of {data.activeLimit} active items. Upgrade to
-          Premium to switch on more.
+          You have reached the Free limit of {data.itemLimit} menu items. Upgrade to
+          Premium to add more.
         </p>
       )}
 

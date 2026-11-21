@@ -8,6 +8,8 @@ export type ItemStatus = "pending" | "approved" | "rejected" | "inactive";
 export type VendorSubscription = {
   plan: "free" | "premium";
   expiresAt: string | null; // when premium ends (null on free)
+  totalItems: number; // all of the vendor's items, any status
+  itemLimit: number | null; // 3 on free, null = unlimited
   activeItems: number; // approved items right now
   activeLimit: number | null; // 3 on free, null = unlimited
   price: number; // premium price per period

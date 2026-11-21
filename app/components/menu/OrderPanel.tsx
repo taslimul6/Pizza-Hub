@@ -14,6 +14,8 @@ const selectStyle =
 // Only logged-in customers can order; guests are sent to sign in.
 export default function OrderPanel({ item }: { item: FeaturedPizza }) {
   const { data: session, isPending } = authClient.useSession();
+  // A vendor cannot order their own item
+  const isOwnItem = !!session && !!item.vendorId && item.vendorId === session.user.id;
 
   const [size, setSize] = useState(item.sizes[0]?.label ?? "");
   const [crust, setCrust] = useState(item.crust[0] ?? "");
@@ -95,6 +97,11 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
 
         {isPending ? (
           <Button disabled>Checking login…</Button>
+        ) : isOwnItem ? (
+          // A vendor cannot order their own item
+          <Button size="lg" disabled>
+            This is your item
+          </Button>
         ) : session ? (
           <Button size="lg" onClick={() => setPayOpen(true)}>
             Order now
@@ -106,7 +113,7 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
         )}
       </div>
 
-      {session && (
+      {session && !isOwnItem && (
         <PaymentDialog
           open={payOpen}
           onOpenChange={setPayOpen}
@@ -119,6 +126,12 @@ export default function OrderPanel({ item }: { item: FeaturedPizza }) {
           crust={crust}
           quantity={quantity}
         />
+      )}
+
+      {isOwnItem && (
+        <p className="mt-3 text-sm text-muted-foreground">
+          You sell this item, so you cannot order it yourself.
+        </p>
       )}
 
       {!isPending && !session && (
