@@ -219,14 +219,14 @@ export default function VendorDashboard({
 
           {/* Plan */}
           {isPremium ? (
-            <section className="rounded-3xl bg-dark p-6 text-light">
+            <section className="rounded-3xl bg-dark p-6 text-cream">
               <p className="flex items-center gap-2 text-sm font-bold text-accent">
                 <Sparkles className="size-4" aria-hidden="true" />
                 Premium vendor
               </p>
               <p className="mt-2 font-display text-xl font-bold">Unlimited items and featured placement</p>
               {subscription.expiresAt && (
-                <p className="mt-1 text-sm text-light/70">
+                <p className="mt-1 text-sm text-cream/70">
                   Active until {formatDay(subscription.expiresAt)}. It does not renew by itself.
                 </p>
               )}

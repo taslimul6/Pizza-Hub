@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { authClient } from "@/lib/auth-client";
 import { getRoleHome, isRole } from "@/lib/roles";
+import ThemeToggle from "./ThemeToggle";
 import type { NavbarUser, NavLink, Role } from "@/types";
 
 // Links everyone sees
@@ -94,6 +95,8 @@ export default function Navbar() {
 
         {/* Right side */}
         <div className="ml-auto flex items-center gap-2">
+          {/* Light / dark mode (all screen sizes) */}
+          <ThemeToggle />
           {isPending ? null : user ? (
             // Logged in: profile button + dropdown (desktop only)
             <DropdownMenu>
@@ -106,7 +109,7 @@ export default function Navbar() {
                 })}
               >
                 {/* Profile photo, or the first letter of the name */}
-                <span className="grid size-7 place-items-center overflow-hidden rounded-full bg-dark text-xs font-bold text-light">
+                <span className="grid size-7 place-items-center overflow-hidden rounded-full bg-dark text-xs font-bold text-cream">
                   {user.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={user.image} alt="" className="size-full object-cover" />

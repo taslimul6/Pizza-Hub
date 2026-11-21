@@ -18,15 +18,15 @@ const perks = [
 // Sign In page - layout. The working form is in SignInForm.
 export default function SignInPage() {
   return (
-    <main className="flex flex-1 items-center bg-[radial-gradient(800px_460px_at_88%_18%,#ffe7b0,transparent_62%),radial-gradient(640px_380px_at_-4%_100%,#fddcd3,transparent_62%)] px-4 py-10 sm:px-6 lg:py-16">
+    <main className="flex flex-1 items-center bg-[radial-gradient(800px_460px_at_88%_18%,#ffe7b0,transparent_62%),radial-gradient(640px_380px_at_-4%_100%,#fddcd3,transparent_62%)] dark:bg-none px-4 py-10 sm:px-6 lg:py-16">
       <div className="mx-auto grid w-full max-w-[1000px] overflow-hidden rounded-[2rem] border border-border bg-white shadow-warm-xl lg:grid-cols-2">
         {/* ===== Left: brand panel (hidden on small screens) ===== */}
-        <aside className="hidden flex-col justify-between bg-primary p-10 text-white lg:flex">
+        <aside className="hidden flex-col justify-between bg-primary p-10 text-cream lg:flex">
           <div>
             <p className="font-display text-3xl font-black">
               Pizza<span className="text-accent">Hub</span>
             </p>
-            <p className="mt-2 text-lg text-white/90">
+            <p className="mt-2 text-lg text-cream/90">
               Hot, fresh, and on its way.
             </p>
           </div>

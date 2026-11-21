@@ -15,7 +15,7 @@ export default function AttentionBanner({
   action: { label: string; href: string };
 }) {
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-dark p-6 text-light sm:p-8">
+    <div className="relative overflow-hidden rounded-3xl bg-dark p-6 text-cream sm:p-8">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-16 -right-10 size-56 rounded-full bg-primary/40 blur-3xl"
@@ -31,7 +31,7 @@ export default function AttentionBanner({
           </span>
           <div>
             <p className="font-display text-2xl font-black">{title}</p>
-            <p className="mt-1 text-light/70">{text}</p>
+            <p className="mt-1 text-cream/70">{text}</p>
           </div>
         </div>
         <Link href={action.href} className={buttonVariants({ variant: "accent", size: "lg" })}>

@@ -46,7 +46,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="bg-[radial-gradient(800px_460px_at_88%_18%,#ffe7b0,transparent_62%),radial-gradient(640px_380px_at_-4%_100%,#fddcd3,transparent_62%)] px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-16">
+    <section className="bg-[radial-gradient(800px_460px_at_88%_18%,#ffe7b0,transparent_62%),radial-gradient(640px_380px_at_-4%_100%,#fddcd3,transparent_62%)] dark:bg-none px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-16">
       <div className="mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
         {/* ===== Left side: text, search, buttons, stats ===== */}
         <div>

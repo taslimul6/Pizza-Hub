@@ -44,7 +44,7 @@ const columns: FooterColumn[] = [
 
 export default function Footer() {
   return (
-    <footer className="bg-dark px-4 pb-6 pt-14 text-white sm:px-6">
+    <footer className="bg-dark px-4 pb-6 pt-14 text-cream sm:px-6">
       <div className="mx-auto max-w-[1200px]">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
           {/* Brand */}
@@ -52,7 +52,7 @@ export default function Footer() {
             <Link href="/" className="font-display text-2xl font-black">
               Pizza<span className="text-accent">Hub</span>
             </Link>
-            <p className="mt-3 max-w-xs text-white/70">
+            <p className="mt-3 max-w-xs text-cream/70">
               PizzaHub connects hungry neighbors with the best local pizzerias —
               hot, fresh and delivered fast. Made with love and plenty of
               mozzarella.
@@ -68,7 +68,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/70 hover:text-white hover:underline"
+                      className="text-cream/70 hover:text-cream hover:underline"
                     >
                       {link.label}
                     </Link>
@@ -81,12 +81,12 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <Separator className="mt-12 bg-white/15" />
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-6 text-sm text-white/70">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-6 text-sm text-cream/70">
           <p>© 2026 PizzaHub, Inc. All rights reserved.</p>
           <ul className="flex gap-5">
-            <li><Link href="#" className="hover:text-white">Privacy</Link></li>
-            <li><Link href="#" className="hover:text-white">Terms</Link></li>
-            <li><Link href="#" className="hover:text-white">Cookies</Link></li>
+            <li><Link href="#" className="hover:text-cream">Privacy</Link></li>
+            <li><Link href="#" className="hover:text-cream">Terms</Link></li>
+            <li><Link href="#" className="hover:text-cream">Cookies</Link></li>
           </ul>
         </div>
       </div>

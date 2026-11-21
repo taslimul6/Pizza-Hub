@@ -55,7 +55,7 @@ export default function DashboardSidebar({
         <div className="flex items-center gap-3">
           <div
             aria-hidden="true"
-            className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-2xl bg-dark text-base font-bold text-light shadow-warm-md"
+            className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-2xl bg-dark text-base font-bold text-cream shadow-warm-md"
           >
             {image ? (
               // eslint-disable-next-line @next/next/no-img-element

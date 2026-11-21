@@ -127,7 +127,7 @@ export default function AdminDashboard({
                     <li key={t.id} className="flex items-center gap-4 py-3.5 first:pt-0 last:pb-0">
                       <span
                         className={`grid size-11 shrink-0 place-items-center rounded-2xl ${
-                          isPlan ? "bg-dark text-light" : "bg-primary-100 text-primary"
+                          isPlan ? "bg-dark text-cream" : "bg-primary-100 text-primary"
                         }`}
                       >
                         {isPlan ? (

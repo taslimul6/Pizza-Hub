@@ -23,7 +23,7 @@ export default function SpecialOffer() {
 
   return (
     <section id="offers" className="px-4 py-16 sm:px-6 lg:py-24">
-      <div className="mx-auto grid max-w-[1200px] items-center gap-8 rounded-[2rem] bg-dark p-8 text-white sm:p-12 md:grid-cols-[1fr_auto]">
+      <div className="mx-auto grid max-w-[1200px] items-center gap-8 rounded-[2rem] bg-dark p-8 text-cream sm:p-12 md:grid-cols-[1fr_auto]">
         <div>
           <Badge variant="accent" className="h-auto py-1 text-sm">
             🔥 Limited-time offer
@@ -31,7 +31,7 @@ export default function SpecialOffer() {
           <h2 className="mt-4 font-display text-3xl font-black sm:text-4xl">
             Your first slice is on us — 30% off.
           </h2>
-          <p className="mt-3 max-w-xl text-lg text-white/80">
+          <p className="mt-3 max-w-xl text-lg text-cream/80">
             New to PizzaHub? Use this code at checkout and save on your first
             order from any participating shop.
           </p>
@@ -45,7 +45,7 @@ export default function SpecialOffer() {
               {copied ? "Copied!" : "Copy code"}
             </Button>
           </div>
-          <p className="mt-4 text-sm text-white/70">
+          <p className="mt-4 text-sm text-cream/70">
             Valid on first orders over $15 · max discount $9 · ends Dec 31.
           </p>
         </div>

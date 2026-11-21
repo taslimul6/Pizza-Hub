@@ -17,7 +17,7 @@ const buttonStyles = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary-600",
         // Cheese gold (used on dark backgrounds)
-        accent: "bg-accent text-accent-foreground hover:bg-white",
+        accent: "bg-accent text-accent-foreground hover:bg-accent/85",
         // No background until hovered
         ghost: "hover:bg-muted hover:text-foreground aria-expanded:bg-muted",
         destructive:

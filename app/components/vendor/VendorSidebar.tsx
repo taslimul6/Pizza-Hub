@@ -22,7 +22,7 @@ export default function VendorSidebar() {
       roleIcon={Store}
       extraBadge={
         premium ? (
-          <span className="inline-flex items-center gap-1 rounded-full bg-dark px-2.5 py-0.5 text-xs font-bold text-light">
+          <span className="inline-flex items-center gap-1 rounded-full bg-dark px-2.5 py-0.5 text-xs font-bold text-cream">
             <Sparkles className="size-3.5 text-accent" aria-hidden="true" />
             Premium
           </span>

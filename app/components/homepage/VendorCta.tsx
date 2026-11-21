@@ -14,7 +14,7 @@ const benefits: Benefit[] = [
 
 export default function VendorCta() {
   return (
-    <section id="partner" className="bg-dark px-4 py-16 text-white sm:px-6 lg:py-24">
+    <section id="partner" className="bg-dark px-4 py-16 text-cream sm:px-6 lg:py-24">
       <div className="mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-2">
         {/* Left: text, benefits, buttons */}
         <div>
@@ -33,7 +33,7 @@ export default function VendorCta() {
                 </span>
                 <div>
                   <strong className="block">{benefit.title}</strong>
-                  <span className="text-sm text-white/70">{benefit.text}</span>
+                  <span className="text-sm text-cream/70">{benefit.text}</span>
                 </div>
               </li>
             ))}
@@ -52,7 +52,7 @@ export default function VendorCta() {
                 variant: "outline",
                 size: "lg",
                 className:
-                  "border-white/60 text-white hover:bg-white hover:text-dark",
+                  "border-cream/60 text-cream hover:bg-cream hover:text-[#2a1a14]",
               })}
             >
               Learn more
@@ -63,13 +63,13 @@ export default function VendorCta() {
         {/* Right: picture area with two small stat cards */}
         <div className="relative grid h-80 place-items-center rounded-[2rem] bg-secondary text-8xl sm:h-96">
           👩‍🍳
-          <Card className="absolute left-4 top-6 gap-0 rounded-2xl px-4 py-2 text-dark shadow-warm-xl ring-0">
+          <Card className="absolute left-4 top-6 gap-0 rounded-2xl px-4 py-2 text-foreground shadow-warm-xl ring-0">
             <strong className="block text-xl">+38%</strong>
             <span className="text-sm text-muted-foreground">
               Avg. order growth
             </span>
           </Card>
-          <Card className="absolute bottom-6 right-4 gap-0 rounded-2xl px-4 py-2 text-dark shadow-warm-xl ring-0">
+          <Card className="absolute bottom-6 right-4 gap-0 rounded-2xl px-4 py-2 text-foreground shadow-warm-xl ring-0">
             <strong className="block text-xl">48</strong>
             <span className="text-sm text-muted-foreground">Orders today</span>
           </Card>

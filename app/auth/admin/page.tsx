@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 // It needs the secret admin key, so admins cannot be created through public sign up.
 export default function AdminSignUpPage() {
   return (
-    <main className="flex flex-1 items-center bg-[radial-gradient(800px_460px_at_88%_18%,#ffe7b0,transparent_62%),radial-gradient(640px_380px_at_-4%_100%,#fddcd3,transparent_62%)] px-4 py-10 sm:px-6 lg:py-16">
+    <main className="flex flex-1 items-center bg-[radial-gradient(800px_460px_at_88%_18%,#ffe7b0,transparent_62%),radial-gradient(640px_380px_at_-4%_100%,#fddcd3,transparent_62%)] dark:bg-none px-4 py-10 sm:px-6 lg:py-16">
       <section className="mx-auto w-full max-w-[480px] rounded-[2rem] border border-border bg-white p-6 shadow-warm-xl sm:p-10">
-        <span className="grid size-12 place-items-center rounded-2xl bg-dark text-light">
+        <span className="grid size-12 place-items-center rounded-2xl bg-dark text-cream">
           <ShieldCheck className="size-6" aria-hidden="true" />
         </span>
         <h1 className="mt-4 font-display text-3xl font-black tracking-tight">

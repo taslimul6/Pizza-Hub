@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Dark styles only apply under a ".dark" class (the site has no dark mode) */
+/* Dark mode: next-themes puts a "dark" class on <html> (see ThemeProvider) */
 @custom-variant dark (&:is(.dark *));
 
 /*
@@ -34,6 +34,52 @@
   --input: #e4dacb;
   --ring: #1a5fd4; /* Keyboard focus ring */
   --radius: 0.625rem;
+
+  /* Extra PizzaHub shades (used as bg-light, bg-dark, bg-primary-100 ...) */
+  --light: #fff8ee; /* page background */
+  --dark: #2a1a14; /* espresso sections (footer, banners) */
+  --primary-600: #a81d14; /* hover / pressed, link text */
+  --primary-100: #fde6e3; /* soft tint (active nav) */
+  --secondary-600: #245530;
+  --secondary-100: #e3f1e5;
+  --shadow-color: rgba(42, 26, 20, 0.1);
+}
+
+/*
+ * Dark mode: warm espresso surfaces, cream text, the same tomato / basil /
+ * cheese brand colors (a little brighter so they keep their contrast).
+ * Cards use bg-white in the markup, so --color-white becomes the card color.
+ * Text that must stay light on red / green / espresso uses "text-cream".
+ */
+.dark {
+  --background: #17110e;
+  --foreground: #f6ece0;
+  --card: #221a15;
+  --card-foreground: #f6ece0;
+  --popover: #221a15;
+  --popover-foreground: #f6ece0;
+  --primary: #e0412f;
+  --primary-foreground: #ffffff;
+  --secondary: #3d8a4b;
+  --secondary-foreground: #ffffff;
+  --muted: #2b211b;
+  --muted-foreground: #c3b3a2;
+  --accent: #ffb81c;
+  --accent-foreground: #2a1a14;
+  --destructive: #ef5a50;
+  --border: #3a2d25;
+  --input: #3a2d25;
+  --ring: #6aa0ff;
+
+  --light: #17110e;
+  --dark: #0d0907;
+  --primary-600: #ff7a6b;
+  --primary-100: #3a1a15;
+  --secondary-600: #6dbb7a;
+  --secondary-100: #1c3121;
+  --shadow-color: rgba(0, 0, 0, 0.45);
+  --color-white: #221a15;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -58,27 +104,28 @@
   --color-ring: var(--ring);
 
   /* Extra PizzaHub shades */
-  --color-primary-600: #a81d14; /* Hover / pressed */
-  --color-primary-100: #fde6e3; /* Soft tint (active nav) */
-  --color-secondary-600: #245530;
-  --color-secondary-100: #e3f1e5;
+  --color-primary-600: var(--primary-600); /* Hover / pressed */
+  --color-primary-100: var(--primary-100); /* Soft tint (active nav) */
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-100: var(--secondary-100);
   --color-error: #b3261e;
   --color-focus: #1a5fd4;
-  --color-dark: #2a1a14; /* Espresso */
-  --color-light: #fff8ee; /* Cream */
-  --color-sand-100: #f1eae0;
+  --color-dark: var(--dark); /* Espresso sections */
+  --color-light: var(--light); /* Page background */
+  --color-cream: #fff8ee; /* Light text on red / green / espresso (same in both modes) */
+  --color-sand-100: var(--muted);
 
   /* Fonts (CSS variables are provided by next/font in app/layout.tsx) */
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
 
   /* Warm shadows */
-  --shadow-warm-md: 0 6px 20px rgba(42, 26, 20, 0.1);
-  --shadow-warm-xl: 0 28px 60px rgba(42, 26, 20, 0.2);
+  --shadow-warm-md: 0 6px 20px var(--shadow-color);
+  --shadow-warm-xl: 0 28px 60px var(--shadow-color);
 }
 
 body {
-  background: var(--color-light);
-  color: var(--color-dark);
+  background: var(--light);
+  color: var(--foreground);
   font-family: var(--font-sans);
 }

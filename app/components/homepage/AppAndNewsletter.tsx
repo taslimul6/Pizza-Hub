@@ -33,12 +33,12 @@ export default function AppAndNewsletter() {
     <section className="px-4 pb-16 sm:px-6 lg:pb-24">
       <div className="mx-auto grid max-w-[1200px] gap-6 lg:grid-cols-2">
         {/* ===== App download ===== */}
-        <div className="flex items-center justify-between gap-6 overflow-hidden rounded-3xl bg-dark p-8 text-white">
+        <div className="flex items-center justify-between gap-6 overflow-hidden rounded-3xl bg-dark p-8 text-cream">
           <div>
             <h2 className="font-display text-2xl font-black">
               Pizza in your pocket
             </h2>
-            <p className="mt-2 text-white/80">
+            <p className="mt-2 text-cream/80">
               Get the PizzaHub app for live order tracking, exclusive app-only
               deals and one-tap reordering.
             </p>

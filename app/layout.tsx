@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import Footer from "./components/shared/Footer";
 import HideOnDashboard from "./components/shared/HideOnDashboard";
+import ThemeProvider from "./components/shared/ThemeProvider";
 import Navbar from "./components/shared/Navbar";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -27,8 +28,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${fraunces.variable} ${dmSans.variable} h-full antialiased`}
+      // next-themes adds the "dark" class before React starts
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
+        <ThemeProvider>
         {/* Navbar reads the login session itself (guest or logged in) */}
         <Navbar />
         {children}
@@ -37,7 +41,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
         </HideOnDashboard>
         {/* Shows toast messages (e.g. "Signed in successfully") */}
-        <Toaster theme="light" position="top-center" richColors />
+        <Toaster position="top-center" richColors />
+        </ThemeProvider>
       </body>
     </html>
   );

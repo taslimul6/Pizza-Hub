@@ -106,7 +106,7 @@ export default function ProfileSettingsForm({ profile }: { profile: ProfileInfo 
       {/* Photo */}
       <section className="rounded-3xl border border-border bg-white p-6 text-center">
         <h2 className="font-display text-xl font-bold">Profile photo</h2>
-        <div className="mx-auto mt-5 grid size-32 place-items-center overflow-hidden rounded-full bg-dark text-3xl font-bold text-light shadow-warm-md">
+        <div className="mx-auto mt-5 grid size-32 place-items-center overflow-hidden rounded-full bg-dark text-3xl font-bold text-cream shadow-warm-md">
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={preview} alt="Profile photo" className="size-full object-cover" />
