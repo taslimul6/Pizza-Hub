@@ -35,6 +35,7 @@ export default function DashboardSidebar({
   }
 
   const name = session?.user.name ?? "";
+  const image = session?.user.image ?? "";
   const email = session?.user.email ?? "";
   const initials = name
     .split(" ")
@@ -54,9 +55,16 @@ export default function DashboardSidebar({
         <div className="flex items-center gap-3">
           <div
             aria-hidden="true"
-            className="grid size-12 shrink-0 place-items-center rounded-2xl bg-dark text-base font-bold text-light shadow-warm-md"
+            className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-2xl bg-dark text-base font-bold text-light shadow-warm-md"
           >
-            {isPending ? "" : initials || roleLabel.charAt(0)}
+            {image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={image} alt="" className="size-full object-cover" />
+            ) : isPending ? (
+              ""
+            ) : (
+              initials || roleLabel.charAt(0)
+            )}
           </div>
           <div className="min-w-0">
             {isPending ? (

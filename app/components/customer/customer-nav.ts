@@ -1,4 +1,4 @@
-import { LayoutDashboard, Pizza, ShoppingBag } from "lucide-react";
+import { LayoutDashboard, Pizza, ShoppingBag, UserCog } from "lucide-react";
 import type { DashboardNavSection } from "@/app/components/dashboard/nav";
 
 // The pages of the customer panel (sidebar + mobile tabs)
@@ -19,6 +19,12 @@ export const customerNav: DashboardNavSection[] = [
     title: "Explore",
     items: [
       { href: "/menu", label: "Browse menu", icon: Pizza, hint: "Find something tasty" },
+    ],
+  },
+  {
+    title: "Account",
+    items: [
+      { href: "/customer/settings", label: "Profile settings", icon: UserCog, hint: "Name and photo" },
     ],
   },
 ];

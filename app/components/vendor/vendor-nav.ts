@@ -3,6 +3,7 @@ import {
   PlusCircle,
   ShoppingBag,
   Sparkles,
+  UserCog,
   UtensilsCrossed,
 } from "lucide-react";
 import type { DashboardNavSection } from "@/app/components/dashboard/nav";
@@ -27,6 +28,12 @@ export const vendorNav: DashboardNavSection[] = [
     items: [
       { href: "/vendor/orders", label: "Orders", icon: ShoppingBag, hint: "Accept and complete" },
       { href: "/vendor/subscription", label: "Subscription", icon: Sparkles, hint: "Free or Premium plan" },
+    ],
+  },
+  {
+    title: "Account",
+    items: [
+      { href: "/vendor/settings", label: "Profile settings", icon: UserCog, hint: "Restaurant name and photo" },
     ],
   },
 ];

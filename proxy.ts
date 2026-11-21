@@ -49,7 +49,7 @@ export async function proxy(request: NextRequest) {
 
   // 1. Guests cannot open dashboards or item pages
   if (!session) {
-    if (areaOwner || isItemPage(pathname)) return toSignIn(request);
+    if (areaOwner || isItemPage(pathname) || pathname === "/settings") return toSignIn(request);
     return NextResponse.next(); // guests may see /signin and /signup
   }
 
@@ -61,6 +61,11 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL(getRoleHome(role), request.url));
     }
     return NextResponse.next();
+  }
+
+  // /settings (navbar "Profile Settings") -> the settings page of their own dashboard
+  if (pathname === "/settings") {
+    return NextResponse.redirect(new URL(`${getRoleHome(role)}/settings`, request.url));
   }
 
   // 3. Any logged-in user may open an item page
@@ -77,6 +82,7 @@ export const config = {
     "/signin",
     "/signup",
     "/menu/:id",
+    "/settings",
     "/customer/:path*",
     "/vendor/:path*",
     "/admin/:path*",

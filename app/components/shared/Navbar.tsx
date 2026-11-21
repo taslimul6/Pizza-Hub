@@ -49,6 +49,7 @@ export default function Navbar() {
     ? {
         name: session.user.name,
         role: isRole(session.user.role) ? session.user.role : "customer",
+        image: session.user.image ?? null,
       }
     : null;
 
@@ -104,6 +105,15 @@ export default function Navbar() {
                     "hidden h-10 border-2 border-border bg-white px-4 text-foreground hover:border-primary hover:bg-white hover:text-foreground lg:inline-flex",
                 })}
               >
+                {/* Profile photo, or the first letter of the name */}
+                <span className="grid size-7 place-items-center overflow-hidden rounded-full bg-dark text-xs font-bold text-light">
+                  {user.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={user.image} alt="" className="size-full object-cover" />
+                  ) : (
+                    user.name.charAt(0).toUpperCase()
+                  )}
+                </span>
                 {user.name.split(" ")[0]} ▾
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">

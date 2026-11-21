@@ -11,4 +11,5 @@ export type AccountType = {
 export type NavbarUser = {
   name: string;
   role: Role;
+  image: string | null; // profile photo (ImgBB or Google), if any
 };

@@ -23,11 +23,26 @@ export const auth = betterAuth({
     minPasswordLength: PASSWORD_MIN_LENGTH, // 6 (Better Auth's default is 8)
   },
   hooks: {
-    // Password rule on the server too: 6+ characters, one uppercase, one lowercase
     before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path !== "/sign-up/email") return;
-      const message = checkPassword(String(ctx.body?.password ?? ""));
-      if (message) throw new APIError("BAD_REQUEST", { message });
+      // Password rule on the server too: 6+ characters, one uppercase, one lowercase
+      if (ctx.path === "/sign-up/email") {
+        const message = checkPassword(String(ctx.body?.password ?? ""));
+        if (message) throw new APIError("BAD_REQUEST", { message });
+      }
+
+      // Profile updates can never change the role, the block or the plan.
+      // ("role" is accepted at sign up, so Better Auth would otherwise let
+      // /update-user change it too.)
+      if (ctx.path === "/update-user") {
+        const locked = ["role", "isBlocked", "subscriptionPlan", "subscriptionExpiresAt", "email"];
+        const tried = locked.filter((key) => ctx.body && key in ctx.body);
+        if (tried.length > 0) {
+          throw new APIError("FORBIDDEN", {
+            message: `You cannot change ${tried.join(", ")} from your profile.`,
+            code: "LOCKED_FIELD",
+          });
+        }
+      }
     }),
   },
   socialProviders: {
