@@ -5,7 +5,32 @@ import { MongoClient, ObjectId } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { checkPassword, PASSWORD_MIN_LENGTH } from "./password-rules";
 
-const client = new MongoClient(process.env.MONGODB_URI as string);
+// Connects to MongoDB, trying up to 3 times with a fresh client each time.
+// Why: when the first connection fails the driver closes the client for good, and
+// every later query then fails with "Topology is closed" (this showed up on
+// Vercel). A fresh client on the next try avoids that, and the real error is
+// printed so it can be read in the logs.
+async function connectMongo() {
+  let lastClient = new MongoClient(process.env.MONGODB_URI as string, {
+    serverSelectionTimeoutMS: 8000,
+  });
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      await lastClient.connect();
+      return lastClient;
+    } catch (err) {
+      console.error(`MongoDB connection failed (try ${attempt} of 3):`, err);
+      await lastClient.close().catch(() => {});
+      lastClient = new MongoClient(process.env.MONGODB_URI as string, {
+        serverSelectionTimeoutMS: 8000,
+      });
+    }
+  }
+  // Give up: hand back an unconnected client (the driver will try again itself)
+  return lastClient;
+}
+
+const client = await connectMongo();
 const db = client.db("pizzaPulse");
 
 // Used by the admin sign up route to give the new account the admin role
@@ -20,11 +45,11 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    minPasswordLength: PASSWORD_MIN_LENGTH, // 6 (Better Auth's default is 8)
+    minPasswordLength: PASSWORD_MIN_LENGTH, // 8
   },
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
-      // Password rule on the server too: 6+ characters, one uppercase, one lowercase
+      // Password rule on the server too: 8+ characters, uppercase, lowercase, number, special character
       if (ctx.path === "/sign-up/email") {
         const message = checkPassword(String(ctx.body?.password ?? ""));
         if (message) throw new APIError("BAD_REQUEST", { message });

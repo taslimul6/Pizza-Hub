@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { authClient } from "@/lib/auth-client";
-import { checkPassword } from "@/lib/password-rules";
+import { checkPassword, PASSWORD_HINT } from "@/lib/password-rules";
 import { getRoleHome, isRole } from "@/lib/roles";
 import type { AccountType, Role } from "@/types";
 import { Separator } from "@/components/ui/separator";
@@ -165,6 +165,8 @@ export default function SignUpForm() {
           />
         </div>
       </div>
+
+      <p className="-mt-3 text-sm text-muted-foreground">{PASSWORD_HINT}</p>
 
       {/* Terms */}
       <div className="flex items-start gap-2">
