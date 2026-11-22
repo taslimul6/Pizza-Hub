@@ -15,6 +15,10 @@ A role-based pizza ordering and delivery platform. Customers discover local pizz
 ![Better Auth](https://img.shields.io/badge/Better_Auth-1.7-111)
 ![Stripe](https://img.shields.io/badge/Stripe-Checkout-635bff?logo=stripe)
 
+<br />
+
+![PizzaHub home page](docs/screenshots/home.png)
+
 </div>
 
 ---
